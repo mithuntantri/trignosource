@@ -1,0 +1,56 @@
+{
+  "_from": "git+https://github.com/jaeger25/Html5Video.git",
+  "_id": "Html5Video@1.2.2",
+  "_inBundle": false,
+  "_integrity": "sha1-wqqHrWFVQep9HItQEm51Axchl3Q=",
+  "_location": "/Html5Video",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "https://github.com/jaeger25/Html5Video.git",
+    "rawSpec": "https://github.com/jaeger25/Html5Video.git",
+    "saveSpec": "git+https://github.com/jaeger25/Html5Video.git",
+    "fetchSpec": "https://github.com/jaeger25/Html5Video.git",
+    "gitCommittish": "master"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/jaeger25/Html5Video.git#334f5e81bbb1747e7202fece1a78f8d83a1ff78f",
+  "_spec": "https://github.com/jaeger25/Html5Video.git",
+  "_where": "/home/mithuntantri/mithuntantri/app/trignosource",
+  "author": {
+    "name": "jaeger25"
+  },
+  "bugs": {
+    "url": "https://github.com/jaeger25/Html5Video/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "Html5Video",
+    "platforms": [
+      "android"
+    ]
+  },
+  "deprecated": false,
+  "description": "### Description ###",
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=2.7.0"
+    }
+  ],
+  "homepage": "https://github.com/jaeger25/Html5Video",
+  "keywords": [
+    "phonegap",
+    "cordova"
+  ],
+  "license": "Apache License 2.0",
+  "name": "Html5Video",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaeger25/Html5Video.git"
+  },
+  "version": "1.2.2"
+}

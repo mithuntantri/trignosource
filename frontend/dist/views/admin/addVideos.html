@@ -1,0 +1,31 @@
+<!-- ADD INVESTMENT MODAL -->
+<div class="modal fade" id="addVideos" role="dialog" data-backdrop="static" ng-controller="addVideosCtrl">
+    <div class="modal-dialog" style="width:90%;max-width:600px;margin:0 auto;">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="container projects">
+            <div class="projects-inner">
+              <header class="projects-header" style="position:relative;">
+                <div class="title">Add Video</div>
+                <div class="count"></div>
+                <div style="position:absolute;right:15px;top:15px;display:flex;flex-direction:row;">
+                  <i class="material-icons" style="margin:10px;" data-dismiss="modal">close</i>
+                </div>
+              </header>
+              <div class="projects-table" style="display:flex;flex-direction:column;justify-content:center;">
+                <div style="text-align:center;padding:25px;overflow: hidden;">
+                    <input type="text" ng-model="Videos.video_name" placeholder="Video Name" ng-change="Videos.validateVideoName()"
+                    style="margin: 10px auto;min-width: 160px;width:50%;border: 1px solid rgba(0,0,0,0.3);padding: 2px 2px 2px 2px;"/>
+                    <input type="file" name="file_upload" onchange="angular.element(this).scope().Videos.uploadFileVideo(this)"
+                    style="color:#fff;margin: auto;min-width: 160px;width:50%;border: 1px solid rgba(0,0,0,0.3);padding: 2px 2px 2px 2px;"/>
+                </div>
+                <div style="text-align:center;padding:25px;overflow: hidden;font-size:12px; color:white;" ng-show="Videos.FileMessage != null">
+                    <span>{{Videos.FileMessage}}</span>
+                </div>
+                <button style="margin:10px auto;width:100px;" class="button" ng-disabled="!Videos.enableUpload" ng-click="Videos.uploadSubmit()">Upload</a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

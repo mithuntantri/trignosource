@@ -1,0 +1,176 @@
+<body>
+
+    <div class="main-container">
+
+        <!-- HEADER -->
+        <header class="block">
+            <ul class="header-menu horizontal-list">
+                <li>
+                    <a class="header-menu-tab" ng-class="{'active-tab': activeTab == 'tutorials'}"
+                    ui-sref="dashboard.tutorials">
+                      <!-- <span class="icon entypo-cog scnd-font-color"></span> -->
+                      Tutorials</a>
+                </li>
+                <li style="cursor:not-allowed;">
+                    <a class="header-menu-tab" ng-class="{'active-tab': activeTab == 'chapters'}">
+                      <!-- <span class="icon fontawesome-user scnd-font-color"></span> -->
+                      Chapters</a>
+                </li>
+                <li style="cursor:not-allowed;">
+                    <a class="header-menu-tab" ng-class="{'active-tab': activeTab == 'videos'}">
+                      <!-- <span class="icon fontawesome-envelope scnd-font-color"></span> -->
+                      Videos</a>
+                    <a class="header-menu-number">5</a>
+                </li>
+            </ul>
+            <div class="profile-menu">
+                <p>SuperAdmin <a href="#26"><span class="entypo-down-open scnd-font-color"></span></a></p>
+                <div class="profile-picture small-profile-picture">
+                    <img width="40px" alt="Anne Hathaway picture"
+                    src="/images/videos.png">
+                </div>
+            </div>
+        </header>
+
+        <!-- LEFT-CONTAINER -->
+        <div class="left-container container">
+            <div class="menu-box block"> <!-- MENU BOX (LEFT-CONTAINER) -->
+                <h2 class="titular">MENU BOX</h2>
+                <ul class="menu-box-menu">
+                    <li>
+                        <a class="menu-box-tab" ng-click="changeMenu('addtutorials')"><span class="icon fontawesome-envelope scnd-font-color"></span>Create Tutorial<div class="menu-box-number">{{Videos.all_tutorials.length}}</div></a>
+                    </li>
+                    <li>
+                        <a class="menu-box-tab" ng-click="changeMenu('addchapters')"><span class="icon entypo-paper-plane scnd-font-color"></span>Add Chapter<div class="menu-box-number"></div></a>
+                    </li>
+                    <li>
+                        <a class="menu-box-tab" ng-click="changeMenu('addvideos')"><span class="icon entypo-calendar scnd-font-color"></span>Add Video<div class="menu-box-number"></div></a>
+                    </li>
+                    <li>
+                        <a class="menu-box-tab" ng-click="changeMenu('addquestions')"><span class="icon entypo-cog scnd-font-color"></span>Add Question</a>
+                    </li>
+                    <li>
+                        <a class="menu-box-tab" ng-click="changeMenu('addoptions')"><sapn class="icon entypo-chart-line scnd-font-color"></sapn>Add Options</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- MIDDLE-CONTAINER -->
+        <div class="middle-container container">
+          <div ui-view></div>
+        </div>
+
+        <!-- RIGHT-CONTAINER -->
+        <div class="right-container container">
+          <div class="account block" id="addtutorials"> <!-- ACCOUNT (RIGHT-CONTAINER) -->
+              <h2 class="titular">CREATE TUTORIALS</h2>
+              <div class="input-container">
+                <input type="number" ng-model="Videos.create_tutorial.subject_number" placeholder="Subject Number" class="password text-input">
+                <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_tutorial.subject_name" placeholder="Subject Name" class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <a class="sign-in button" style="cursor:pointer" ng-click="createTutorial()">Create</a>
+          </div>
+          <div class="account block" id="addchapters">
+            <h2 class="titular">CREATE CHAPTERS</h2>
+            <div ng-if="Videos.create_chapter.subject_number">
+              <div class="input-container">
+                <input type="number" ng-model="Videos.create_chapter.chapter_number" placeholder="Chapter Number" class="password text-input">
+                <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_chapter.chapter_name" placeholder="Chapter Name" class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <a class="sign-in button" style="cursor:pointer" ng-click="createChapter()">Create</a>
+            </div>
+            <div ng-if="!Videos.create_chapter.subject_number">
+              <div style="width:100%;padding:25px 10px;color:#fff;font-size:13px;text-align:center">
+                No Tutorial Selected. To add a chapter - Select Tutorial > Add Chapters
+              </div>
+            </div>
+          </div>
+          <div class="account block" id="addvideos">
+            <h2 class="titular">CREATE VIDEOS</h2>
+            <div ng-if="Videos.create_video.subject_number && Videos.create_video.chapter_number">
+              <div class="input-container">
+                <input type="number" ng-model="Videos.create_video.video_number" placeholder="Video Number" ng-change="Videos.validateVideoName()" class="password text-input">
+                <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_video.video_name" placeholder="Video Title" ng-change="Videos.validateVideoName()"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                <input type="file" name="file_upload" onchange="angular.element(this).scope().Videos.uploadFileVideo(this)"
+                style="color:#fff;margin:0 20px 20px 20px;min-width: 160px;width:260px;height:30px;border: 1px solid rgba(0,0,0,0.3);padding: 2px 2px 2px 2px;"/>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_video.thumbnail_time" placeholder="Thumbnail Time" ng-change="Videos.validateVideoName()"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <a class="sign-in button" style="cursor:pointer" ng-click="Videos.uploadSubmit()">Create</a>
+            </div>
+            <div ng-if="!Videos.create_video.subject_number || !Videos.create_video.chapter_number">
+              <div style="width:100%;padding:25px 10px;color:#fff;font-size:13px;text-align:center">
+                No Tutorial/Chapter Selected. To add a video - Select Tutorial > Select Chapter > Add Videos
+              </div>
+            </div>
+          </div>
+          <div class="account block" id="addquestions">
+            <h2 class="titular">CREATE QUESTIONS</h2>
+            <div ng-if="Videos.create_question.subject_number && Videos.create_question.chapter_number && Videos.create_question.video_number">
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_question.question_number" placeholder="Question No."  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_question.time_of_pause" placeholder="Time of Pause"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_question.question_name" placeholder="Question Text"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_question.appear_time" placeholder="Appear Time"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <a class="sign-in button" style="cursor:pointer" ng-click="createQuestion()">Create</a>
+            </div>
+            <div ng-if="!Videos.create_question.subject_number || !Videos.create_question.chapter_number || !Videos.create_question.video_number">
+              <div style="width:100%;padding:25px 10px;color:#fff;font-size:13px;text-align:center">
+                No Tutorial/Chapter/Video Selected. To add a question - Select Tutorial > Select Chapter > Select Video > Add Questions
+              </div>
+            </div>
+          </div>
+          <div class="account block" id="addoptions">
+            <h2 class="titular">CREATE OPTIONS</h2>
+            <div ng-if="Videos.create_option.subject_number && Videos.create_option.chapter_number && Videos.create_option.video_number && Videos.create_option.question_number">
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_option.option_number" placeholder="Option Number"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_option.option_name" placeholder="Option Text"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_option.skip_time" placeholder="Skip Time"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <a class="sign-in button" style="cursor:pointer" ng-click="createOption()">Create</a>
+            </div>
+            <div ng-if="!Videos.create_option.subject_number || !Videos.create_option.chapter_number || !Videos.create_option.video_number || !Videos.create_option.question_number">
+              <div style="width:100%;padding:25px 10px;color:#fff;font-size:13px;text-align:center">
+                No Tutorial/Chapter/Video/Question Selected. To add a question - Select Tutorial > Select Chapter > Select Video > Select Question > Add Options
+              </div>
+            </div>
+          </div>
+        </div> <!-- end right-container -->
+    </div> <!-- end main-container -->
+</body>

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="io.cordova.trignosource" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Trignosource</name>
+    <description>
+        A sample calculator app for trignosource.
+    </description>
+    <author email="me@mithuntantri.in" href="https://mithuntantri.in">
+        Mithun Tantri
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <preference name="MediaPlaybackRequiresUserAction" value="false" />
+    <allow-navigation href="*youtube*" />
+    <allow-navigation href="*ytimg*" />
+    <access origin="*" />
+    <preference name="AllowInlineMediaPlayback" value="true" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+        <icon density="ldpi" src="assets/launcher.png" />
+        <icon density="mdpi" src="assets/launcher.png" />
+        <icon density="hdpi" src="assets/launcher.png" />
+        <icon density="xhdpi" src="assets/launcher.png" />
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+    <engine name="ios" spec="^4.5.4" />
+    <engine name="android" spec="^6.3.0" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
+    <plugin name="cordova-plugin-statusbar" spec="^2.4.1" />
+    <plugin name="cordova-plugin-http" spec="^1.2.0" />
+    <plugin name="com.hutchind.cordova.plugins.streamingmedia" spec="~0.1.4" />
+</widget>

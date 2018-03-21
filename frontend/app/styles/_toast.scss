@@ -1,0 +1,17 @@
+// md-toast.md-success-toast-theme {
+//     background-color: green;
+// }
+//
+// md-toast.md-error-toast-theme {
+//     background-color: red;
+// }
+
+md-toast.md-error-toast-theme div.md-toast-content{
+    color: white !important;
+    background-color: red !important;
+}
+
+md-toast.md-success-toast-theme div.md-toast-content{
+    color: white !important;
+    background-color: green !important;
+}

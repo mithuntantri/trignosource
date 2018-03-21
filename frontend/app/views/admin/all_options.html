@@ -1,0 +1,40 @@
+<div class="weather block clear" id="options"> <!-- WEATHER (MIDDLE-CONTAINER) -->
+    <h2 class="titular">
+      <span class="icon entypo-location"></span>
+      <strong>Options</strong>&nbsp;
+    </h2>
+    <h2 class="titular" style="line-height:25px;">
+      <span style="font-size:11px;">(Tutorial Name : {{Videos.all_tutorials[currentSubject].subject_name}})</span><br/>
+      <span style="font-size:11px;">(Chapter Name : {{Videos.all_tutorials[currentSubject].chapters[currentChapter].chapter_name}})</span>
+      <span style="font-size:11px;">(Video Name : {{Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[currentVideo].video_name}})</span>
+      <span style="font-size:11px;">(Question Name : {{Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[currentVideo].questions[currentQuestion].question_name}})</span>
+    </h2>
+    <ul class="next-days">
+      <li class="list-item" ng-if="Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[currentVideo].questions[currentQuestion].options.length == 0">
+        <div style="width:100%;text-align:center;padding:15px;font-size:13px;color:#fff;">No Options Added. Please create using the side menu</div>
+      </li>
+        <li style="border-bottom:1px solid #1f253d;cursor:pointer;display:flex;flex-direction:row;"
+        ng-repeat="option in Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[currentVideo].questions[currentQuestion].options">
+            <div style="display:flex;flex-direction:column;padding:10px 5px;flex-grow:2;">
+                <p class="next-days-date" style="width:100%;text-align:left;">
+                  <span class="day">{{option.option_name}}</span>
+                  <span class="scnd-font-color" style="font-size:11px;">
+                  </span>
+                </p>
+                <div class="next-days-temperature"
+                  style="padding:10px 20px;width:100%;font-size:11px;text-align:right;display:flex;flex-direction:row;justify-content:space-between;">
+                  <span class="scnd-font-color" style="font-size:11px;">(Option No. : {{option.option_number}})</span>
+                  <span class="scnd-font-color" style="font-size:11px;">
+                    (Skip Time {{option.skip_time}})
+                  </span>
+                </div>
+                <div class="next-days-temperature"
+                  style="padding:10px 20px;width:100%;font-size:11px;text-align:right;display:flex;flex-direction:row;justify-content:space-between;">
+                  <span data-livestamp="{{option.updated_at}}"></span>
+                  <span class="list-option" ng-click="$event.stopPropagation()">Edit</span>
+                  <span class="list-option" ng-click="deleteOption($index);$event.stopPropagation()">Delete</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>

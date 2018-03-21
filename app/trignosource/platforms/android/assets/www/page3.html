@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;"> -->
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src *;
+   img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;
+   style-src  'self' 'unsafe-inline' *"> -->
+   <meta http-equiv="Content-Security-Policy" content="default-src * gap:; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src *; img-src * data: blob: android-webview-video-poster:; style-src * 'unsafe-inline';">
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src * gap:; media-src *;style-src 'self' 'unsafe-inline'; img-src * data: blob: android-webview-video-poster:; script-src 'self' 'unsafe-inline' 'unsafe-eval'"> -->
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/page1.css">
+        <title>Trignosource | Video</title>
+    </head>
+    <body>
+          <div class="page3">
+            <video id="myVideo" controls autoplay style="width:100%;max-height:250px;" webkit-playsinline playsinline>
+              <source type="video/mp4" src="http://192.168.122.1:8094/uploads/Videos/output.mp4">
+            </video>
+            <div class="page3-part2">
+              <div class="subject_name ppage3" id="subject_name"></div>
+              <div style="padding:10px 25px;width:93%;display:flex;flex-direction:row;justify-content:space-between;">
+                <div class="chapter_name ppage3" id="chapter_name"></div>
+                <div class="chapter_number ppage3" id="chapter_number"></div>
+              </div>
+              <div class="videos_header">
+                <div class="videos_title">
+                  <div id="video_name"></div>
+                  <div id="video_number"></div>
+                </div>
+                <img src="img/bookmark.png" style="width:50px;height:32px;margin-top:8px;">
+              </div>
+            </div>
+            <div class="page3-part3" id="bottom-next-part">
+              <div class="bottom-row" style="padding-top:5px;">
+                <div class="next_video_title">NEXT VIDEO</div>
+                <div class="next_video_title" style="display:none;text-align:right;" id="video-open">
+                  <img src="img/arrow_down.png" style="width:9px;margin-top:12px;"/>
+                </div>
+                <div class="next_video_title" style="text-align:right" id="video-close">
+                  <img src="img/arrow_up.png" style="width:9px;margin-top:12px;"/>
+                </div>
+              </div>
+              <div class="bottom-row" style="padding-bottom:10px;">
+                <div class="next_video_name" id="next_video_name"></div>
+                <div class="next_video_duration" id="next_video_duration"></div>
+              </div>
+              <div class="bottom-row play-next">
+                <div class="play-next-btn">
+                  <span style="margin-right:7px;">Play</span>
+                  <img src="img/arrow_right.png" style="width:12px;margin-top:12px;"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/page3.js"></script>
+    </body>
+</html>
