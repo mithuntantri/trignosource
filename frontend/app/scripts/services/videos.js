@@ -30,6 +30,9 @@ class Videos{
       'video_name' : null,
       'video_number' : null,
       'thumbnail_time' : null,
+      'is_module' : 'module',
+      'mop_name' : null,
+      'mop_number' : null
     }
 
     this.create_question = {
@@ -159,7 +162,12 @@ class Videos{
   }
 
   validateVideoName(){
-    if(this.create_video.video_name && this.create_video.video_number && this.create_video.thumbnail_time) {
+    if(this.create_video.video_name &&
+      this.create_video.video_number &&
+      this.create_video.thumbnail_time &&
+      this.create_video.is_module &&
+      this.create_video.mop_name &&
+      this.create_video.mop_number) {
       this.FileMessage = null
       this.enableUpload = this.checkThumbnailTime()
     }else{
@@ -288,11 +296,15 @@ class Videos{
         if (is_valid && is_one && is_valid_filename){
           var data = new FormData();
           data.append('file', this.theFile);
+          var is_module = (this.create_video.is_module == 'module'?true:false)
           let url = `/api/admin/upload?video_name=${this.create_video.video_name}`
           url += `&subject_number=${this.create_video.subject_number}`
           url += `&chapter_number=${this.create_video.chapter_number}`
           url += `&video_number=${this.create_video.video_number}`
           url += `&thumbnail_time=${this.create_video.thumbnail_time}`
+          url += `&is_module=${is_module}`
+          url += `&mop_name=${this.create_video.mop_name}`
+          url += `&mop_number=${this.create_video.mop_number}`
           this.$http({
             url: url,
             method: 'POST',
@@ -304,6 +316,9 @@ class Videos{
               this.create_video.video_name = null
               this.create_video.video_number = null
               this.create_video.thumbnail_time = null
+              this.create_video.mop_name = null
+              this.create_video.mop_number = null
+              this.create_video.is_module = 'module'
               this.enableUpload = false
               this.Toast.showSuccess(`Video created successfully`)
             }else{

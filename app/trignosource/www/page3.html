@@ -39,12 +39,106 @@
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <link rel="stylesheet" type="text/css" href="css/page1.css">
         <title>Trignosource | Video</title>
+        <style>
+          .video-player{
+            width: 100%;
+            position: relative;
+          }
+          .video-element{
+            width: 100%;
+          }
+          .video-controls{
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left:0;
+            display: flex;
+            flex-direction: column;
+          }
+          .controls-part1{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            flex-grow: 2;
+            justify-content: center;
+          }
+          .controls-part2{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            height: 50px;
+          }
+          .middle-controls{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 200px;
+            height: 50px;
+            margin: 0 auto;
+          }
+          .progress-bar{
+            flex-grow: 2;
+            padding: 0 15px;
+          }
+          progress {
+      color: red;
+      font-size: 12px;
+      width: 100%;
+      height: 6px;
+      border: none;
+      margin-right: 10px;
+      background: #fff;
+      border-radius: 9px;
+      vertical-align: middle;
+    }
+    progress::-moz-progress-bar {
+      color:green;
+      background:#fff;
+    }
+
+    progress[value]::-webkit-progress-bar {
+      background-color: #fff;
+      border-radius: 2px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+    }
+
+    progress[value]::-webkit-progress-value {
+      background-color: red;
+    }
+        </style>
     </head>
     <body>
           <div class="page3">
-            <video id="myVideo" controls autoplay style="width:100%;max-height:250px;" webkit-playsinline playsinline>
-              <source type="video/mp4" src="http://192.168.122.1:8094/uploads/Videos/output.mp4">
-            </video>
+            <div id='player' class="video-player">
+          		<video id='video-element' class="video-element">
+          			<source src='http://192.168.122.1:8094/uploads/Videos/tutorials_video.mp4' type='video/mp4'>
+          		</video>
+          		<div id='controls' class="video-controls">
+                <div class="controls-part1">
+                  <div class="middle-controls">
+                    <img src="img/revind.png" style="width:30px;height:30px;margin-top:10px;" id='btnReplay' class='replay' title='replay' accesskey="R" onclick='replayVideo();'/>
+                    <img src="img/play.png" style="width:50px;height:50px;" id='btnPlayPause' class='play' title='play' accesskey="P" onclick='playPauseVideo();'/>
+                    <img src="img/forwad.png" style="width:30px;height:30px;margin-top:10px;" id='btnReplay' class='replay' title='replay' accesskey="R" onclick='replayVideo();'/>
+                    <!-- <button id='btnStop' class='stop' title='stop' accesskey="X" onclick='stopVideo();'>Stop</button> -->
+                  </div>
+                </div>
+                <div class="controls-part2">
+                  <div class="progress-bar" style="position:relative;">
+                    <progress id='progress-bar' min='0' max='100' value='0'>
+                    </progress>
+                    <div style="width:3px;height:6px;background-color:blue;position:absolute;left:100px;top:5px;"></div>
+                  </div>
+                  <!-- <button id='btnMute' class='mute' title='mute' onclick='muteVolume();'>Mute</button> -->
+                  <img src="img/full_screen.png" style="width:25px;height:20px;margin-right:15px;"
+                  id='btnFullScreen' class='fullscreen' title='toggle full screen' accesskey="T"
+                  onclick='toggleFullScreen();'/>
+                  <!-- <input type="range" id="volume-bar" title="volume" min="0" max="1" step="0.1" value="1"> -->
+                </div>
+
+          		</div>
+          	</div>
             <div class="page3-part2">
               <div class="subject_name ppage3" id="subject_name"></div>
               <div style="padding:10px 25px;width:93%;display:flex;flex-direction:row;justify-content:space-between;">
@@ -81,7 +175,161 @@
               </div>
             </div>
           </div>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/page3.js"></script>
+        <!-- <script type="text/javascript" src="cordova.js"></script> -->
+        <!-- <script type="text/javascript" src="js/page3.js"></script> -->
+        <script>
+        console.log("sscript loaded")
+        // Get a handle to the player
+	player       = document.getElementById('video-element');
+	btnPlayPause = document.getElementById('btnPlayPause');
+	// btnMute      = document.getElementById('btnMute');
+	var progressBar  = document.getElementById('progress-bar');
+  // volumeBar    = document.getElementById('volume-bar');
+
+  // Update the video volume
+  // volumeBar.addEventListener("change", function(evt) {
+	// 	player.volume = evt.target.value;
+	// });
+  document.getElementById('btnFullScreen').disabled = true;
+	// Add a listener for the timeupdate event so we can update the progress bar
+	player.addEventListener('timeupdate', updateProgressBar, false);
+
+	// Add a listener for the play and pause events so the buttons state can be updated
+	player.addEventListener('play', function() {
+		// Change the button to be a pause button
+		changeButtonType(btnPlayPause, 'pause');
+	}, false);
+
+	player.addEventListener('pause', function() {
+		// Change the button to be a play button
+		changeButtonType(btnPlayPause, 'play');
+	}, false);
+
+	player.addEventListener('volumechange', function(e) {
+		// Update the button to be mute/unmute
+		if (player.muted) changeButtonType(btnMute, 'unmute');
+		else changeButtonType(btnMute, 'mute');
+	}, false);
+
+	player.addEventListener('ended', function() { this.pause(); }, false);
+
+  progressBar.addEventListener("click", seek);
+
+  function seek(e) {
+      var percent = e.offsetX / this.offsetWidth;
+      player.currentTime = percent * player.duration;
+      e.target.value = Math.floor(percent / 100);
+      e.target.innerHTML = progressBar.value + '% played';
+  }
+
+  function playPauseVideo() {
+  	if (player.paused || player.ended) {
+  		// Change the button to a pause button
+  		changeButtonType(btnPlayPause, 'pause');
+  		player.play();
+  	}
+  	else {
+  		// Change the button to a play button
+  		changeButtonType(btnPlayPause, 'play');
+  		player.pause();
+  	}
+  }
+
+  // Stop the current media from playing, and return it to the start position
+  function stopVideo() {
+  	player.pause();
+  	if (player.currentTime) player.currentTime = 0;
+  }
+
+  // Toggles the media player's mute and unmute status
+  function muteVolume() {
+  	if (player.muted) {
+  		// Change the button to a mute button
+  		changeButtonType(btnMute, 'mute');
+  		player.muted = false;
+  	}
+  	else {
+  		// Change the button to an unmute button
+  		changeButtonType(btnMute, 'unmute');
+  		player.muted = true;
+  	}
+  }
+
+  // Replays the media currently loaded in the player
+  function replayVideo() {
+  	resetPlayer();
+  	player.play();
+  }
+
+  // Update the progress bar
+  function updateProgressBar() {
+  	// Work out how much of the media has played via the duration and currentTime parameters
+  	var percentage = Math.floor((100 / player.duration) * player.currentTime);
+  	// Update the progress bar's value
+  	progressBar.value = percentage;
+  	// Update the progress bar's text (for browsers that don't support the progress element)
+  	progressBar.innerHTML = percentage + '% played';
+  }
+
+  // Updates a button's title, innerHTML and CSS class
+  function changeButtonType(btn, value) {
+  	btn.title     = value;
+  	btn.innerHTML = value;
+  	btn.className = value;
+  }
+
+  function resetPlayer() {
+  	progressBar.value = 0;
+  	// Move the media back to the start
+  	player.currentTime = 0;
+  	// Set the play/pause button to 'play'
+  	changeButtonType(btnPlayPause, 'play');
+  }
+
+  function exitFullScreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    }
+  }
+
+  function toggleFullScreen() {
+    //var player = document.getElementById("player");
+
+    if (player.requestFullscreen)
+        if (document.fullScreenElement) {
+            document.cancelFullScreen();
+        } else {
+            player.requestFullscreen();
+        }
+        else if (player.msRequestFullscreen)
+        if (document.msFullscreenElement) {
+            document.msExitFullscreen();
+        } else {
+            player.msRequestFullscreen();
+        }
+        else if (player.mozRequestFullScreen)
+        if (document.mozFullScreenElement) {
+            document.mozCancelFullScreen();
+        } else {
+            player.mozRequestFullScreen();
+        }
+        else if (player.webkitRequestFullscreen)
+        if (document.webkitFullscreenElement) {
+            document.webkitCancelFullScreen();
+        } else {
+            player.webkitRequestFullscreen();
+        }
+    else {
+        alert("Fullscreen API is not supported");
+
+    }
+  }
+        </script>
     </body>
 </html>

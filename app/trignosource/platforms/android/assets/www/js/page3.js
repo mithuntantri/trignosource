@@ -76,7 +76,7 @@ var app = {
             videoclose.style.display = 'none'
           }
         }, false)
-        this.initVideo()
+        // this.initVideo()
     },
 
     // Update DOM on a Received Event

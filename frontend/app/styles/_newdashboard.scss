@@ -99,6 +99,7 @@ h1, h2, p, a, span{
 .input-container {
 	position: relative;
 }
+  select,
   input[type=file],
   input[type=number],
 	input[type=text]{
@@ -968,7 +969,7 @@ h1, h2, p, a, span{
 						background: #0F9295;
 					}
 			.account {
-				max-height: 425px;
+				max-height: 600px;
         padding-bottom: 20px;
 			}
 				.account .titular {

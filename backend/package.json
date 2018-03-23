@@ -25,6 +25,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "forever": "^0.15.3",
     "fs": "0.0.1-security",
+    "get-video-duration": "^0.2.0",
     "goo.gl": "^0.1.4",
     "jade": "~1.11.0",
     "jwt-simple": "^0.5.1",

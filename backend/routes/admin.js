@@ -20,6 +20,7 @@ var rethinkOps = require('../store/rethinkOps');
 var thumbler = require('video-thumb');
 var ffmpeg = require('fluent-ffmpeg');
 var child_process = require('child_process')
+const getDuration = require('get-video-duration');
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -86,55 +87,66 @@ router.post("/upload", function(req, res, next) {
   var chapter_number = req.query.chapter_number
   var video_name = req.query.video_name
   var video_number = req.query.video_number
+  var is_module = req.query.is_module
+  var mop_name = req.query.mop_name
+  var mop_number = req.query.mop_number
   var thumbnail_time = req.query.thumbnail_time
   var thumbnail_url = moment().unix() + '.png'
   new Promise((resolve, reject)=>{
     rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
       upload(req,res,function(err){
-        let up_tutorial = null
-        _.each(tutorials, (tutorial)=>{
-          if(tutorial.subject_number == subject_number){
-            _.each(tutorial.chapters, (chapter)=>{
-              if(chapter.chapter_number == chapter_number){
-                  let file_name = req.file.filename
-                  if(err){
-                    reject(err)
-                  }else{
-                    var new_upload_statement = {
-                      'video_number' : video_number,
-                      'video_name' : video_name,
-                      'interactions': 0,
-                      'created_at' : moment().unix(),
-                      'updated_at' : moment().unix(),
-                      'file_name' : file_name,
-                      'thumbnail_time' : thumbnail_time,
-                      'thumbnail_url': thumbnail_url,
-                      'questions' : []
+        var relative_path = path.join(__dirname, '../uploads/Videos', req.file.filename)
+        getDuration(relative_path).then((duration) => {
+          console.log("duration",duration);
+          let up_tutorial = null
+          _.each(tutorials, (tutorial)=>{
+            if(tutorial.subject_number == subject_number){
+              _.each(tutorial.chapters, (chapter)=>{
+                if(chapter.chapter_number == chapter_number){
+                    let file_name = req.file.filename
+                    if(err){
+                      reject(err)
+                    }else{
+                      var new_upload_statement = {
+                        'video_number' : video_number,
+                        'video_name' : video_name,
+                        'is_module' : is_module,
+                        'mop_number' : mop_number,
+                        'mop_name': mop_name,
+                        'interactions': 0,
+                        'created_at' : moment().unix(),
+                        'updated_at' : moment().unix(),
+                        'file_name' : file_name,
+                        'thumbnail_time' : thumbnail_time,
+                        'thumbnail_url': thumbnail_url,
+                        'duration' : duration,
+                        'questions' : []
+                      }
+                      chapter.videos.push(new_upload_statement)
                     }
-                    chapter.videos.push(new_upload_statement)
-                  }
-              }
+                }
+              })
+              up_tutorial = tutorial
+            }
+          })
+          if(up_tutorial){
+            rethinkOps.updateData('tutorials', up_tutorial).then(()=>{
+              resolve({
+                'tutorials': tutorials,
+                'file_name': req.file.filename,
+                'thumbnail_url' : thumbnail_url,
+                'thumbnail_time': thumbnail_time
+              })
             })
-            up_tutorial = tutorial
-          }
-        })
-        if(up_tutorial){
-          rethinkOps.updateData('tutorials', up_tutorial).then(()=>{
+          }else{
             resolve({
               'tutorials': tutorials,
               'file_name': req.file.filename,
               'thumbnail_url' : thumbnail_url,
               'thumbnail_time': thumbnail_time
             })
-          })
-        }else{
-          resolve({
-            'tutorials': tutorials,
-            'file_name': req.file.filename,
-            'thumbnail_url' : thumbnail_url,
-            'thumbnail_time': thumbnail_time
-          })
-        }
+          }
+        })
       })
     })
   }).then((data)=>{

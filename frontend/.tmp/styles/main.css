@@ -795,6 +795,7 @@ h1, h2, p, a, span {
 }
 
 /* line 102, ../../app/styles/_newdashboard.scss */
+select,
 input[type=file],
 input[type=number],
 input[type=text] {
@@ -810,7 +811,7 @@ input[type=text] {
   border-radius: 5px;
 }
 
-/* line 116, ../../app/styles/_newdashboard.scss */
+/* line 117, ../../app/styles/_newdashboard.scss */
 input[type=file]::-webkit-input-placeholder,
 input[type=number]::-webkit-input-placeholder,
 input[type=text]::-webkit-input-placeholder {
@@ -818,7 +819,7 @@ input[type=text]::-webkit-input-placeholder {
   color: #fff;
 }
 
-/* line 121, ../../app/styles/_newdashboard.scss */
+/* line 122, ../../app/styles/_newdashboard.scss */
 input[type=file]:-moz-input-placeholder,
 input[type=number]:-moz-input-placeholder,
 input[type=text]:-moz-input-placeholder {
@@ -827,7 +828,7 @@ input[type=text]:-moz-input-placeholder {
   font-family: 'Ubuntu', sans-serif;
 }
 
-/* line 127, ../../app/styles/_newdashboard.scss */
+/* line 128, ../../app/styles/_newdashboard.scss */
 input[type=file]::-moz-input-placeholder,
 input[type=number]::-moz-input-placeholder,
 input[type=text]::-moz-input-placeholder {
@@ -836,7 +837,7 @@ input[type=text]::-moz-input-placeholder {
   font-family: 'Ubuntu', sans-serif;
 }
 
-/* line 133, ../../app/styles/_newdashboard.scss */
+/* line 134, ../../app/styles/_newdashboard.scss */
 input[type=file]:-ms-input-placeholder,
 input[type=number]:-ms-input-placeholder,
 input[type=text]:-ms-input-placeholder {
@@ -845,7 +846,7 @@ input[type=text]:-ms-input-placeholder {
   font-family: 'Ubuntu', sans-serif;
 }
 
-/* line 139, ../../app/styles/_newdashboard.scss */
+/* line 140, ../../app/styles/_newdashboard.scss */
 input[type=file]:focus,
 input[type=number]:focus,
 input[type=text]:focus {
@@ -855,7 +856,7 @@ input[type=text]:focus {
   font-family: 'Ubuntu', sans-serif;
 }
 
-/* line 146, ../../app/styles/_newdashboard.scss */
+/* line 147, ../../app/styles/_newdashboard.scss */
 .input-icon {
   font-size: 22px;
   position: absolute;
@@ -863,34 +864,34 @@ input[type=text]:focus {
   top: 10px;
 }
 
-/* line 152, ../../app/styles/_newdashboard.scss */
+/* line 153, ../../app/styles/_newdashboard.scss */
 .input-icon.password-icon {
   left: 35px;
 }
 
-/* line 156, ../../app/styles/_newdashboard.scss */
+/* line 157, ../../app/styles/_newdashboard.scss */
 .horizontal-list {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
 
-/* line 161, ../../app/styles/_newdashboard.scss */
+/* line 162, ../../app/styles/_newdashboard.scss */
 .horizontal-list li {
   float: left;
 }
 
-/* line 165, ../../app/styles/_newdashboard.scss */
+/* line 166, ../../app/styles/_newdashboard.scss */
 .clear {
   clear: both;
 }
 
-/* line 169, ../../app/styles/_newdashboard.scss */
+/* line 170, ../../app/styles/_newdashboard.scss */
 .icon {
   font-size: 25px;
 }
 
-/* line 173, ../../app/styles/_newdashboard.scss */
+/* line 174, ../../app/styles/_newdashboard.scss */
 .titular {
   display: block;
   line-height: 60px;
@@ -900,7 +901,7 @@ input[type=text]:focus {
   border-top-right-radius: 5px;
 }
 
-/* line 182, ../../app/styles/_newdashboard.scss */
+/* line 183, ../../app/styles/_newdashboard.scss */
 .button {
   display: block;
   width: 175px;
@@ -913,17 +914,17 @@ input[type=text]:focus {
   transition: background .3s;
 }
 
-/* line 194, ../../app/styles/_newdashboard.scss */
+/* line 195, ../../app/styles/_newdashboard.scss */
 .button:hover {
   text-decoration: none;
 }
 
-/* line 198, ../../app/styles/_newdashboard.scss */
+/* line 199, ../../app/styles/_newdashboard.scss */
 .arrow-btn-container {
   position: relative;
 }
 
-/* line 201, ../../app/styles/_newdashboard.scss */
+/* line 202, ../../app/styles/_newdashboard.scss */
 .arrow-btn {
   position: absolute;
   display: block;
@@ -932,24 +933,24 @@ input[type=text]:focus {
   transition: background .3s;
 }
 
-/* line 209, ../../app/styles/_newdashboard.scss */
+/* line 210, ../../app/styles/_newdashboard.scss */
 .arrow-btn:hover {
   text-decoration: none;
 }
 
-/* line 212, ../../app/styles/_newdashboard.scss */
+/* line 213, ../../app/styles/_newdashboard.scss */
 .arrow-btn.left {
   border-top-left-radius: 5px;
 }
 
-/* line 215, ../../app/styles/_newdashboard.scss */
+/* line 216, ../../app/styles/_newdashboard.scss */
 .arrow-btn.right {
   border-top-right-radius: 5px;
   right: 0;
   top: 0;
 }
 
-/* line 220, ../../app/styles/_newdashboard.scss */
+/* line 221, ../../app/styles/_newdashboard.scss */
 .arrow-btn .icon {
   display: block;
   font-size: 18px;
@@ -961,19 +962,19 @@ input[type=text]:focus {
   text-align: center;
 }
 
-/* line 230, ../../app/styles/_newdashboard.scss */
+/* line 231, ../../app/styles/_newdashboard.scss */
 .arrow-btn.left .icon {
   padding-right: 2px;
 }
 
-/* line 234, ../../app/styles/_newdashboard.scss */
+/* line 235, ../../app/styles/_newdashboard.scss */
 .profile-picture {
   border-radius: 100%;
   overflow: hidden;
   box-sizing: content-box;
 }
 
-/* line 241, ../../app/styles/_newdashboard.scss */
+/* line 242, ../../app/styles/_newdashboard.scss */
 .big-profile-picture {
   margin: 0 auto;
   border: 5px solid #50597b;
@@ -981,7 +982,7 @@ input[type=text]:focus {
   height: 150px;
 }
 
-/* line 247, ../../app/styles/_newdashboard.scss */
+/* line 248, ../../app/styles/_newdashboard.scss */
 .small-profile-picture {
   border: 2px solid #50597b;
   width: 40px;
@@ -989,7 +990,7 @@ input[type=text]:focus {
 }
 
 /** MAIN CONTAINER **/
-/* line 256, ../../app/styles/_newdashboard.scss */
+/* line 257, ../../app/styles/_newdashboard.scss */
 .main-container {
   font-family: 'Ubuntu', sans-serif;
   width: 950px;
@@ -998,25 +999,25 @@ input[type=text]:focus {
 }
 
 /*********************************************** HEADER ***********************************************/
-/* line 263, ../../app/styles/_newdashboard.scss */
+/* line 264, ../../app/styles/_newdashboard.scss */
 header {
   height: 80px;
 }
 
-/* line 266, ../../app/styles/_newdashboard.scss */
+/* line 267, ../../app/styles/_newdashboard.scss */
 .header-menu {
   font-size: 17px;
   line-height: 80px;
 }
 
-/* line 270, ../../app/styles/_newdashboard.scss */
+/* line 271, ../../app/styles/_newdashboard.scss */
 .header-menu li {
   position: relative;
   -webkit-transform: translateZ(0);
   /** To avoid a flash when hover messages **/
 }
 
-/* line 274, ../../app/styles/_newdashboard.scss */
+/* line 275, ../../app/styles/_newdashboard.scss */
 .header-menu-tab {
   padding: 0 27px;
   display: block;
@@ -1025,19 +1026,19 @@ header {
   transition: background .3s;
 }
 
-/* line 282, ../../app/styles/_newdashboard.scss */
+/* line 283, ../../app/styles/_newdashboard.scss */
 .header-menu-tab:hover {
   background: #50597b;
   border-bottom: 4px solid #11a8ab;
   text-decoration: none;
 }
 
-/* line 287, ../../app/styles/_newdashboard.scss */
+/* line 288, ../../app/styles/_newdashboard.scss */
 .header-menu-tab .icon {
   padding-right: 15px;
 }
 
-/* line 290, ../../app/styles/_newdashboard.scss */
+/* line 291, ../../app/styles/_newdashboard.scss */
 .header-menu-number {
   position: absolute;
   line-height: 22px;
@@ -1050,20 +1051,20 @@ header {
   transition: all .3s linear;
 }
 
-/* line 302, ../../app/styles/_newdashboard.scss */
+/* line 303, ../../app/styles/_newdashboard.scss */
 .header-menu li:hover .header-menu-number {
   text-decoration: none;
   transform: rotate(360deg);
 }
 
-/* line 308, ../../app/styles/_newdashboard.scss */
+/* line 309, ../../app/styles/_newdashboard.scss */
 .profile-menu {
   float: right;
   height: 80px;
   padding-right: 20px;
 }
 
-/* line 313, ../../app/styles/_newdashboard.scss */
+/* line 314, ../../app/styles/_newdashboard.scss */
 .profile-menu p {
   font-size: 17px;
   display: inline-block;
@@ -1072,30 +1073,30 @@ header {
   padding-right: 10px;
 }
 
-/* line 320, ../../app/styles/_newdashboard.scss */
+/* line 321, ../../app/styles/_newdashboard.scss */
 .profile-menu a {
   padding-left: 5px;
 }
 
-/* line 323, ../../app/styles/_newdashboard.scss */
+/* line 324, ../../app/styles/_newdashboard.scss */
 .profile-menu a:hover {
   text-decoration: none;
 }
 
-/* line 326, ../../app/styles/_newdashboard.scss */
+/* line 327, ../../app/styles/_newdashboard.scss */
 .small-profile-picture {
   display: inline-block;
   vertical-align: middle;
 }
 
 /** CONTAINERS **/
-/* line 331, ../../app/styles/_newdashboard.scss */
+/* line 332, ../../app/styles/_newdashboard.scss */
 .container {
   float: left;
   width: 300px;
 }
 
-/* line 335, ../../app/styles/_newdashboard.scss */
+/* line 336, ../../app/styles/_newdashboard.scss */
 .block {
   margin-bottom: 25px;
   background: #394264;
@@ -1103,17 +1104,17 @@ header {
 }
 
 /******************************************** LEFT CONTAINER *****************************************/
-/* line 342, ../../app/styles/_newdashboard.scss */
+/* line 343, ../../app/styles/_newdashboard.scss */
 .menu-box {
   height: 360px;
 }
 
-/* line 345, ../../app/styles/_newdashboard.scss */
+/* line 346, ../../app/styles/_newdashboard.scss */
 .menu-box .titular {
   background: #11a8ab;
 }
 
-/* line 348, ../../app/styles/_newdashboard.scss */
+/* line 349, ../../app/styles/_newdashboard.scss */
 .menu-box-menu .icon {
   display: inline-block;
   vertical-align: top;
@@ -1122,7 +1123,7 @@ header {
   margin-right: 15px;
 }
 
-/* line 355, ../../app/styles/_newdashboard.scss */
+/* line 356, ../../app/styles/_newdashboard.scss */
 .menu-box-number {
   width: 36px;
   line-height: 22px;
@@ -1135,13 +1136,13 @@ header {
   transition: all .3s;
 }
 
-/* line 367, ../../app/styles/_newdashboard.scss */
+/* line 368, ../../app/styles/_newdashboard.scss */
 .menu-box-menu li {
   height: 60px;
   position: relative;
 }
 
-/* line 371, ../../app/styles/_newdashboard.scss */
+/* line 372, ../../app/styles/_newdashboard.scss */
 .menu-box-tab {
   line-height: 60px;
   display: block;
@@ -1149,34 +1150,34 @@ header {
   transition: background .2s;
 }
 
-/* line 378, ../../app/styles/_newdashboard.scss */
+/* line 379, ../../app/styles/_newdashboard.scss */
 .menu-box-tab:hover {
   background: #50597b;
   border-top: 1px solid #1f253d;
   text-decoration: none;
 }
 
-/* line 383, ../../app/styles/_newdashboard.scss */
+/* line 384, ../../app/styles/_newdashboard.scss */
 .menu-box-tab:hover .icon {
   color: #fff;
 }
 
-/* line 386, ../../app/styles/_newdashboard.scss */
+/* line 387, ../../app/styles/_newdashboard.scss */
 .menu-box-tab:hover .menu-box-number {
   background: #e64c65;
 }
 
-/* line 389, ../../app/styles/_newdashboard.scss */
+/* line 390, ../../app/styles/_newdashboard.scss */
 .donut-chart-block {
   height: 434px;
 }
 
-/* line 392, ../../app/styles/_newdashboard.scss */
+/* line 393, ../../app/styles/_newdashboard.scss */
 .donut-chart-block .titular {
   padding: 10px 0;
 }
 
-/* line 395, ../../app/styles/_newdashboard.scss */
+/* line 396, ../../app/styles/_newdashboard.scss */
 .donut-chart {
   height: 270px;
 }
@@ -1184,7 +1185,7 @@ header {
 /******************************************
 DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
 ******************************************/
-/* line 401, ../../app/styles/_newdashboard.scss */
+/* line 402, ../../app/styles/_newdashboard.scss */
 .donut-chart {
   position: relative;
   width: 200px;
@@ -1193,7 +1194,7 @@ DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   border-radius: 100%;
 }
 
-/* line 408, ../../app/styles/_newdashboard.scss */
+/* line 409, ../../app/styles/_newdashboard.scss */
 p.center-date {
   background: #394264;
   position: absolute;
@@ -1211,12 +1212,12 @@ p.center-date {
   padding: 15% 0 0;
 }
 
-/* line 421, ../../app/styles/_newdashboard.scss */
+/* line 422, ../../app/styles/_newdashboard.scss */
 .center-date span.scnd-font-color {
   line-height: 0;
 }
 
-/* line 424, ../../app/styles/_newdashboard.scss */
+/* line 425, ../../app/styles/_newdashboard.scss */
 .recorte {
   border-radius: 50%;
   clip: rect(0px, 200px, 200px, 100px);
@@ -1225,7 +1226,7 @@ p.center-date {
   width: 100%;
 }
 
-/* line 431, ../../app/styles/_newdashboard.scss */
+/* line 432, ../../app/styles/_newdashboard.scss */
 .quesito {
   border-radius: 50%;
   clip: rect(0px, 100px, 200px, 0px);
@@ -1236,45 +1237,45 @@ p.center-date {
   font-size: 1.5rem;
 }
 
-/* line 440, ../../app/styles/_newdashboard.scss */
+/* line 441, ../../app/styles/_newdashboard.scss */
 #porcion1 {
   transform: rotate(0deg);
 }
 
-/* line 445, ../../app/styles/_newdashboard.scss */
+/* line 446, ../../app/styles/_newdashboard.scss */
 #porcion1 .quesito {
   background-color: #E64C65;
   transform: rotate(76deg);
 }
 
-/* line 450, ../../app/styles/_newdashboard.scss */
+/* line 451, ../../app/styles/_newdashboard.scss */
 #porcion2 {
   transform: rotate(76deg);
 }
 
-/* line 454, ../../app/styles/_newdashboard.scss */
+/* line 455, ../../app/styles/_newdashboard.scss */
 #porcion2 .quesito {
   background-color: #11A8AB;
   transform: rotate(140deg);
 }
 
-/* line 459, ../../app/styles/_newdashboard.scss */
+/* line 460, ../../app/styles/_newdashboard.scss */
 #porcion3 {
   transform: rotate(215deg);
 }
 
-/* line 463, ../../app/styles/_newdashboard.scss */
+/* line 464, ../../app/styles/_newdashboard.scss */
 #porcion3 .quesito {
   background-color: #4FC4F6;
   transform: rotate(113deg);
 }
 
-/* line 468, ../../app/styles/_newdashboard.scss */
+/* line 469, ../../app/styles/_newdashboard.scss */
 #porcionFin {
   transform: rotate(-32deg);
 }
 
-/* line 472, ../../app/styles/_newdashboard.scss */
+/* line 473, ../../app/styles/_newdashboard.scss */
 #porcionFin .quesito {
   background-color: #FCB150;
   transform: rotate(32deg);
@@ -1283,12 +1284,12 @@ p.center-date {
 /******************************************
 END DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
 ******************************************/
-/* line 480, ../../app/styles/_newdashboard.scss */
+/* line 481, ../../app/styles/_newdashboard.scss */
 .os-percentages {
   padding-top: 36px;
 }
 
-/* line 483, ../../app/styles/_newdashboard.scss */
+/* line 484, ../../app/styles/_newdashboard.scss */
 .os-percentages li {
   width: 75px;
   border-left: 1px solid #394264;
@@ -1296,46 +1297,46 @@ END DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   background: #50597b;
 }
 
-/* line 489, ../../app/styles/_newdashboard.scss */
+/* line 490, ../../app/styles/_newdashboard.scss */
 .os {
   margin: 0;
   padding: 10px 0 5px;
   font-size: 15px;
 }
 
-/* line 494, ../../app/styles/_newdashboard.scss */
+/* line 495, ../../app/styles/_newdashboard.scss */
 .os.ios {
   border-top: 4px solid #e64c65;
 }
 
-/* line 497, ../../app/styles/_newdashboard.scss */
+/* line 498, ../../app/styles/_newdashboard.scss */
 .os.mac {
   border-top: 4px solid #11a8ab;
 }
 
-/* line 500, ../../app/styles/_newdashboard.scss */
+/* line 501, ../../app/styles/_newdashboard.scss */
 .os.linux {
   border-top: 4px solid #fcb150;
 }
 
-/* line 503, ../../app/styles/_newdashboard.scss */
+/* line 504, ../../app/styles/_newdashboard.scss */
 .os.win {
   border-top: 4px solid #4fc4f6;
 }
 
-/* line 506, ../../app/styles/_newdashboard.scss */
+/* line 507, ../../app/styles/_newdashboard.scss */
 .os-percentage {
   margin: 0;
   padding: 0 0 15px 10px;
   font-size: 25px;
 }
 
-/* line 511, ../../app/styles/_newdashboard.scss */
+/* line 512, ../../app/styles/_newdashboard.scss */
 .line-chart-block {
   height: 400px;
 }
 
-/* line 514, ../../app/styles/_newdashboard.scss */
+/* line 515, ../../app/styles/_newdashboard.scss */
 .line-chart {
   height: 200px;
   background: #11a8ab;
@@ -1344,7 +1345,7 @@ END DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
         /******************************************
 				LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
 				******************************************/
-/* line 521, ../../app/styles/_newdashboard.scss */
+/* line 522, ../../app/styles/_newdashboard.scss */
 .grafico {
   padding: 2rem 1rem 1rem;
   width: 100%;
@@ -1354,7 +1355,7 @@ END DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   font-size: 80%;
 }
 
-/* line 529, ../../app/styles/_newdashboard.scss */
+/* line 530, ../../app/styles/_newdashboard.scss */
 .grafico span {
   display: block;
   position: absolute;
@@ -1365,55 +1366,55 @@ END DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   transform-origin: left center;
 }
 
-/* line 539, ../../app/styles/_newdashboard.scss */
+/* line 540, ../../app/styles/_newdashboard.scss */
 .grafico span > span {
   left: 100%;
   bottom: 0;
 }
 
-/* line 542, ../../app/styles/_newdashboard.scss */
+/* line 543, ../../app/styles/_newdashboard.scss */
 [data-valor='25'] {
   width: 75px;
   transform: rotate(-45deg);
 }
 
-/* line 543, ../../app/styles/_newdashboard.scss */
+/* line 544, ../../app/styles/_newdashboard.scss */
 [data-valor='8'] {
   width: 24px;
   transform: rotate(65deg);
 }
 
-/* line 544, ../../app/styles/_newdashboard.scss */
+/* line 545, ../../app/styles/_newdashboard.scss */
 [data-valor='13'] {
   width: 39px;
   transform: rotate(-45deg);
 }
 
-/* line 545, ../../app/styles/_newdashboard.scss */
+/* line 546, ../../app/styles/_newdashboard.scss */
 [data-valor='5'] {
   width: 15px;
   transform: rotate(50deg);
 }
 
-/* line 546, ../../app/styles/_newdashboard.scss */
+/* line 547, ../../app/styles/_newdashboard.scss */
 [data-valor='23'] {
   width: 69px;
   transform: rotate(-70deg);
 }
 
-/* line 547, ../../app/styles/_newdashboard.scss */
+/* line 548, ../../app/styles/_newdashboard.scss */
 [data-valor='12'] {
   width: 36px;
   transform: rotate(75deg);
 }
 
-/* line 548, ../../app/styles/_newdashboard.scss */
+/* line 549, ../../app/styles/_newdashboard.scss */
 [data-valor='15'] {
   width: 45px;
   transform: rotate(-45deg);
 }
 
-/* line 550, ../../app/styles/_newdashboard.scss */
+/* line 551, ../../app/styles/_newdashboard.scss */
 [data-valor]:before {
   content: '';
   position: absolute;
@@ -1425,7 +1426,7 @@ END DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   border-radius: 50%;
 }
 
-/* line 560, ../../app/styles/_newdashboard.scss */
+/* line 561, ../../app/styles/_newdashboard.scss */
 [data-valor='23']:after {
   content: "+" attr(data-valor) "%";
   position: absolute;
@@ -1437,7 +1438,7 @@ END DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   transform: rotate(45deg);
 }
 
-/* line 571, ../../app/styles/_newdashboard.scss */
+/* line 572, ../../app/styles/_newdashboard.scss */
 [class^='eje-'] {
   position: absolute;
   left: 0;
@@ -1447,18 +1448,18 @@ END DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   height: 80%;
 }
 
-/* line 579, ../../app/styles/_newdashboard.scss */
+/* line 580, ../../app/styles/_newdashboard.scss */
 .eje-x {
   height: 2.5rem;
 }
 
-/* line 582, ../../app/styles/_newdashboard.scss */
+/* line 583, ../../app/styles/_newdashboard.scss */
 .eje-y li {
   height: 25%;
   border-top: 1px solid #777;
 }
 
-/* line 586, ../../app/styles/_newdashboard.scss */
+/* line 587, ../../app/styles/_newdashboard.scss */
 [data-ejeY]:before {
   content: attr(data-ejeY);
   display: inline-block;
@@ -1470,7 +1471,7 @@ END DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   top: -.5rem;
 }
 
-/* line 596, ../../app/styles/_newdashboard.scss */
+/* line 597, ../../app/styles/_newdashboard.scss */
 .eje-x li {
   width: 33%;
   float: left;
@@ -1480,13 +1481,13 @@ END DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
 /******************************************
 END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
 ******************************************/
-/* line 604, ../../app/styles/_newdashboard.scss */
+/* line 605, ../../app/styles/_newdashboard.scss */
 .time-lenght {
   padding-top: 22px;
   padding-left: 38px;
 }
 
-/* line 608, ../../app/styles/_newdashboard.scss */
+/* line 609, ../../app/styles/_newdashboard.scss */
 .time-lenght-btn {
   display: block;
   width: 70px;
@@ -1499,18 +1500,18 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   transition: background .3s;
 }
 
-/* line 620, ../../app/styles/_newdashboard.scss */
+/* line 621, ../../app/styles/_newdashboard.scss */
 .time-lenght-btn:hover {
   text-decoration: none;
   background: #e64c65;
 }
 
-/* line 624, ../../app/styles/_newdashboard.scss */
+/* line 625, ../../app/styles/_newdashboard.scss */
 .month-data {
   padding-top: 28px;
 }
 
-/* line 627, ../../app/styles/_newdashboard.scss */
+/* line 628, ../../app/styles/_newdashboard.scss */
 .month-data p {
   display: inline-block;
   margin: 0;
@@ -1518,31 +1519,31 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   font-size: 16px;
 }
 
-/* line 633, ../../app/styles/_newdashboard.scss */
+/* line 634, ../../app/styles/_newdashboard.scss */
 .month-data p:last-child {
   padding: 0 25px;
   float: right;
   font-size: 15px;
 }
 
-/* line 638, ../../app/styles/_newdashboard.scss */
+/* line 639, ../../app/styles/_newdashboard.scss */
 .increment {
   color: #e64c65;
 }
 
-/* line 641, ../../app/styles/_newdashboard.scss */
+/* line 642, ../../app/styles/_newdashboard.scss */
 .media {
   height: 216px;
 }
 
-/* line 644, ../../app/styles/_newdashboard.scss */
+/* line 645, ../../app/styles/_newdashboard.scss */
 #media-display {
   position: relative;
   height: 180px;
   background: #787878 url("https://www.fancinema.com.ar/wp-content/uploads/catwoman1.jpg") center top;
 }
 
-/* line 649, ../../app/styles/_newdashboard.scss */
+/* line 650, ../../app/styles/_newdashboard.scss */
 #media-display .play {
   position: absolute;
   top: 75px;
@@ -1552,60 +1553,60 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   padding: 2px 5px 2px 9px;
 }
 
-/* line 657, ../../app/styles/_newdashboard.scss */
+/* line 658, ../../app/styles/_newdashboard.scss */
 #media-display .play:hover {
   border: 2px solid #e64c65;
 }
 
-/* line 660, ../../app/styles/_newdashboard.scss */
+/* line 661, ../../app/styles/_newdashboard.scss */
 .media-control-bar {
   padding: 6px 0 0 15px;
 }
 
-/* line 663, ../../app/styles/_newdashboard.scss */
+/* line 664, ../../app/styles/_newdashboard.scss */
 .media-btn, .time-passed {
   display: inline-block;
   margin: 0;
 }
 
-/* line 667, ../../app/styles/_newdashboard.scss */
+/* line 668, ../../app/styles/_newdashboard.scss */
 .media-btn {
   font-size: 19px;
 }
 
-/* line 670, ../../app/styles/_newdashboard.scss */
+/* line 671, ../../app/styles/_newdashboard.scss */
 .media-btn:hover, .media-btn:hover span {
   text-decoration: none;
   color: #e64c65;
 }
 
-/* line 674, ../../app/styles/_newdashboard.scss */
+/* line 675, ../../app/styles/_newdashboard.scss */
 .play {
   margin-right: 100px;
 }
 
-/* line 677, ../../app/styles/_newdashboard.scss */
+/* line 678, ../../app/styles/_newdashboard.scss */
 .volume {
   margin-left: 30px;
 }
 
-/* line 680, ../../app/styles/_newdashboard.scss */
+/* line 681, ../../app/styles/_newdashboard.scss */
 .resize {
   margin-left: 12px;
 }
 
-/* line 683, ../../app/styles/_newdashboard.scss */
+/* line 684, ../../app/styles/_newdashboard.scss */
 .left-container .social {
   height: 110px;
 }
 
-/* line 686, ../../app/styles/_newdashboard.scss */
+/* line 687, ../../app/styles/_newdashboard.scss */
 .left-container .social li {
   width: 75px;
   height: 110px;
 }
 
-/* line 690, ../../app/styles/_newdashboard.scss */
+/* line 691, ../../app/styles/_newdashboard.scss */
 .left-container .social li .icon {
   text-align: center;
   font-size: 20px;
@@ -1613,76 +1614,76 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   line-height: 75px;
 }
 
-/* line 696, ../../app/styles/_newdashboard.scss */
+/* line 697, ../../app/styles/_newdashboard.scss */
 .left-container .social li .number {
   text-align: center;
   margin: 0;
   line-height: 34px;
 }
 
-/* line 701, ../../app/styles/_newdashboard.scss */
+/* line 702, ../../app/styles/_newdashboard.scss */
 .left-container .social .facebook {
   background: #3468af;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
 }
 
-/* line 706, ../../app/styles/_newdashboard.scss */
+/* line 707, ../../app/styles/_newdashboard.scss */
 .left-container .social .facebook .number {
   background: #1a4e95;
   border-bottom-left-radius: 5px;
 }
 
-/* line 710, ../../app/styles/_newdashboard.scss */
+/* line 711, ../../app/styles/_newdashboard.scss */
 .left-container .social .twitter {
   background: #4fc4f6;
 }
 
-/* line 713, ../../app/styles/_newdashboard.scss */
+/* line 714, ../../app/styles/_newdashboard.scss */
 .left-container .social .twitter .icon {
   font-size: 18px;
 }
 
-/* line 716, ../../app/styles/_newdashboard.scss */
+/* line 717, ../../app/styles/_newdashboard.scss */
 .left-container .social .twitter .number {
   background: #35aadc;
 }
 
-/* line 719, ../../app/styles/_newdashboard.scss */
+/* line 720, ../../app/styles/_newdashboard.scss */
 .left-container .social .googleplus {
   background: #e64c65;
 }
 
-/* line 722, ../../app/styles/_newdashboard.scss */
+/* line 723, ../../app/styles/_newdashboard.scss */
 .left-container .social .googleplus .number {
   background: #cc324b;
 }
 
-/* line 725, ../../app/styles/_newdashboard.scss */
+/* line 726, ../../app/styles/_newdashboard.scss */
 .left-container .social .mailbox {
   background: #50597b;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
 
-/* line 730, ../../app/styles/_newdashboard.scss */
+/* line 731, ../../app/styles/_newdashboard.scss */
 .left-container .social .mailbox .number {
   background: #363f61;
   border-bottom-right-radius: 5px;
 }
 
 /************************************************** MIDDLE CONTAINER **********************************/
-/* line 735, ../../app/styles/_newdashboard.scss */
+/* line 736, ../../app/styles/_newdashboard.scss */
 .middle-container {
   margin: 0 25px;
 }
 
-/* line 738, ../../app/styles/_newdashboard.scss */
+/* line 739, ../../app/styles/_newdashboard.scss */
 .profile {
   height: 410px;
 }
 
-/* line 741, ../../app/styles/_newdashboard.scss */
+/* line 742, ../../app/styles/_newdashboard.scss */
 .add-button .icon {
   float: right;
   line-height: 18px;
@@ -1694,41 +1695,41 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   margin: 10px;
 }
 
-/* line 751, ../../app/styles/_newdashboard.scss */
+/* line 752, ../../app/styles/_newdashboard.scss */
 .add-button .icon:hover {
   color: #e64c65;
   border-color: #e64c65;
 }
 
-/* line 755, ../../app/styles/_newdashboard.scss */
+/* line 756, ../../app/styles/_newdashboard.scss */
 .user-name {
   margin: 25px 0 16px;
   text-align: center;
 }
 
-/* line 759, ../../app/styles/_newdashboard.scss */
+/* line 760, ../../app/styles/_newdashboard.scss */
 .profile-description {
   width: 210px;
   margin: 0 auto;
   text-align: center;
 }
 
-/* line 764, ../../app/styles/_newdashboard.scss */
+/* line 765, ../../app/styles/_newdashboard.scss */
 .profile-options {
   padding-top: 23px;
 }
 
-/* line 767, ../../app/styles/_newdashboard.scss */
+/* line 768, ../../app/styles/_newdashboard.scss */
 .profile-options li {
   border-left: 1px solid #1f253d;
 }
 
-/* line 770, ../../app/styles/_newdashboard.scss */
+/* line 771, ../../app/styles/_newdashboard.scss */
 .profile-options p {
   margin: 0;
 }
 
-/* line 773, ../../app/styles/_newdashboard.scss */
+/* line 774, ../../app/styles/_newdashboard.scss */
 .profile-options a {
   display: block;
   width: 99px;
@@ -1737,99 +1738,99 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   transition: background .3s;
 }
 
-/* line 781, ../../app/styles/_newdashboard.scss */
+/* line 782, ../../app/styles/_newdashboard.scss */
 .profile-options a:hover {
   text-decoration: none;
   background: #50597b;
 }
 
-/* line 785, ../../app/styles/_newdashboard.scss */
+/* line 786, ../../app/styles/_newdashboard.scss */
 .profile-options a:hover.comments .icon {
   color: #fcb150;
 }
 
-/* line 788, ../../app/styles/_newdashboard.scss */
+/* line 789, ../../app/styles/_newdashboard.scss */
 .profile-options a:hover.views .icon {
   color: #11a8ab;
 }
 
-/* line 791, ../../app/styles/_newdashboard.scss */
+/* line 792, ../../app/styles/_newdashboard.scss */
 .profile-options a:hover.likes .icon {
   color: #e64c65;
 }
 
-/* line 794, ../../app/styles/_newdashboard.scss */
+/* line 795, ../../app/styles/_newdashboard.scss */
 .profile-options .icon {
   padding-right: 10px;
 }
 
-/* line 797, ../../app/styles/_newdashboard.scss */
+/* line 798, ../../app/styles/_newdashboard.scss */
 .profile-options .comments {
   border-top: 4px solid #fcb150;
 }
 
-/* line 800, ../../app/styles/_newdashboard.scss */
+/* line 801, ../../app/styles/_newdashboard.scss */
 .profile-options .views {
   border-top: 4px solid #11a8ab;
 }
 
-/* line 803, ../../app/styles/_newdashboard.scss */
+/* line 804, ../../app/styles/_newdashboard.scss */
 .profile-options .likes {
   border-top: 4px solid #e64c65;
 }
 
-/* line 806, ../../app/styles/_newdashboard.scss */
+/* line 807, ../../app/styles/_newdashboard.scss */
 .weather {
   max-height: 555px;
 }
 
-/* line 809, ../../app/styles/_newdashboard.scss */
+/* line 810, ../../app/styles/_newdashboard.scss */
 .weather .titular {
   background: #cc324b;
 }
 
-/* line 812, ../../app/styles/_newdashboard.scss */
+/* line 813, ../../app/styles/_newdashboard.scss */
 .weather .titular .icon {
   padding-right: 15px;
   font-size: 26px;
 }
 
-/* line 816, ../../app/styles/_newdashboard.scss */
+/* line 817, ../../app/styles/_newdashboard.scss */
 .weather .current-day {
   height: 135px;
   background: #e64c65;
 }
 
-/* line 820, ../../app/styles/_newdashboard.scss */
+/* line 821, ../../app/styles/_newdashboard.scss */
 .weather .current-day p {
   margin: 0;
   padding-left: 50px;
 }
 
-/* line 824, ../../app/styles/_newdashboard.scss */
+/* line 825, ../../app/styles/_newdashboard.scss */
 .current-day-date {
   font-size: 16px;
   padding-top: 16px;
 }
 
-/* line 828, ../../app/styles/_newdashboard.scss */
+/* line 829, ../../app/styles/_newdashboard.scss */
 .current-day-temperature {
   font-size: 70px;
 }
 
-/* line 831, ../../app/styles/_newdashboard.scss */
+/* line 832, ../../app/styles/_newdashboard.scss */
 .current-day-temperature .icon-cloudy {
   padding-left: 20px;
 }
 
-/* line 835, ../../app/styles/_newdashboard.scss */
+/* line 836, ../../app/styles/_newdashboard.scss */
 .weather .next-days p {
   margin: 0;
   display: inline-block;
   font-size: 16px;
 }
 
-/* line 840, ../../app/styles/_newdashboard.scss */
+/* line 841, ../../app/styles/_newdashboard.scss */
 .weather .next-days a {
   display: block;
   line-height: 58px;
@@ -1837,146 +1838,146 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   transition: background .3s;
 }
 
-/* line 847, ../../app/styles/_newdashboard.scss */
+/* line 848, ../../app/styles/_newdashboard.scss */
 .weather .next-days a:hover {
   background: #50597b;
 }
 
-/* line 850, ../../app/styles/_newdashboard.scss */
+/* line 851, ../../app/styles/_newdashboard.scss */
 .weather .next-days a:hover .day {
   color: #e64c65;
 }
 
-/* line 853, ../../app/styles/_newdashboard.scss */
+/* line 854, ../../app/styles/_newdashboard.scss */
 .weather .next-days-date {
   padding-left: 20px;
 }
 
-/* line 856, ../../app/styles/_newdashboard.scss */
+/* line 857, ../../app/styles/_newdashboard.scss */
 .weather .next-days-temperature {
   float: right;
   padding-right: 20px;
 }
 
-/* line 860, ../../app/styles/_newdashboard.scss */
+/* line 861, ../../app/styles/_newdashboard.scss */
 .weather .next-days-temperature .icon {
   padding-left: 10px;
 }
 
-/* line 863, ../../app/styles/_newdashboard.scss */
+/* line 864, ../../app/styles/_newdashboard.scss */
 .tweets {
   height: 375px;
 }
 
-/* line 866, ../../app/styles/_newdashboard.scss */
+/* line 867, ../../app/styles/_newdashboard.scss */
 .tweets .titular {
   background: #35aadc;
 }
 
-/* line 869, ../../app/styles/_newdashboard.scss */
+/* line 870, ../../app/styles/_newdashboard.scss */
 .tweets .titular .icon {
   font-size: 18px;
   padding-right: 20px;
 }
 
-/* line 873, ../../app/styles/_newdashboard.scss */
+/* line 874, ../../app/styles/_newdashboard.scss */
 .tweet.first {
   height: 150px;
   border-bottom: 1px solid #1f253d;
 }
 
-/* line 877, ../../app/styles/_newdashboard.scss */
+/* line 878, ../../app/styles/_newdashboard.scss */
 .tweet p:first-child {
   margin: 0;
   padding: 30px 30px 0;
 }
 
-/* line 881, ../../app/styles/_newdashboard.scss */
+/* line 882, ../../app/styles/_newdashboard.scss */
 .tweet p:last-child {
   margin: 0;
   padding: 15px 30px 0;
 }
 
-/* line 885, ../../app/styles/_newdashboard.scss */
+/* line 886, ../../app/styles/_newdashboard.scss */
 .tweet-link {
   color: #4fc4f6;
 }
 
-/* line 888, ../../app/styles/_newdashboard.scss */
+/* line 889, ../../app/styles/_newdashboard.scss */
 .middle-container .social {
   height: 205px;
   background: #1f253d;
 }
 
-/* line 892, ../../app/styles/_newdashboard.scss */
+/* line 893, ../../app/styles/_newdashboard.scss */
 .middle-container .social li {
   margin-bottom: 12px;
 }
 
-/* line 895, ../../app/styles/_newdashboard.scss */
+/* line 896, ../../app/styles/_newdashboard.scss */
 .middle-container .social a {
   line-height: 60px;
 }
 
-/* line 898, ../../app/styles/_newdashboard.scss */
+/* line 899, ../../app/styles/_newdashboard.scss */
 .middle-container .social a:hover {
   text-decoration: none;
 }
 
-/* line 901, ../../app/styles/_newdashboard.scss */
+/* line 902, ../../app/styles/_newdashboard.scss */
 .middle-container .social .titular {
   border-radius: 5px;
 }
 
-/* line 904, ../../app/styles/_newdashboard.scss */
+/* line 905, ../../app/styles/_newdashboard.scss */
 .middle-container .social .facebook {
   background: #3468af;
   transition: background .3s;
 }
 
-/* line 909, ../../app/styles/_newdashboard.scss */
+/* line 910, ../../app/styles/_newdashboard.scss */
 .middle-container .social a:hover .facebook {
   background: #1a4e95;
 }
 
-/* line 912, ../../app/styles/_newdashboard.scss */
+/* line 913, ../../app/styles/_newdashboard.scss */
 .middle-container .social a:hover .icon.facebook {
   background: #3468af;
 }
 
-/* line 915, ../../app/styles/_newdashboard.scss */
+/* line 916, ../../app/styles/_newdashboard.scss */
 .middle-container .social .twitter {
   background: #4fc4f6;
   transition: background .3s;
 }
 
-/* line 920, ../../app/styles/_newdashboard.scss */
+/* line 921, ../../app/styles/_newdashboard.scss */
 .middle-container .social a:hover .twitter {
   background: #35aadc;
 }
 
-/* line 923, ../../app/styles/_newdashboard.scss */
+/* line 924, ../../app/styles/_newdashboard.scss */
 .middle-container .social a:hover .icon.twitter {
   background: #4fc4f6;
 }
 
-/* line 926, ../../app/styles/_newdashboard.scss */
+/* line 927, ../../app/styles/_newdashboard.scss */
 .middle-container .social .googleplus {
   background: #e64c65;
   transition: background .3s;
 }
 
-/* line 931, ../../app/styles/_newdashboard.scss */
+/* line 932, ../../app/styles/_newdashboard.scss */
 .middle-container .social a:hover .googleplus {
   background: #cc324b;
 }
 
-/* line 934, ../../app/styles/_newdashboard.scss */
+/* line 935, ../../app/styles/_newdashboard.scss */
 .middle-container .social a:hover .icon.googleplus {
   background: #e64c65;
 }
 
-/* line 937, ../../app/styles/_newdashboard.scss */
+/* line 938, ../../app/styles/_newdashboard.scss */
 .middle-container .social .icon {
   float: left;
   width: 60px;
@@ -1987,71 +1988,71 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   border-top-left-radius: 5px;
 }
 
-/* line 946, ../../app/styles/_newdashboard.scss */
+/* line 947, ../../app/styles/_newdashboard.scss */
 .middle-container .social .icon.facebook {
   background: #1a4e95;
 }
 
-/* line 949, ../../app/styles/_newdashboard.scss */
+/* line 950, ../../app/styles/_newdashboard.scss */
 .middle-container .social .icon.twitter {
   background: #35aadc;
 }
 
-/* line 952, ../../app/styles/_newdashboard.scss */
+/* line 953, ../../app/styles/_newdashboard.scss */
 .middle-container .social .icon.googleplus {
   background: #cc324b;
 }
 
 /********************************************* RIGHT CONTAINER ****************************************/
-/* line 957, ../../app/styles/_newdashboard.scss */
+/* line 958, ../../app/styles/_newdashboard.scss */
 .join-newsletter {
   height: 230px;
 }
 
-/* line 960, ../../app/styles/_newdashboard.scss */
+/* line 961, ../../app/styles/_newdashboard.scss */
 .join-newsletter .titular {
   padding-top: 10px;
 }
 
-/* line 963, ../../app/styles/_newdashboard.scss */
+/* line 964, ../../app/styles/_newdashboard.scss */
 .subscribe.button {
   background: #11a8ab;
   margin-top: 10px;
 }
 
-/* line 967, ../../app/styles/_newdashboard.scss */
+/* line 968, ../../app/styles/_newdashboard.scss */
 .subscribe.button:hover {
   background: #0F9295;
 }
 
-/* line 970, ../../app/styles/_newdashboard.scss */
+/* line 971, ../../app/styles/_newdashboard.scss */
 .account {
-  max-height: 425px;
+  max-height: 600px;
   padding-bottom: 20px;
 }
 
-/* line 974, ../../app/styles/_newdashboard.scss */
+/* line 975, ../../app/styles/_newdashboard.scss */
 .account .titular {
   padding: 10px 0;
 }
 
-/* line 977, ../../app/styles/_newdashboard.scss */
+/* line 978, ../../app/styles/_newdashboard.scss */
 .sign-in.button {
   background: #e64c65;
   margin: 10px auto;
 }
 
-/* line 981, ../../app/styles/_newdashboard.scss */
+/* line 982, ../../app/styles/_newdashboard.scss */
 .sign-in.button:hover {
   background: #cc324b;
 }
 
-/* line 984, ../../app/styles/_newdashboard.scss */
+/* line 985, ../../app/styles/_newdashboard.scss */
 .account p {
   text-align: center;
 }
 
-/* line 987, ../../app/styles/_newdashboard.scss */
+/* line 988, ../../app/styles/_newdashboard.scss */
 .fb-sign-in {
   margin-top: 28px;
   display: block;
@@ -2062,20 +2063,20 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   transition: background .3s;
 }
 
-/* line 997, ../../app/styles/_newdashboard.scss */
+/* line 998, ../../app/styles/_newdashboard.scss */
 .fb-sign-in:hover {
   background: #1a4e95;
   text-decoration: none;
 }
 
-/* line 1001, ../../app/styles/_newdashboard.scss */
+/* line 1002, ../../app/styles/_newdashboard.scss */
 .fb-sign-in .icon {
   line-height: 20px;
   font-size: 12px;
   padding-right: 3px;
 }
 
-/* line 1006, ../../app/styles/_newdashboard.scss */
+/* line 1007, ../../app/styles/_newdashboard.scss */
 .fb-border {
   display: inline-block;
   width: 23px;
@@ -2085,31 +2086,31 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   margin-right: 10px;
 }
 
-/* line 1014, ../../app/styles/_newdashboard.scss */
+/* line 1015, ../../app/styles/_newdashboard.scss */
 .loading {
   height: 200px;
   padding-top: 35px;
 }
 
-/* line 1018, ../../app/styles/_newdashboard.scss */
+/* line 1019, ../../app/styles/_newdashboard.scss */
 .loading p {
   display: inline-block;
   padding-left: 30px;
   margin: 5px 0 20px;
 }
 
-/* line 1023, ../../app/styles/_newdashboard.scss */
+/* line 1024, ../../app/styles/_newdashboard.scss */
 .loading .icon {
   padding-right: 15px;
 }
 
-/* line 1026, ../../app/styles/_newdashboard.scss */
+/* line 1027, ../../app/styles/_newdashboard.scss */
 .loading .percentage {
   float: right;
   padding: 6px 35px 0 0;
 }
 
-/* line 1030, ../../app/styles/_newdashboard.scss */
+/* line 1031, ../../app/styles/_newdashboard.scss */
 .loading .progress-bar {
   width: 250px;
   height: 20px;
@@ -2118,7 +2119,7 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   margin: 0 auto;
 }
 
-/* line 1037, ../../app/styles/_newdashboard.scss */
+/* line 1038, ../../app/styles/_newdashboard.scss */
 .progress-bar.downloading {
   /* Chrome10+,Safari5.1+ */
   /* IE10+ */
@@ -2126,7 +2127,7 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   /* W3C */
 }
 
-/* line 1042, ../../app/styles/_newdashboard.scss */
+/* line 1043, ../../app/styles/_newdashboard.scss */
 .progress-bar.uploading {
   /* Chrome10+,Safari5.1+ */
   /* IE10+ */
@@ -2134,77 +2135,77 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   /* W3C */
 }
 
-/* line 1047, ../../app/styles/_newdashboard.scss */
+/* line 1048, ../../app/styles/_newdashboard.scss */
 .calendar-day {
   height: 320px;
   background: #3468af;
 }
 
-/* line 1051, ../../app/styles/_newdashboard.scss */
+/* line 1052, ../../app/styles/_newdashboard.scss */
 .calendar-day .titular {
   background: #1a4e95;
 }
 
-/* line 1054, ../../app/styles/_newdashboard.scss */
+/* line 1055, ../../app/styles/_newdashboard.scss */
 .calendar-day .arrow-btn:hover {
   background: #16417E;
 }
 
-/* line 1057, ../../app/styles/_newdashboard.scss */
+/* line 1058, ../../app/styles/_newdashboard.scss */
 .calendar-day .the-day {
   margin: 0;
   text-align: center;
   font-size: 146px;
 }
 
-/* line 1062, ../../app/styles/_newdashboard.scss */
+/* line 1063, ../../app/styles/_newdashboard.scss */
 .add-event.button {
   background: #4fc4f6;
 }
 
-/* line 1065, ../../app/styles/_newdashboard.scss */
+/* line 1066, ../../app/styles/_newdashboard.scss */
 .add-event.button:hover {
   background: #35aadc;
 }
 
-/* line 1068, ../../app/styles/_newdashboard.scss */
+/* line 1069, ../../app/styles/_newdashboard.scss */
 .calendar-month {
   height: 380px;
 }
 
-/* line 1071, ../../app/styles/_newdashboard.scss */
+/* line 1072, ../../app/styles/_newdashboard.scss */
 .calendar-month .titular {
   background: #3468af;
 }
 
-/* line 1074, ../../app/styles/_newdashboard.scss */
+/* line 1075, ../../app/styles/_newdashboard.scss */
 .calendar-month .arrow-btn:hover {
   background: #1a4e95;
 }
 
-/* line 1077, ../../app/styles/_newdashboard.scss */
+/* line 1078, ../../app/styles/_newdashboard.scss */
 .calendar {
   margin: 22px 15px;
   text-align: center;
 }
 
-/* line 1081, ../../app/styles/_newdashboard.scss */
+/* line 1082, ../../app/styles/_newdashboard.scss */
 .calendar a {
   font-size: 17px;
 }
 
-/* line 1084, ../../app/styles/_newdashboard.scss */
+/* line 1085, ../../app/styles/_newdashboard.scss */
 .calendar td, .calendar th {
   width: 40px;
   height: 38px;
 }
 
-/* line 1088, ../../app/styles/_newdashboard.scss */
+/* line 1089, ../../app/styles/_newdashboard.scss */
 .calendar .days-week {
   color: #4fc4f6;
 }
 
-/* line 1091, ../../app/styles/_newdashboard.scss */
+/* line 1092, ../../app/styles/_newdashboard.scss */
 .calendar .today {
   display: block;
   width: 34px;
@@ -2213,33 +2214,33 @@ END LINE-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
   border-radius: 100%;
 }
 
-/* line 1098, ../../app/styles/_newdashboard.scss */
+/* line 1099, ../../app/styles/_newdashboard.scss */
 .active-tab {
   background: #50597b !important;
   border-bottom: 4px solid #11a8ab !important;
 }
 
-/* line 1103, ../../app/styles/_newdashboard.scss */
+/* line 1104, ../../app/styles/_newdashboard.scss */
 .active-menu {
   background: #50597b !important;
   border-top: 1px solid #1f253d !important;
   text-decoration: none !important;
 }
 
-/* line 1109, ../../app/styles/_newdashboard.scss */
+/* line 1110, ../../app/styles/_newdashboard.scss */
 .list-item {
   border-bottom: 1px solid #1f253d;
   cursor: pointer;
   position: relative;
 }
 
-/* line 1115, ../../app/styles/_newdashboard.scss */
+/* line 1116, ../../app/styles/_newdashboard.scss */
 .list-option {
   font-size: 11px;
   cursor: pointer;
 }
 
-/* line 1120, ../../app/styles/_newdashboard.scss */
+/* line 1121, ../../app/styles/_newdashboard.scss */
 .list-option:hover {
   text-decoration: underline;
 }
