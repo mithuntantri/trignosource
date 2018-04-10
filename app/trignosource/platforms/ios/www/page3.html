@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;"> -->
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src *;
+   img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;
+   style-src  'self' 'unsafe-inline' *"> -->
+   <meta http-equiv="Content-Security-Policy" content="default-src * gap:; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src *; img-src * data: blob: android-webview-video-poster:; style-src * 'unsafe-inline';">
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src * gap:; media-src *;style-src 'self' 'unsafe-inline'; img-src * data: blob: android-webview-video-poster:; script-src 'self' 'unsafe-inline' 'unsafe-eval'"> -->
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/page1.css">
+        <title>Trignosource | Video</title>
+        <style>
+          .video-player{
+            width: 100%;
+            position: relative;
+          }
+          .video-element{
+            width: 100%;
+          }
+          .video-controls{
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left:0;
+            display: flex;
+            flex-direction: column;
+          }
+          .controls-part1{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            flex-grow: 2;
+            justify-content: center;
+          }
+          .controls-part2{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            height: 50px;
+          }
+          .middle-controls{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 200px;
+            height: 50px;
+            margin: 0 auto;
+          }
+          .progress-bar{
+            flex-grow: 2;
+            padding: 0 15px;
+          }
+          progress {
+      color: red;
+      font-size: 12px;
+      width: 100%;
+      height: 6px;
+      border: none;
+      margin-right: 10px;
+      background: #fff;
+      border-radius: 9px;
+      vertical-align: middle;
+    }
+    progress::-moz-progress-bar {
+      color:green;
+      background:#fff;
+    }
+
+    progress[value]::-webkit-progress-bar {
+      background-color: #fff;
+      border-radius: 2px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+    }
+
+    progress[value]::-webkit-progress-value {
+      background-color: red;
+    }
+        </style>
+    </head>
+    <body>
+          <div class="page3">
+            <div id='player' class="video-player">
+          		<video id='video-element' class="video-element">
+                <!-- <source src='http://192.168.0.128:8094/uploads/Videos/tutorials_video.mp4' type='video/mp4'> -->
+          		</video>
+          		<div id='controls' class="video-controls">
+                <div class="controls-part1">
+                  <div class="middle-controls">
+                    <img src="img/revind.png" style="width:30px;height:30px;margin-top:10px;" id='btnReplay' class='replay' title='replay' accesskey="R"/>
+                    <img src="img/play.png" style="width:50px;height:50px;" id='btnPlay' class='play' title='play' accesskey="P"/>
+                    <img src="img/pause.png" style="width:50px;height:50px;display:none;" id='btnPause' class='play' title='play' accesskey="P"/>
+                    <img src="img/forwad.png" style="width:30px;height:30px;margin-top:10px;" id='btnReplay' class='replay' title='replay' accesskey="R"/>
+                    <!-- <button id='btnStop' class='stop' title='stop' accesskey="X" onclick='stopVideo();'>Stop</button> -->
+                  </div>
+                </div>
+                <div class="controls-part2">
+                  <div class="progress-bar" id="progress-var-container" style="position:relative;">
+                    <progress id='progress-bar' min='0' max='100' value='0'>
+                    </progress>
+                    <!-- <div style="width:3px;height:6px;background-color:blue;position:absolute;left:100px;top:5px;"></div> -->
+                  </div>
+                  <!-- <button id='btnMute' class='mute' title='mute' onclick='muteVolume();'>Mute</button> -->
+                  <img src="img/full_screen.png" style="width:25px;height:20px;margin-right:15px;"
+                  id='btnFullScreen' class='fullscreen' title='toggle full screen' accesskey="T"/>
+                  <!-- <input type="range" id="volume-bar" title="volume" min="0" max="1" step="0.1" value="1"> -->
+                </div>
+
+          		</div>
+          	</div>
+            <div class="page3-part2">
+              <div class="subject_name ppage3" id="subject_name"></div>
+              <div style="padding:10px 25px;width:93%;display:flex;flex-direction:row;justify-content:space-between;">
+                <div class="chapter_name ppage3" id="chapter_name"></div>
+                <div class="chapter_number ppage3" id="chapter_number"></div>
+              </div>
+              <div class="videos_header">
+                <div class="videos_title">
+                  <div id="video_name"></div>
+                  <div id="video_number"></div>
+                </div>
+                <img src="img/bookmark.png" style="width:50px;height:32px;margin-top:8px;">
+              </div>
+            </div>
+            <div class="page3-part3" id="bottom-next-part">
+              <div class="bottom-row" style="padding-top:5px;">
+                <div class="next_video_title">NEXT VIDEO</div>
+                <div class="next_video_title" style="display:none;text-align:right;" id="video-open">
+                  <img src="img/arrow_down.png" style="width:9px;margin-top:12px;"/>
+                </div>
+                <div class="next_video_title" style="text-align:right" id="video-close">
+                  <img src="img/arrow_up.png" style="width:9px;margin-top:12px;"/>
+                </div>
+              </div>
+              <div class="bottom-row" style="padding-bottom:10px;">
+                <div class="next_video_name" id="next_video_name"></div>
+                <div class="next_video_duration" id="next_video_duration"></div>
+              </div>
+              <div class="bottom-row play-next">
+                <div class="play-next-btn" id="play-next-btn">
+                  <span style="margin-right:7px;">Play</span>
+                  <img src="img/arrow_right.png" style="width:12px;margin-top:12px;"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/page3.js"></script>
+    </body>
+</html>

@@ -19,6 +19,12 @@
     <feature name="StreamingMedia">
         <param name="android-package" value="com.hutchind.cordova.plugins.streamingmedia.StreamingMedia" />
     </feature>
+    <feature name="Toast">
+        <param name="android-package" value="nl.xservices.plugins.Toast" />
+    </feature>
+    <feature name="CDVOrientation">
+        <param name="android-package" value="cordova.plugins.screenorientation.CDVOrientation" />
+    </feature>
     <name>Trignosource</name>
     <description>
         A sample calculator app for trignosource.

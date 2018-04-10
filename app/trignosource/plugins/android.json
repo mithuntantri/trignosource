@@ -18,10 +18,19 @@
     },
     "com.hutchind.cordova.plugins.streamingmedia": {
       "PACKAGE_NAME": "io.cordova.trignosource"
+    },
+    "cordova-plugin-x-toast": {
+      "PACKAGE_NAME": "io.cordova.trignosource"
+    },
+    "cordova-plugin-screen-orientation": {
+      "PACKAGE_NAME": "io.cordova.trignosource"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-file": {
+      "PACKAGE_NAME": "io.cordova.trignosource"
+    },
+    "es6-promise-plugin": {
       "PACKAGE_NAME": "io.cordova.trignosource"
     }
   }

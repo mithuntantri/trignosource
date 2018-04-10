@@ -1,0 +1,142 @@
+@font-face {
+  font-family: "Eras Medium ITC";
+  src: url('../fonts/ERASMD.TTF');
+}
+@font-face {
+  font-family: "Tw Cen MT";
+  src: url('../fonts/twcenmt.TTF');
+}
+html{
+	width: 100%;
+	height: 100%;
+}
+body{
+	margin: 0 !important;
+	width: 100%;
+	height: 100%;
+}
+.chapters_page_container{
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.subject_1{
+	background-color: rgb(103,156,215);
+}
+.subject_2{
+	background-color: rgb(156,215,103);
+}
+.subject_3{
+	background-color: rgb(242, 146, 130);
+}
+.subject_4{
+	background-color: rgb(255,151,87);
+}
+
+.part1{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin: 25px;
+}
+
+.chapter_title{
+	font-family: 'Eras Medium ITC';
+	font-size: 13px;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: white;
+	text-align: center;
+}
+
+.part2{
+	width: 100%;
+	height: 120px;
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 10px;
+}
+
+.part3{
+	flex-grow: 2;
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+}
+
+.card{
+	font-family: 'Eras Medium ITC';
+	flex-grow: 1;
+	padding: 10px;
+	color: white;
+	display: flex;
+  	flex-direction: column;
+	justify-content: center;
+	border-color: rgb(208, 206, 206);
+	height: 100%;
+	margin: 0 25px;
+	box-shadow:rgba(0, 0, 0, 0.4) 0px 0px 15px 0px;
+	box-sizing: border-box;
+	border-radius: 3px;
+}
+
+.chapters_count{
+	text-align: center;
+	margin: 0 auto;
+}
+
+.module_details{
+	margin-top: 15px;
+	padding: 0 15px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.chapter_card{
+	background-color: white;
+	height: 70px;
+	min-height: 70px;
+	max-height: 70px;
+	margin-bottom: 10px;
+	padding: 7px;
+	flex-direction: row;
+	justify-content: flex-start;
+	border-radius: 8px;
+}
+
+.module_header{
+	font-family: 'TW Cen MT';
+	padding: 10px 25px;
+	color: white;
+	font-size:12px;
+}
+
+.chapter_number_part{
+	width:30px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+}
+
+.chapter_name_part{
+	flex-grow: 2;
+	margin-left: 15px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	font-family: 'Eras Medium ITC';
+	color: black;
+}
+
+.module_details_item{
+    margin-bottom: 7px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    width: 100%;
+}

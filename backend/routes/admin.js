@@ -41,7 +41,7 @@ var upload = multer({ storage: storage, limits: { fileSize: '150MB' } }).single(
 
 router.get("/upload", function(req, res, next) {
   new Promise(function(resolve, reject) {
-    rethinkOps.getAllSpecificData('videos').then((videos)=>{
+    rethinkOps.getAllSpecificData('tutorials').then((videos)=>{
       resolve(videos)
     })
   }).then((response)=>{
@@ -54,11 +54,11 @@ router.get("/upload", function(req, res, next) {
 router.put("/upload", function(req, res, next){
   var id = req.body.id
   new Promise(function(resolve, reject) {
-    rethinkOps.getData('videos', id).then((videos)=>{
+    rethinkOps.getData('tutorials', id).then((videos)=>{
       console.log("videos", videos)
       videos.pause_durations = req.body.pause_durations
       videos.questions = req.body.questions
-      rethinkOps.updateData('videos', videos).then(()=>{
+      rethinkOps.updateData('tutorials', videos).then(()=>{
           resolve()
       })
     })
@@ -72,7 +72,7 @@ router.put("/upload", function(req, res, next){
 router.delete('/upload', function(req, res, next){
   let id = req.query.id
   new Promise(function(resolve, reject) {
-    rethinkOps.deleteData('videos', id).then(()=>{
+    rethinkOps.deleteData('tutorials', id).then(()=>{
       resolve()
     })
   }).then((response)=>{
@@ -83,13 +83,10 @@ router.delete('/upload', function(req, res, next){
 })
 
 router.post("/upload", function(req, res, next) {
-  var subject_number = req.query.subject_number
-  var chapter_number = req.query.chapter_number
+  var subject_number = parseInt(req.query.subject_number)
+  var chapter_number = parseInt(req.query.chapter_number)
   var video_name = req.query.video_name
-  var video_number = req.query.video_number
-  var is_module = req.query.is_module
-  var mop_name = req.query.mop_name
-  var mop_number = req.query.mop_number
+  var video_number = parseInt(req.query.video_number)
   var thumbnail_time = req.query.thumbnail_time
   var thumbnail_url = moment().unix() + '.png'
   new Promise((resolve, reject)=>{
@@ -110,9 +107,6 @@ router.post("/upload", function(req, res, next) {
                       var new_upload_statement = {
                         'video_number' : video_number,
                         'video_name' : video_name,
-                        'is_module' : is_module,
-                        'mop_number' : mop_number,
-                        'mop_name': mop_name,
                         'interactions': 0,
                         'created_at' : moment().unix(),
                         'updated_at' : moment().unix(),
@@ -215,7 +209,10 @@ router.get('/tutorials', function(req, res, next){
         console.log("Current tutorials >>>>>>")
         console.log(tutorials)
         console.log("<<<<<<")
+        tutorials = _.sortBy(tutorials, 'subject_number')
         resolve(tutorials)
+      }).catch((err)=>{
+        console.log(err)
       })
   }).then((response)=>{
     res.json({'status': true, 'data': response})
@@ -225,8 +222,8 @@ router.get('/tutorials', function(req, res, next){
 })
 
 router.put('/tutorials', function(req, res, next){
-  var old_subject_number = req.body.old_subject_number
-  var subject_number = req.body.subject_number
+  var old_subject_number = parseInt(req.body.old_subject_number)
+  var subject_number = parseInt(req.body.subject_number)
   var subject_name = req.body.subject_name
   new Promise(function(resolve, reject) {
     rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
@@ -255,7 +252,7 @@ router.put('/tutorials', function(req, res, next){
 })
 
 router.delete('/tutorials', function(req, res, next){
-  var subject_number = req.query.subject_number
+  var subject_number = parseInt(req.query.subject_number)
   console.log(req.body)
   new Promise(function(resolve, reject) {
     rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
@@ -288,7 +285,7 @@ router.delete('/tutorials', function(req, res, next){
 
 router.post('/tutorials', function(req, res, next){
   var subject_name = req.body.subject_name
-  var subject_number = req.body.subject_number
+  var subject_number = parseInt(req.body.subject_number)
   new Promise(function(resolve, reject) {
       rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
         console.log("Current tutorials >>>>>>")
@@ -318,10 +315,13 @@ router.post('/tutorials', function(req, res, next){
 })
 
 router.put('/chapters', function(req, res, next){
-  var old_chapter_number = req.body.old_chapter_number
-  var chapter_number = req.body.chapter_number
+  var old_chapter_number = parseInt(req.body.old_chapter_number)
+  var chapter_number = parseInt(req.body.chapter_number)
   var chapter_name = req.body.chapter_name
-  var subject_number = req.body.subjext_number
+  var subject_number = parseInt(req.body.subjext_number)
+  var is_module = req.body.is_module
+  var mop_name = req.body.mop_name
+  var mop_number = parseInt(req.body.mop_number)
   new Promise(function(resolve, reject) {
     rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
       let up_tutorial = null
@@ -332,6 +332,9 @@ router.put('/chapters', function(req, res, next){
             if(chapter.chapter_number == old_chapter_number){
               chapter.chapter_number = chapter_number
               chapter.chapter_name = chapter_name
+              chapter.is_module = is_module
+              chapter.mop_number = mop_number
+              chapter.mop_name = mop_name
               chapter.updated_at = moment().unix()
             }
           })
@@ -354,7 +357,7 @@ router.put('/chapters', function(req, res, next){
 })
 
 router.get('/chapters', function(req, res, next){
-  var subject_number = req.body.subjext_number
+  var subject_number = parseInt(req.body.subjext_number)
   new Promise(function(resolve, reject) {
     rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
       let up_chapters = null
@@ -373,9 +376,9 @@ router.get('/chapters', function(req, res, next){
 })
 
 router.delete('/videos', function(req, res, next){
-  var chapter_number = req.query.chapter_number
-  var subject_number = req.query.subject_number
-  var video_number = req.query.video_number
+  var chapter_number = parseInt(req.query.chapter_number)
+  var subject_number = parseInt(req.query.subject_number)
+  var video_number = parseInt(req.query.video_number)
   new Promise(function(resolve, reject) {
     rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
       let up_tutorial = null
@@ -409,8 +412,8 @@ router.delete('/videos', function(req, res, next){
 })
 
 router.delete('/chapters', function(req, res, next){
-  var chapter_number = req.query.chapter_number
-  var subject_number = req.query.subject_number
+  var chapter_number = parseInt(req.query.chapter_number)
+  var subject_number = parseInt(req.query.subject_number)
   new Promise(function(resolve, reject) {
     rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
       let up_tutorial = null
@@ -439,10 +442,13 @@ router.delete('/chapters', function(req, res, next){
 })
 
 router.post('/chapters', function(req, res, next){
-  var subject_number = req.body.subject_number
+  var subject_number = parseInt(req.body.subject_number)
   var chapter = {
-    'chapter_number': req.body.chapter_number,
-    'chapter_name' : req.body.chapter_name
+    'chapter_number': parseInt(req.body.chapter_number),
+    'chapter_name' : req.body.chapter_name,
+   'is_module' : req.body.is_module,
+  'mop_name' : req.body.mop_name,
+  'mop_number' : parseInt(req.body.mop_number)
   }
   console.log(subject_number, chapter)
   new Promise(function(resolve, reject) {
@@ -474,11 +480,11 @@ router.post('/chapters', function(req, res, next){
 })
 
 router.post('/questions', function(req, res, next){
-  var subject_number = req.body.subject_number
-  var chapter_number = req.body.chapter_number
-  var video_number = req.body.video_number
+  var subject_number = parseInt(req.body.subject_number)
+  var chapter_number = parseInt(req.body.chapter_number)
+  var video_number = parseInt(req.body.video_number)
   var question = {
-    'question_number': req.body.question_number,
+    'question_number': parseInt(req.body.question_number),
     'question_name': req.body.question_name,
     'time_of_pause': req.body.time_of_pause,
     'appear_time' : req.body.appear_time
@@ -522,10 +528,10 @@ router.post('/questions', function(req, res, next){
 })
 
 router.delete('/questions', function(req, res, next){
-  var subject_number = req.query.subject_number
-  var chapter_number = req.query.chapter_number
-  var video_number = req.query.video_number
-  var question_number = req.query.question_number
+  var subject_number = parseInt(req.query.subject_number)
+  var chapter_number = parseInt(req.query.chapter_number)
+  var video_number = parseInt(req.query.video_number)
+  var question_number = parseInt(req.query.question_number)
 
   new Promise(function(resolve, reject) {
     rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
@@ -565,14 +571,15 @@ router.delete('/questions', function(req, res, next){
 })
 
 router.post('/options', function(req, res, next){
-  var subject_number = req.body.subject_number
-  var chapter_number = req.body.chapter_number
-  var video_number = req.body.video_number
-  var question_number = req.body.question_number
+  var subject_number = parseInt(req.body.subject_number)
+  var chapter_number = parseInt(req.body.chapter_number)
+  var video_number = parseInt(req.body.video_number)
+  var question_number = parseInt(req.body.question_number)
   var option = {
-    'option_number': req.body.option_number,
+    'option_number': parseInt(req.body.option_number),
     'option_name': req.body.option_name,
-    'skip_time': req.body.skip_time
+    'skip_time': parseFloat(req.body.skip_time),
+    'is_correct': (req.body.is_correct=='true'?true:false)
   }
   new Promise(function(resolve, reject) {
     rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
@@ -617,11 +624,11 @@ router.post('/options', function(req, res, next){
 })
 
 router.delete('/options', function(req, res, next){
-  var subject_number = req.query.subject_number
-  var chapter_number = req.query.chapter_number
-  var video_number = req.query.video_number
-  var question_number = req.query.question_number
-  var option_number = req.query.option_number
+  var subject_number = parseInt(req.query.subject_number)
+  var chapter_number = parseInt(req.query.chapter_number)
+  var video_number = parseInt(req.query.video_number)
+  var question_number = parseInt(req.query.question_number)
+  var option_number = parseInt(req.query.option_number)
 
   new Promise(function(resolve, reject) {
     rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{

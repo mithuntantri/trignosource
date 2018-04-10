@@ -31,6 +31,14 @@
             {
               "xml": "<feature name=\"StreamingMedia\"><param name=\"ios-package\" value=\"StreamingMedia\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"Toast\"><param name=\"ios-package\" value=\"Toast\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"CDVOrientation\"><param name=\"ios-package\" value=\"CDVOrientation\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -52,6 +60,12 @@
     },
     "com.hutchind.cordova.plugins.streamingmedia": {
       "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-x-toast": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-screen-orientation": {
+      "PACKAGE_NAME": "io.cordova.trignosource"
     }
   },
   "dependent_plugins": {},
@@ -252,6 +266,22 @@
       "clobbers": [
         "streamingMedia"
       ]
+    },
+    {
+      "id": "cordova-plugin-x-toast.Toast",
+      "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
+      "pluginId": "cordova-plugin-x-toast",
+      "clobbers": [
+        "window.plugins.toast"
+      ]
+    },
+    {
+      "id": "cordova-plugin-screen-orientation.screenorientation",
+      "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.js",
+      "pluginId": "cordova-plugin-screen-orientation",
+      "clobbers": [
+        "cordova.plugins.screenorientation"
+      ]
     }
   ],
   "plugin_metadata": {
@@ -259,6 +289,8 @@
     "cordova-plugin-statusbar": "2.4.1",
     "cordova-plugin-file": "6.0.1",
     "cordova-plugin-http": "1.2.0",
-    "com.hutchind.cordova.plugins.streamingmedia": "0.1.4"
+    "com.hutchind.cordova.plugins.streamingmedia": "0.1.4",
+    "cordova-plugin-x-toast": "2.6.2",
+    "cordova-plugin-screen-orientation": "3.0.1"
   }
 }

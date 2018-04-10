@@ -43,10 +43,14 @@
           .video-player{
             width: 100%;
             position: relative;
+            background-color: black;
+            height: 200px;
+            overflow: hidden;
           }
           .video-element{
             width: 100%;
           }
+          .question-controls,
           .video-controls{
             position: absolute;
             height: 100%;
@@ -55,6 +59,7 @@
             left:0;
             display: flex;
             flex-direction: column;
+            z-index: 2147483648 !important;
           }
           .controls-part1{
             display: flex;
@@ -68,7 +73,7 @@
             flex-direction: row;
             justify-content: space-between;
             width: 100%;
-            height: 50px;
+            height: 35px;
           }
           .middle-controls{
             display: flex;
@@ -107,50 +112,78 @@
     progress[value]::-webkit-progress-value {
       background-color: red;
     }
+    video::-webkit-media-controls-overlay-enclosure {
+    display:none !important;
+}
+
+video::-webkit-media-controls-enclosure {
+    display:none !important;
+}
+
+video::-webkit-media-controls {
+    display:none !important;
+}
         </style>
     </head>
     <body>
           <div class="page3">
-            <div id='player' class="video-player">
-          		<video id='video-element' class="video-element">
-          			<source src='http://192.168.122.1:8094/uploads/Videos/tutorials_video.mp4' type='video/mp4'>
+            <div class="video-player" id="loading" 
+                style="display: flex;flex-direction: column;justify-content: center;"> 
+                <div class="loading"></div>
+            </div>
+            <div id='player' class="video-player" style="display: none;">
+          		<video id='video-element' class="video-element" autoplay >
+                <!-- <source src='https://tiozzzzmjc.localtunnel.me/uploads/Videos/tutorials_video.mp4' type='video/mp4'> -->
           		</video>
-          		<div id='controls' class="video-controls">
+          		<div id='controls' class="video-controls hide">
                 <div class="controls-part1">
                   <div class="middle-controls">
-                    <img src="img/revind.png" style="width:30px;height:30px;margin-top:10px;" id='btnReplay' class='replay' title='replay' accesskey="R" onclick='replayVideo();'/>
-                    <img src="img/play.png" style="width:50px;height:50px;" id='btnPlayPause' class='play' title='play' accesskey="P" onclick='playPauseVideo();'/>
-                    <img src="img/forwad.png" style="width:30px;height:30px;margin-top:10px;" id='btnReplay' class='replay' title='replay' accesskey="R" onclick='replayVideo();'/>
+                    <img src="img/revind.png" style="width:30px;height:30px;margin-top:10px;" id='btnReplay' class='replay' title='replay' accesskey="R"/>
+                    <img src="img/play.png" style="width:50px;height:50px;" id='btnPlay' class='play' title='play' accesskey="P"/>
+                    <img src="img/pause.png" style="width:50px;height:50px;display:none;" id='btnPause' class='play' title='play' accesskey="P"/>
+                    <img src="img/forwad.png" style="width:30px;height:30px;margin-top:10px;" id='btnReplay' class='replay' title='replay' accesskey="R"/>
                     <!-- <button id='btnStop' class='stop' title='stop' accesskey="X" onclick='stopVideo();'>Stop</button> -->
                   </div>
                 </div>
                 <div class="controls-part2">
-                  <div class="progress-bar" style="position:relative;">
+                  <div class="progress-bar" id="progress-bar-container" style="position:relative;display: flex;flex-direction: column;">
                     <progress id='progress-bar' min='0' max='100' value='0'>
                     </progress>
-                    <div style="width:3px;height:6px;background-color:blue;position:absolute;left:100px;top:5px;"></div>
+                    <div style="width: 100%;display: flex;flex-direction: row;justify-content: space-between;margin-top:10px;color:#fff;">
+                      <div id="elapsed_time"></div>
+                      <div id="total_time"></div>
+                    </div>
+                    <!-- <div style="width:3px;height:6px;background-color:blue;position:absolute;left:100px;top:5px;"></div> -->
                   </div>
                   <!-- <button id='btnMute' class='mute' title='mute' onclick='muteVolume();'>Mute</button> -->
                   <img src="img/full_screen.png" style="width:25px;height:20px;margin-right:15px;"
-                  id='btnFullScreen' class='fullscreen' title='toggle full screen' accesskey="T"
-                  onclick='toggleFullScreen();'/>
-                  <!-- <input type="range" id="volume-bar" title="volume" min="0" max="1" step="0.1" value="1"> -->
+                  id='btnFullScreen' class='fullscreen' title='toggle full screen' accesskey="T"/>
+                  <!-- <input type="range" id="volume-bar" title="volume" min="0" max="1" step="0.1" value="1"> 
+                  -->
+                  <div class="pauses"></div>
                 </div>
-
+              </div>
+              <div id='questions' class="question-controls hide">
+                <div class="question__container">
+                </div>
           		</div>
           	</div>
             <div class="page3-part2">
               <div class="subject_name ppage3" id="subject_name"></div>
-              <div style="padding:10px 25px;width:93%;display:flex;flex-direction:row;justify-content:space-between;">
+              <div style="padding:10px 0px 0px 0px;width:100%;display:flex;flex-direction:row;justify-content:space-between;">
                 <div class="chapter_name ppage3" id="chapter_name"></div>
                 <div class="chapter_number ppage3" id="chapter_number"></div>
               </div>
               <div class="videos_header">
                 <div class="videos_title">
-                  <div id="video_name"></div>
-                  <div id="video_number"></div>
+                  <div style="display:  flex;justify-content: space-between;font-size: 18px;line-height:  17px;">
+                    <div style="display: flex;flex-direction: column;justify-content: center;">
+                      <div id="video_name"></div>
+                    </div>
+                    <div id="video_number" style="line-height: 30px;"></div>
+                  </div>
                 </div>
-                <img src="img/bookmark.png" style="width:50px;height:32px;margin-top:8px;">
+                <img src="img/bookmark.png" style="width:71px;height:46px;margin-top:8px;margin-right: -5px;">
               </div>
             </div>
             <div class="page3-part3" id="bottom-next-part">
@@ -163,173 +196,19 @@
                   <img src="img/arrow_up.png" style="width:9px;margin-top:12px;"/>
                 </div>
               </div>
-              <div class="bottom-row" style="padding-bottom:10px;">
+              <div class="bottom-row" style="padding-bottom:10px;margin-top:-1px;">
                 <div class="next_video_name" id="next_video_name"></div>
                 <div class="next_video_duration" id="next_video_duration"></div>
               </div>
               <div class="bottom-row play-next">
-                <div class="play-next-btn">
+                <div class="play-next-btn" id="play-next-btn">
                   <span style="margin-right:7px;">Play</span>
                   <img src="img/arrow_right.png" style="width:12px;margin-top:12px;"/>
                 </div>
               </div>
             </div>
           </div>
-        <!-- <script type="text/javascript" src="cordova.js"></script> -->
-        <!-- <script type="text/javascript" src="js/page3.js"></script> -->
-        <script>
-        console.log("sscript loaded")
-        // Get a handle to the player
-	player       = document.getElementById('video-element');
-	btnPlayPause = document.getElementById('btnPlayPause');
-	// btnMute      = document.getElementById('btnMute');
-	var progressBar  = document.getElementById('progress-bar');
-  // volumeBar    = document.getElementById('volume-bar');
-
-  // Update the video volume
-  // volumeBar.addEventListener("change", function(evt) {
-	// 	player.volume = evt.target.value;
-	// });
-  document.getElementById('btnFullScreen').disabled = true;
-	// Add a listener for the timeupdate event so we can update the progress bar
-	player.addEventListener('timeupdate', updateProgressBar, false);
-
-	// Add a listener for the play and pause events so the buttons state can be updated
-	player.addEventListener('play', function() {
-		// Change the button to be a pause button
-		changeButtonType(btnPlayPause, 'pause');
-	}, false);
-
-	player.addEventListener('pause', function() {
-		// Change the button to be a play button
-		changeButtonType(btnPlayPause, 'play');
-	}, false);
-
-	player.addEventListener('volumechange', function(e) {
-		// Update the button to be mute/unmute
-		if (player.muted) changeButtonType(btnMute, 'unmute');
-		else changeButtonType(btnMute, 'mute');
-	}, false);
-
-	player.addEventListener('ended', function() { this.pause(); }, false);
-
-  progressBar.addEventListener("click", seek);
-
-  function seek(e) {
-      var percent = e.offsetX / this.offsetWidth;
-      player.currentTime = percent * player.duration;
-      e.target.value = Math.floor(percent / 100);
-      e.target.innerHTML = progressBar.value + '% played';
-  }
-
-  function playPauseVideo() {
-  	if (player.paused || player.ended) {
-  		// Change the button to a pause button
-  		changeButtonType(btnPlayPause, 'pause');
-  		player.play();
-  	}
-  	else {
-  		// Change the button to a play button
-  		changeButtonType(btnPlayPause, 'play');
-  		player.pause();
-  	}
-  }
-
-  // Stop the current media from playing, and return it to the start position
-  function stopVideo() {
-  	player.pause();
-  	if (player.currentTime) player.currentTime = 0;
-  }
-
-  // Toggles the media player's mute and unmute status
-  function muteVolume() {
-  	if (player.muted) {
-  		// Change the button to a mute button
-  		changeButtonType(btnMute, 'mute');
-  		player.muted = false;
-  	}
-  	else {
-  		// Change the button to an unmute button
-  		changeButtonType(btnMute, 'unmute');
-  		player.muted = true;
-  	}
-  }
-
-  // Replays the media currently loaded in the player
-  function replayVideo() {
-  	resetPlayer();
-  	player.play();
-  }
-
-  // Update the progress bar
-  function updateProgressBar() {
-  	// Work out how much of the media has played via the duration and currentTime parameters
-  	var percentage = Math.floor((100 / player.duration) * player.currentTime);
-  	// Update the progress bar's value
-  	progressBar.value = percentage;
-  	// Update the progress bar's text (for browsers that don't support the progress element)
-  	progressBar.innerHTML = percentage + '% played';
-  }
-
-  // Updates a button's title, innerHTML and CSS class
-  function changeButtonType(btn, value) {
-  	btn.title     = value;
-  	btn.innerHTML = value;
-  	btn.className = value;
-  }
-
-  function resetPlayer() {
-  	progressBar.value = 0;
-  	// Move the media back to the start
-  	player.currentTime = 0;
-  	// Set the play/pause button to 'play'
-  	changeButtonType(btnPlayPause, 'play');
-  }
-
-  function exitFullScreen() {
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-    }
-  }
-
-  function toggleFullScreen() {
-    //var player = document.getElementById("player");
-
-    if (player.requestFullscreen)
-        if (document.fullScreenElement) {
-            document.cancelFullScreen();
-        } else {
-            player.requestFullscreen();
-        }
-        else if (player.msRequestFullscreen)
-        if (document.msFullscreenElement) {
-            document.msExitFullscreen();
-        } else {
-            player.msRequestFullscreen();
-        }
-        else if (player.mozRequestFullScreen)
-        if (document.mozFullScreenElement) {
-            document.mozCancelFullScreen();
-        } else {
-            player.mozRequestFullScreen();
-        }
-        else if (player.webkitRequestFullscreen)
-        if (document.webkitFullscreenElement) {
-            document.webkitCancelFullScreen();
-        } else {
-            player.webkitRequestFullscreen();
-        }
-    else {
-        alert("Fullscreen API is not supported");
-
-    }
-  }
-        </script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/page3.js"></script>
     </body>
 </html>

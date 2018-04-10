@@ -31,6 +31,14 @@
             {
               "xml": "<feature name=\"StreamingMedia\"><param name=\"android-package\" value=\"com.hutchind.cordova.plugins.streamingmedia.StreamingMedia\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"Toast\"><param name=\"android-package\" value=\"nl.xservices.plugins.Toast\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"CDVOrientation\"><param name=\"android-package\" value=\"cordova.plugins.screenorientation.CDVOrientation\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -77,6 +85,15 @@
       "PACKAGE_NAME": "io.cordova.trignosource"
     },
     "com.hutchind.cordova.plugins.streamingmedia": {
+      "PACKAGE_NAME": "io.cordova.trignosource"
+    },
+    "cordova-plugin-x-toast": {
+      "PACKAGE_NAME": "io.cordova.trignosource"
+    },
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "io.cordova.trignosource"
+    },
+    "cordova-plugin-screen-orientation": {
       "PACKAGE_NAME": "io.cordova.trignosource"
     }
   },
@@ -278,6 +295,28 @@
       "clobbers": [
         "streamingMedia"
       ]
+    },
+    {
+      "id": "cordova-plugin-x-toast.Toast",
+      "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
+      "pluginId": "cordova-plugin-x-toast",
+      "clobbers": [
+        "window.plugins.toast"
+      ]
+    },
+    {
+      "id": "es6-promise-plugin.Promise",
+      "file": "plugins/es6-promise-plugin/www/promise.js",
+      "pluginId": "es6-promise-plugin",
+      "runs": true
+    },
+    {
+      "id": "cordova-plugin-screen-orientation.screenorientation",
+      "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.js",
+      "pluginId": "cordova-plugin-screen-orientation",
+      "clobbers": [
+        "cordova.plugins.screenorientation"
+      ]
     }
   ],
   "plugin_metadata": {
@@ -285,6 +324,9 @@
     "cordova-plugin-whitelist": "1.3.3",
     "cordova-plugin-file": "6.0.1",
     "cordova-plugin-http": "1.2.0",
-    "com.hutchind.cordova.plugins.streamingmedia": "0.1.4"
+    "com.hutchind.cordova.plugins.streamingmedia": "0.1.4",
+    "cordova-plugin-x-toast": "2.6.2",
+    "es6-promise-plugin": "4.2.2",
+    "cordova-plugin-screen-orientation": "3.0.1"
   }
 }

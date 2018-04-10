@@ -18,9 +18,12 @@
  */
 var app = {
     // Application Constructor
+    baseUrl: null,
     videos: [],
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+
+        this.baseUrl = localStorage.getItem('baseUrl')
 
         var tutorials = localStorage.getItem('tutorials')
         tutorials = JSON.parse(tutorials).data
@@ -32,25 +35,48 @@ var app = {
 
         this.videos = tutorials[0].chapters[0].videos
         var final_html = ``
+        var img_loaded = []
         for(var i=0;i< this.videos.length;i++){
           final_html += `<div class="interactive__videos" id="interactive-videos-`+i+`">
             <div class="videos__thumbnail onerounded-card">
-              <img style="width:100%;" src='http://192.168.122.1:8094/uploads/Thumbnails/` + this.videos[i].thumbnail_url + `'/>
+              <img style="width:100%;" id="videos_thumbnail_`+i+`" src='`+ this.baseUrl +`/uploads/Thumbnails/` + this.videos[i].thumbnail_url + `'/>
             </div>
             <div class="videos__details onerounded-card">
-              <div class="videos__title">`+this.videos[i].video_name+`</div>
+              <div class="videos__title"><div style="line-height:17px;">`+this.videos[i].video_name+`</div></div>
               <div class="videos__subdetails">
                 <span class="videos__number">`+ this.videos[i].video_number+ `</span>
                 <span class="videos__number">|</span>
-                <span class="videos__duration">Duratiom: 11m 42s</span>
+                <span class="videos__duration">Duration: `+this.getDuration(this.videos[i].duration)+`</span>
                 <span class="videos__duration">|</span>
                 <span class="videos__interactions">Interactions: `+ this.videos[i].questions.length + `</span>
               </div>
             </div>
           </div>`
+          img_loaded.push(false)
           console.log(final_html)
         }
+
         document.getElementById('interaction_videos').innerHTML = final_html
+
+        for(var i=0;i< this.videos.length;i++){
+          (function(i){
+            var j = i;
+            var img_thumbnail = document.getElementById('videos_thumbnail_'+j)
+            img_thumbnail.addEventListener('load', function(){
+                img_loaded[j] = true
+                var hide_loader = true
+                for(var k=0;k<img_loaded.length;k++){
+                  if(img_loaded[k] == false){
+                    hide_loader = false
+                  }
+                }
+                if(hide_loader){
+                    document.getElementById('loading').style.display = 'none'
+                    document.getElementById('interaction_videos').style.display = 'flex'
+                }
+            }, false)
+          })(i);
+        }
     },
 
     // deviceready Event Handler
@@ -66,6 +92,7 @@ var app = {
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
         for(var i=0;i< this.videos.length;i++){
+          (function(i){
             var j = i;
             var videos_card = document.getElementById('interactive-videos-'+i);
             console.log(videos_card, id)
@@ -74,8 +101,29 @@ var app = {
               localStorage.currentVideo = j
               window.location = 'page3.html'
             }, false);
+          })(i);
         }
-    }
+    },
+
+    getDuration: function(duration){
+      var hours = 0, min = 0, seconds = 0;
+      console.log(duration)
+      var result = ''
+      if(duration >= 3600){
+        hours = parseInt(duration/60)
+        duration = duration-(hours*60)
+        result += hours+"h"
+      }
+      if(duration >= 60){
+        min = parseInt(duration/60)
+        duration = duration-(min*60)
+        result += " " + min+"m"
+      }
+      seconds = parseInt(duration)
+      result += " " + seconds+"s"
+      console.log(result)
+      return result.trim()
+    },
 };
 
 app.initialize();

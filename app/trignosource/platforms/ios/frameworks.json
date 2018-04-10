@@ -1,5 +1,6 @@
 {
     "Security.framework": 1,
     "SystemConfiguration.framework": 1,
-    "MediaPlayer.framework": 1
+    "MediaPlayer.framework": 1,
+    "QuartzCore.framework": 1
 }

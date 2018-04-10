@@ -86,6 +86,20 @@
                   <input type="text" ng-model="Videos.create_chapter.chapter_name" placeholder="Chapter Name" class="email text-input">
                   <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
               </div>
+              <div class="input-container">
+                <select id="module_or_part" ng-model="Videos.create_chapter.is_module">
+                  <option value="module">Module</option>
+                  <option value="part">Part</option>
+                </select>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_chapter.mop_number" placeholder="Module/Part Number" class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_chapter.mop_name" placeholder="Module/Part Name" class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
               <a class="sign-in button" style="cursor:pointer" ng-click="createChapter()">Create</a>
             </div>
             <div ng-if="!Videos.create_chapter.subject_number">
@@ -111,20 +125,6 @@
               </div>
               <div class="input-container">
                   <input type="text" ng-model="Videos.create_video.thumbnail_time" placeholder="Thumbnail Time" ng-change="Videos.validateVideoName()"  class="email text-input">
-                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
-              </div>
-              <div class="input-container">
-                <select id="module_or_part" ng-model="Videos.create_video.is_module">
-                  <option value="module">Module</option>
-                  <option value="part">Part</option>
-                </select>
-              </div>
-              <div class="input-container">
-                  <input type="text" ng-model="Videos.create_video.mop_number" placeholder="Module/Part Number" ng-change="Videos.validateVideoName()"  class="email text-input">
-                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
-              </div>
-              <div class="input-container">
-                  <input type="text" ng-model="Videos.create_video.mop_name" placeholder="Module/Part Name" ng-change="Videos.validateVideoName()"  class="email text-input">
                   <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
               </div>
               <a class="sign-in button" style="cursor:pointer" ng-click="Videos.uploadSubmit()">Create</a>
@@ -176,6 +176,12 @@
               <div class="input-container">
                   <input type="text" ng-model="Videos.create_option.skip_time" placeholder="Skip Time"  class="email text-input">
                   <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+               <div class="input-container">
+                <select id="module_or_part" ng-model="Videos.create_option.is_correct">
+                  <option value="true">Right Answer</option>
+                  <option value="false">Wrong Answer</option>
+                </select>
               </div>
               <a class="sign-in button" style="cursor:pointer" ng-click="createOption()">Create</a>
             </div>

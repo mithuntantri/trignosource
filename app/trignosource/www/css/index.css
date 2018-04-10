@@ -35,8 +35,7 @@ html {
   height: 100vh;
 }
 body {
-  background: #0e6eff;
-  background: -webkit-linear-gradient(48deg, #00e56f, #0e6eff);
+  background: rgb(30,59,21);
   height: 100%;
   overflow: hidden;
 }
@@ -90,6 +89,9 @@ canvas {
 .splash-screen{
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   overflow: hidden;
 }
 .container {

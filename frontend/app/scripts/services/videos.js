@@ -21,7 +21,10 @@ class Videos{
     this.create_chapter = {
       'chapter_number' : null,
       'subject_number' : null,
-      'chapter_name' : null
+      'chapter_name' : null,
+      'is_module' : 'module',
+      'mop_name' : null,
+      'mop_number' : null
     }
 
     this.create_video = {
@@ -29,10 +32,7 @@ class Videos{
       'subject_number' : null,
       'video_name' : null,
       'video_number' : null,
-      'thumbnail_time' : null,
-      'is_module' : 'module',
-      'mop_name' : null,
-      'mop_number' : null
+      'thumbnail_time' : null
     }
 
     this.create_question = {
@@ -52,7 +52,8 @@ class Videos{
       'question_number' : null,
       'option_number' : null,
       'option_name' : null,
-      'skip_time' : null
+      'skip_time' : null,
+      'is_correct': 'false',
     }
   }
 
@@ -164,10 +165,7 @@ class Videos{
   validateVideoName(){
     if(this.create_video.video_name &&
       this.create_video.video_number &&
-      this.create_video.thumbnail_time &&
-      this.create_video.is_module &&
-      this.create_video.mop_name &&
-      this.create_video.mop_number) {
+      this.create_video.thumbnail_time) {
       this.FileMessage = null
       this.enableUpload = this.checkThumbnailTime()
     }else{
@@ -302,9 +300,6 @@ class Videos{
           url += `&chapter_number=${this.create_video.chapter_number}`
           url += `&video_number=${this.create_video.video_number}`
           url += `&thumbnail_time=${this.create_video.thumbnail_time}`
-          url += `&is_module=${is_module}`
-          url += `&mop_name=${this.create_video.mop_name}`
-          url += `&mop_number=${this.create_video.mop_number}`
           this.$http({
             url: url,
             method: 'POST',

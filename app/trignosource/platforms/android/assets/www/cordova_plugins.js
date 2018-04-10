@@ -196,6 +196,28 @@ module.exports = [
     "clobbers": [
       "streamingMedia"
     ]
+  },
+  {
+    "id": "cordova-plugin-x-toast.Toast",
+    "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
+    "pluginId": "cordova-plugin-x-toast",
+    "clobbers": [
+      "window.plugins.toast"
+    ]
+  },
+  {
+    "id": "es6-promise-plugin.Promise",
+    "file": "plugins/es6-promise-plugin/www/promise.js",
+    "pluginId": "es6-promise-plugin",
+    "runs": true
+  },
+  {
+    "id": "cordova-plugin-screen-orientation.screenorientation",
+    "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.js",
+    "pluginId": "cordova-plugin-screen-orientation",
+    "clobbers": [
+      "cordova.plugins.screenorientation"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -205,7 +227,10 @@ module.exports.metadata =
   "cordova-plugin-whitelist": "1.3.3",
   "cordova-plugin-file": "6.0.1",
   "cordova-plugin-http": "1.2.0",
-  "com.hutchind.cordova.plugins.streamingmedia": "0.1.4"
+  "com.hutchind.cordova.plugins.streamingmedia": "0.1.4",
+  "cordova-plugin-x-toast": "2.6.2",
+  "es6-promise-plugin": "4.2.2",
+  "cordova-plugin-screen-orientation": "3.0.1"
 };
 // BOTTOM OF METADATA
 });

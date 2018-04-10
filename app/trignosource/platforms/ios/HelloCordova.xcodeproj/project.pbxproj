@@ -32,6 +32,10 @@
 		DE451A5DB2B74B6DAD5ABB12 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64819CCC0927491E9862839D /* SystemConfiguration.framework */; };
 		D484984E68954F74B355688C /* StreamingMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ECCA9A3EE264FE394998280 /* StreamingMedia.m */; };
 		509B1CD020E649B68A3D96FD /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F963698A6E754427A81E3707 /* MediaPlayer.framework */; };
+		FB358F08ECE34B0698945911 /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEF21BE7A7CE4D53B07EF18C /* Toast+UIView.m */; };
+		3B30D26641864961887CFC35 /* Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 19F879DE83D840388902A399 /* Toast.m */; };
+		161A5B880E28448AA6FCC2A7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D18025525A4D2B815C2DD9 /* QuartzCore.framework */; };
+		0F0472BDF0F240EEAC1C24BF /* CDVOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 75B5BB36DC7049C493FBD5C0 /* CDVOrientation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +106,13 @@
 		0ECCA9A3EE264FE394998280 /* StreamingMedia.m */ = {isa = PBXFileReference; name = "StreamingMedia.m"; path = "com.hutchind.cordova.plugins.streamingmedia/StreamingMedia.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		B4E11A704F864B78AD4E82EA /* StreamingMedia.h */ = {isa = PBXFileReference; name = "StreamingMedia.h"; path = "com.hutchind.cordova.plugins.streamingmedia/StreamingMedia.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		F963698A6E754427A81E3707 /* MediaPlayer.framework */ = {isa = PBXFileReference; name = "MediaPlayer.framework"; path = "System/Library/Frameworks/MediaPlayer.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		EEF21BE7A7CE4D53B07EF18C /* Toast+UIView.m */ = {isa = PBXFileReference; name = "Toast+UIView.m"; path = "cordova-plugin-x-toast/Toast+UIView.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		19F879DE83D840388902A399 /* Toast.m */ = {isa = PBXFileReference; name = "Toast.m"; path = "cordova-plugin-x-toast/Toast.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		F41B99ACC5F645D993745037 /* Toast+UIView.h */ = {isa = PBXFileReference; name = "Toast+UIView.h"; path = "cordova-plugin-x-toast/Toast+UIView.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		FF8C15308D5B4040A37B982B /* Toast.h */ = {isa = PBXFileReference; name = "Toast.h"; path = "cordova-plugin-x-toast/Toast.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		45D18025525A4D2B815C2DD9 /* QuartzCore.framework */ = {isa = PBXFileReference; name = "QuartzCore.framework"; path = "System/Library/Frameworks/QuartzCore.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		75B5BB36DC7049C493FBD5C0 /* CDVOrientation.m */ = {isa = PBXFileReference; name = "CDVOrientation.m"; path = "cordova-plugin-screen-orientation/CDVOrientation.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		C990180263754AEABB5FE093 /* CDVOrientation.h */ = {isa = PBXFileReference; name = "CDVOrientation.h"; path = "cordova-plugin-screen-orientation/CDVOrientation.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +124,7 @@
 				6E7E67B657C44762AB8CF9A2 /* Security.framework in Frameworks */,
 				DE451A5DB2B74B6DAD5ABB12 /* SystemConfiguration.framework in Frameworks */,
 				509B1CD020E649B68A3D96FD /* MediaPlayer.framework in Frameworks */,
+				161A5B880E28448AA6FCC2A7 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,6 +198,7 @@
 				0273DC1DEF1243B6A52D00CE /* Security.framework */,
 				64819CCC0927491E9862839D /* SystemConfiguration.framework */,
 				F963698A6E754427A81E3707 /* MediaPlayer.framework */,
+				45D18025525A4D2B815C2DD9 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -238,6 +251,12 @@
 				3C4F315B24474CEB95054392 /* AFURLSessionManager.h */,
 				0ECCA9A3EE264FE394998280 /* StreamingMedia.m */,
 				B4E11A704F864B78AD4E82EA /* StreamingMedia.h */,
+				EEF21BE7A7CE4D53B07EF18C /* Toast+UIView.m */,
+				19F879DE83D840388902A399 /* Toast.m */,
+				F41B99ACC5F645D993745037 /* Toast+UIView.h */,
+				FF8C15308D5B4040A37B982B /* Toast.h */,
+				75B5BB36DC7049C493FBD5C0 /* CDVOrientation.m */,
+				C990180263754AEABB5FE093 /* CDVOrientation.h */,
 			);
 			name = Plugins;
 			path = "HelloCordova/Plugins";
@@ -363,6 +382,9 @@
 				7D930F62B6DF46F1BEEBD6A5 /* AFURLResponseSerialization.m in Sources */,
 				B3E98AD53D2C42F0B379D849 /* AFURLSessionManager.m in Sources */,
 				D484984E68954F74B355688C /* StreamingMedia.m in Sources */,
+				FB358F08ECE34B0698945911 /* Toast+UIView.m in Sources */,
+				3B30D26641864961887CFC35 /* Toast.m in Sources */,
+				0F0472BDF0F240EEAC1C24BF /* CDVOrientation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

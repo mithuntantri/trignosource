@@ -27,19 +27,29 @@ var app = {
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
+        StatusBar.hide();
         this.receivedEvent('deviceready');
+        this.getTutorials();
     },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
         console.log('Received Event: ' + id);
+    },
+
+    getTutorials: function(){
+      cordovaHTTP.get("https://bshoeuapop.localtunnel.me/api/admin/tutorials", {},
+        { Authorization: "" }, function(response) {
+          console.log(response)
+          if(response.status){
+            var tutorials = response.data
+            localStorage.tutorials = tutorials
+            window.location.href = `subject_page.html`
+          }
+        }, function(response) {
+          console.log(response);
+      })
     }
 };
 

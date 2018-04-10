@@ -93,6 +93,7 @@ var getAllSpecificData = function(table_name) {
     return new Promise ((resolve, reject)=>{
         r.table(table_name)
             .run(store.rethink_conn, (err, cursor)=>{
+              console.log("err", err)
                 cursor.toArray(function(err, result) {
                     if (err) throw err;
                         resolve(result);
