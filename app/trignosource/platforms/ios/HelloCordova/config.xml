@@ -36,7 +36,16 @@
     <feature name="Toast">
         <param name="ios-package" value="Toast" />
     </feature>
-    <name>Trignosource</name>
+    <feature name="CDVOrientation">
+        <param name="ios-package" value="CDVOrientation" />
+    </feature>
+    <feature name="NetworkStatus">
+        <param name="ios-package" value="CDVConnection" />
+    </feature>
+    <feature name="ActionSheet">
+        <param name="ios-package" value="ActionSheet" />
+    </feature>
+    <name>Trigno Ed</name>
     <description>
         A sample calculator app for trignosource.
     </description>
@@ -70,7 +79,4 @@
     <preference name="StatusBarOverlaysWebView" value="true" />
     <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="MediaPlaybackRequiresUserAction" value="false" />
-    <feature name="CDVOrientation">
-        <param name="ios-package" value="CDVOrientation" />
-    </feature>
 </widget>

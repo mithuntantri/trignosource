@@ -33,10 +33,18 @@ var app = {
     interactionTimes:[],
     whiteTimes : [],
     stopPropogation: false,
+    stayHere: false,
+    currentQuality: 'Auto',
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
 
         this.baseUrl = localStorage.getItem('baseUrl')
+
+        if(localStorage.getItem('streaming') != null || localStorage.getItem('streaming') != undefined){
+          this.currentQuality = localStorage.getItem('streaming')
+        }else{
+          localStorage.setItem('streaming', this.currentQuality)
+        }
 
         this.tutorials = localStorage.getItem('tutorials')
         this.currentSubject = parseInt(localStorage.getItem('currentSubject'))
@@ -65,17 +73,53 @@ var app = {
           document.getElementById('next_video_duration').innerHTML = this.getDuration(this.tutorials[this.currentSubject].chapters[this.currentChapter].videos[parseInt(this.currentVideo)+1].duration)
         }
 
-        document.getElementById('video-element').innerHTML = "<source src='"+this.baseUrl+"/uploads/Videos/"+this.video.file_name+"' type='video/mp4'>"
-        this.loadVieo(0);
+        this.reloadVideo(0);
         this.handleNext();
     },
 
-    seekTenSecondsBehind: function(){
+    reloadVideo: function(currentTime){
+      if(this.currentQuality == 'Auto'){
+        document.getElementById('video-element').innerHTML = "<source src='"+this.baseUrl+"/uploads/Videos/360p/"+this.video.file_name+"' type='video/mp4'>"
+      }else{
+        document.getElementById('video-element').innerHTML = "<source src='"+this.baseUrl+"/uploads/Videos/"+this.currentQuality+"/"+this.video.file_name+"' type='video/mp4'>"
+      }
+      this.loadVieo(currentTime);
+    },
 
+    seekTenSecondsBehind: function(){
+      this.seekToTime(this.player.currentTime - 10)
     },
 
     seekTenSecondsForward: function(){
+      this.seekToTime(this.player.currentTime + 10)
+    },
 
+    reLoadUnexplored: function(){
+      document.getElementById('controls').classList.remove("hide")
+      document.getElementById('controls').classList.remove("show")
+      document.getElementById('controls').classList.add("show")
+      var progressBarContainer = document.getElementById('progress-bar-container');
+      var width = progressBarContainer.offsetWidth
+      console.log(width)
+      var total_width = this.progressBar.offsetWidth
+      console.log(this.questions)
+      document.getElementsByClassName('unexplored')[0].innerHTML = ''
+      for(var i=0;i<this.whiteTimes.length;i++){
+        var left_pc = parseInt(this.whiteTimes[i].start_time) / parseInt(this.video.duration) * 100
+        var right_pc = parseInt(this.whiteTimes[i].end_time) / parseInt(this.video.duration) * 100
+        var left_px = Math.floor(15 + (left_pc * width / 100))
+        var right_px = Math.floor(15 + (right_pc * width / 100))
+        var total_width = right_px-left_px
+        console.log("left_pc", left_pc)
+        console.log("left_px", left_px)
+        var ele = `<div id=unexplored_`+this.whiteTimes[i].question_number+` style="width:`+total_width+`px;height:6px;background-color:yellow;position:absolute;left:`+ left_px+`px;"></div>`
+        console.log(ele)
+        document.getElementsByClassName('unexplored')[0].innerHTML += ele
+        if(i== this.whiteTimes.length -1){
+          document.getElementById('controls').classList.remove("show")
+          document.getElementById('controls').classList.add("hide")
+        }
+      }
     },
 
     loadUnexplored: function(start_time, end_time, question_number){
@@ -87,8 +131,9 @@ var app = {
       console.log(width)
       var total_width = this.progressBar.offsetWidth
       console.log(this.questions)
+      document.getElementsByClassName('unexplored')[0].innerHTML = ''
       for(var i=0;i<this.questions.length;i++){
-        this.whiteTimes.push({start_time:start_time, end_time: end_time, id:'unexplored_'+question_number})
+        this.whiteTimes.push({start_time:start_time, end_time: end_time, id:'unexplored_'+question_number, question_number: question_number})
         var left_pc = parseInt(start_time) / parseInt(this.video.duration) * 100
         var right_pc = parseInt(end_time) / parseInt(this.video.duration) * 100
         var left_px = Math.floor(15 + (left_pc * width / 100))
@@ -98,7 +143,7 @@ var app = {
         console.log("left_px", left_px)
         var ele = `<div id=unexplored_`+question_number+` style="width:`+total_width+`px;height:6px;background-color:yellow;position:absolute;left:`+ left_px+`px;"></div>`
         console.log(ele)
-        document.getElementsByClassName('pauses')[0].innerHTML += ele
+        document.getElementsByClassName('unexplored')[0].innerHTML += ele
         if(i== this.questions.length -1){
           document.getElementById('controls').classList.remove("show")
           document.getElementById('controls').classList.add("hide")
@@ -115,6 +160,9 @@ var app = {
       console.log(width)
       var total_width = this.progressBar.offsetWidth
       console.log(this.questions)
+      this.pauseTimes = []
+      this.interactionTimes = []
+      document.getElementsByClassName('pauses')[0].innerHTML = '';
       for(var i=0;i<this.questions.length;i++){
         var left_pc = parseInt(this.questions[i].appear_time) / parseInt(this.video.duration) * 100
         this.pauseTimes.push({
@@ -201,6 +249,9 @@ var app = {
         StatusBar.backgroundColorByHexString('#003256');
         this.receivedEvent('deviceready');
         var that = this;
+        document.getElementById('back_arrow').addEventListener('click', function(e){
+            navigator.app.backHistory();
+        })
     },
 
     handleNext: function(){
@@ -231,16 +282,24 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+         document.addEventListener("offline", function(){ 
+          console.log("Device offline")
+          alert("Seems your internet is disconnected. Please check and try again") 
+          navigator.app.exitApp();
+        }, false);
     },
 
     loadVieo: function(starttime){
       console.log("sscript loaded")
-
       // Get a handle to the player
       this.player = document.getElementById('video-element');
       this.player.currentTime = starttime
       this.btnPlay = document.getElementById('btnPlay');
       this.btnPause = document.getElementById('btnPause');
+      this.btnRewind = document.getElementById('btnRewind');
+      this.btnForward = document.getElementById('btnForward');
+      this.settingsBtn = document.getElementById('btnSettings');
+
       document.getElementById('total_time').innerHTML = this.getTime(this.video.duration)
       document.getElementById('elapsed_time').innerHTML = this.getTime(starttime)
       // btnMute      = document.getElementById('btnMute');
@@ -253,6 +312,14 @@ var app = {
       this.btnPause.addEventListener('click', function(){
         that.playPauseVideo()
       })
+
+      this.btnRewind.addEventListener('click', function(){
+        that.seekTenSecondsBehind()
+      })
+      this.btnForward.addEventListener('click', function(){
+        that.seekTenSecondsForward()
+      })
+
       this.player.addEventListener('loadeddata', function(){
           console.log("Video Loaded Successfully!")
           document.getElementById('loading').style.display = 'none'
@@ -303,11 +370,18 @@ var app = {
             var player = document.getElementById('player')
             var part2 = document.getElementsByClassName('page3-part2')[0]
             var part3 = document.getElementById('bottom-next-part')
+            document.getElementById('controls').classList.remove("hide")
+            document.getElementById('controls').classList.remove("show")
+            document.getElementById('controls').classList.add("hide")
             if(parseInt(window.orientation) == parseInt(90) || parseInt(window.orientation) == parseInt(-90)){
                 player.style.height='100%';
                 loader.style.height='100%';
                 part2.style.display='none'
                 part3.style.display='none'
+                setTimeout(function(){
+                  that.seekToTime(that.player.currentTime);
+                  that.reLoadUnexplored();
+                },500)
             }else{
                 player.style.height='200px';
                 loader.style.height='200px';
@@ -317,6 +391,10 @@ var app = {
                 }else{
                   part3.style.display='block'
                 }
+                setTimeout(function(){
+                  that.seekToTime(that.player.currentTime);
+                  that.reLoadUnexplored();
+                },500)
             }
         });
       fullScreen.addEventListener('click', function(){
@@ -333,12 +411,70 @@ var app = {
           console.log(that.whiteTimes)
           var percent = e.offsetX / that.progressBar.offsetWidth;
           var currentTime = percent * that.player.duration;
-          that.seekToTime(e, currentTime)
+          that.seekToTime(currentTime)
         }
       },false);
+
+      this.settingsBtn.addEventListener('click', function(){
+        that.testShareSheet()
+      }, false)
     },
 
-    seekToTime: function(e, currentTime){
+    testShareSheet: function() {
+      var that = this;
+      var options = {
+          androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT, // default is THEME_TRADITIONAL
+          title: 'Video Streaming Quality',
+          subtitle: 'Choose wisely, my friend', // supported on iOS only
+          buttonLabels: ['Auto', '360p', '480p', '720p', '1080p'],
+          androidEnableCancelButton : true, // default false
+          winphoneEnableCancelButton : true, // default false
+          addCancelButtonWithLabel: 'Cancel',
+          position: [20, 40, 60, 80, 100], // for iPad pass in the [x, y] position of the popover
+          destructiveButtonLast: true // you can choose where the destructive button is shown
+      };
+      window.plugins.actionsheet.show(options, function(buttonIndex){
+        setTimeout(function(){
+          console.log("buttonIndex", buttonIndex)
+          var buttonLabels = ['Auto', '360p', '480p', '720p', '1080p']
+          if(buttonIndex <= 5){
+            that.currentQuality = buttonLabels[buttonIndex-1];
+            localStorage.setItem('streaming', that.currentQuality)
+            that.reloadVideo(that.player.currentTime)
+          }
+        },1000)
+      });
+    },
+
+    loadBuffer: function(){
+        document.getElementById('btnPlay').style.display = 'block'
+        document.getElementById('btnPause').style.display = 'none'
+        this.changeButtonType(this.btnPause, 'play');
+        this.player.pause();
+
+        var that = this;
+
+        document.getElementById('controls').classList.remove("hide")
+        document.getElementById('controls').classList.remove("show")
+        document.getElementById('controls').classList.add("hide")
+        document.getElementById('video_loading').style.display = 'flex'
+        // document.getElementById('player').style.display = 'none'
+        this.player.addEventListener('canplaythrough', function(){
+          console.log("Video canplaythrough Successfully!")
+          document.getElementById('video_loading').style.display = 'none'
+          document.getElementById('controls').classList.remove("hide")
+          document.getElementById('controls').classList.remove("show")
+          document.getElementById('controls').classList.add("hide")
+
+          that.changeButtonType(that.btnPlay, 'pause');
+          document.getElementById('btnPlay').style.display = 'none'
+          document.getElementById('btnPause').style.display = 'block'
+          that.player.play();
+          // document.getElementById('player').style.display = 'flex'
+      }, false)
+    },
+
+    seekToTime: function(currentTime){
         var found = false
         var that = this
         console.log("currentTime", currentTime, that.player.currentTime)
@@ -375,6 +511,7 @@ var app = {
           that.stopPropogation = false
         }, 3000)
         console.log("Video Seeked",that.player.currentTime)
+        this.loadBuffer()
         for(var i=0;i<that.whiteTimes.length;i++){
           console.log(i)
           console.log("Removing", parseFloat(that.player.currentTime),parseFloat(that.whiteTimes[i].start_time))
@@ -434,13 +571,17 @@ var app = {
       var that = this
       // Work out how much of the media has played via the duration and currentTime parameters
       var percentage = Math.floor((100 / that.player.duration) * that.player.currentTime);
-      if(this.pauseTimes.length > 0 && (Math.floor(that.player.currentTime) == Math.floor(parseInt(this.pauseTimes[0].time_of_pause)))){
-        console.log("Pausing Video")
-        that.player.pause()
+      for(var i=0;i<this.pauseTimes.length;i++){
+        if(Math.floor(that.player.currentTime) == Math.floor(parseInt(this.pauseTimes[i].time_of_pause))){
+          console.log("Pausing Video")
+          that.player.pause()
+        }
       }
-      if(this.pauseTimes.length > 0 && (Math.floor(that.player.currentTime) == Math.floor(parseInt(this.pauseTimes[0].appear_time)))){
-        console.log("Question Appears")
-        that.showQuestions(that.pauseTimes[0].question_number)
+      for(var i=0;i<this.pauseTimes.length;i++){
+        if(Math.floor(that.player.currentTime) == Math.floor(parseInt(this.pauseTimes[i].appear_time))){
+          console.log("Question Appears")
+          that.showQuestions(that.pauseTimes[i].question_number)
+        }
       }
       // Update the progress bar's value
       this.progressBar.value = percentage;
@@ -450,12 +591,14 @@ var app = {
     },
 
     showQuestions: function(i){
+      console.log("Showing Questions", i)
         var question = null
         for(var j=0;j<this.questions.length;j++){
           if(this.questions[j].question_number == i){
             question = this.questions[j]
           }
         }
+        console.log(question)
         document.getElementById('controls').classList.remove("show")
         document.getElementById('controls').classList.add("hide")
         document.getElementById('questions').classList.remove("hide")
@@ -478,6 +621,7 @@ var app = {
             }, false)
           })(j);
         }
+        that.loadPauses();
     },
 
     skipToVideo: function(i, j){
@@ -516,6 +660,7 @@ var app = {
     },
 
     exitFullScreen: function() {
+      console.log("Exitig full screen")
       if (document.exitFullscreen) {
           document.exitFullscreen();
       } else if (document.msExitFullscreen) {
@@ -529,33 +674,47 @@ var app = {
 
     toggleFullScreen: function() {
       var player = document.getElementById('player')
+      var part2 = document.getElementsByClassName('page3-part2')[0]
+      var part3 = document.getElementsByClassName('page3-part3')[0]
       if (player.requestFullscreen)
           if (document.fullScreenElement) {
               document.cancelFullScreen();
+              this.stayHere = false;
           } else {
-            console.log("if-if-else")
+              console.log("if-if-else")
+              this.stayHere = true;
               player.requestFullscreen();
           }
       else if (player.msRequestFullscreen)
           if (document.msFullscreenElement) {
               document.msExitFullscreen();
+              this.stayHere = false;
           } else {
             console.log("if-else-if-if-else")
+              this.stayHere = true;
               player.msRequestFullscreen();
           }
       else if (player.mozRequestFullScreen)
           if (document.mozFullScreenElement) {
               document.mozCancelFullScreen();
+              this.stayHere = false;
           } else {
             console.log("if-else-if-else-if-if-else")
+              this.stayHere = true;
               player.mozRequestFullScreen();
           }
       else if (player.webkitRequestFullscreen)
           if (document.webkitFullscreenElement) {
               player.style.height='200px';
+              part3.style.display = 'none'
+              part2.style.display = 'none'
+              this.stayHere = false;
               document.webkitCancelFullScreen();
           } else {console.log('if-else-if-else-if-else-if-if-else')
               player.style.height='100%'
+              this.stayHere = true;
+              part2.style.display = 'none'
+              part3.style.display = 'none'
               player.webkitRequestFullscreen();
           }
       else {

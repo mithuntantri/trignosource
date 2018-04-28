@@ -36,6 +36,7 @@ var app = {
         document.getElementById('chapter_name').innerHTML = this.tutorials[this.currentSubject].chapters[this.currentChapter].chapter_name
         document.getElementById('chapter_number').innerHTML = 'CHAPTER ' + this.tutorials[this.currentSubject].chapters[this.currentChapter].chapter_number
         document.getElementById('videos_count').innerHTML = this.tutorials[this.currentSubject].chapters[this.currentChapter].videos.length
+        document.getElementById('videos_count_new').innerHTML = this.tutorials[this.currentSubject].chapters[this.currentChapter].videos.length
 
         document.getElementsByClassName('subject_image')[0].innerHTML = '<img style="width:75%;" src="img/subject_icons/subject_'+ parseInt(this.currentSubject + 1) + '_b.png"/>'
 
@@ -49,11 +50,19 @@ var app = {
     onDeviceReady: function() {
         StatusBar.backgroundColorByHexString('#003256');
         this.receivedEvent('deviceready');
+        document.getElementById('back_arrow').addEventListener('click', function(e){
+            navigator.app.backHistory();
+        })
     },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        document.addEventListener("offline", function(){ 
+          console.log("Device offline")
+          alert("Seems your internet is disconnected. Please check and try again") 
+          navigator.app.exitApp();
+        }, false);
     },
 
     gotoVideos: function(){

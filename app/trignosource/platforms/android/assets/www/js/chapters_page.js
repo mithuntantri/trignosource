@@ -34,10 +34,13 @@ var app = {
         var container = document.getElementById('chapters_page_container')
         container.classList.add("subject_"+parseInt(this.currentSubject+1))
 
-        var summary_card = document.getElementById('summary_card');
+        var summary_card = document.getElementsByClassName('part3')[0];
         summary_card.classList.add("subject_"+parseInt(this.currentSubject+1))
 
-        document.getElementsByClassName('chapters_count')[0].innerHTML = 'CHAPTERS- ' + this.subject.chapters.length
+        var track_header = document.getElementsByClassName('track_ur_progress_header')[0];
+        track_header.classList.add("subject_"+parseInt(this.currentSubject+1))
+
+        // document.getElementsByClassName('chapters_count')[0].innerHTML = 'CHAPTERS- ' + this.subject.chapters.length
         
         var modules = [], parts = [], total_modules = [], total_parts = []
         for(i=0;i<this.subject.chapters.length;i++){
@@ -65,15 +68,19 @@ var app = {
 
         for(var i=0;i<total_modules.length;i++){
             if(total_modules[i].length > 0){
-                module_list += `<div class="module_details_item">
-                <div>Module `+ (i+1) + `</div>
-                <div>0` + total_modules[i].length + ` Chapters</div></div>`
-                part3 += `<div class="module_header">MODULE ` + (i+1) + `</div>`
+                module_list += `<div class="new-progress-list">
+                <div class="new-progress-list-completion">75% completed</div>
+                <div class="new-progress-list-module">Module `+ (i+1) + `</div>
+                <div class="new-progress-list-chapter">0` + total_modules[i].length + ` Chapters</div></div>`
+                part3 += `<div class="module_header subject_`+parseInt(this.currentSubject+1)+`_text">MODULE ` + (i+1) + `</div>`
                 for(var j=0;j<total_modules[i].length;j++){
                     var x = total_modules[i][j].chapter_number
+                    if(x <= 9){
+                        x = '0'+x
+                    }
                     console.log("chapter_name",total_modules[i][j].chapter_name)                    
                     part3 += `<div class="card chapter_card" id="chapter_card_`+total_modules[i][j].chapter_number+`">
-                    <div class="chapter_number_part subject_`+parseInt(this.currentSubject+1)+`">0`+(total_modules[i][j].chapter_number)+`</div>
+                    <div class="chapter_number_part subject_`+parseInt(this.currentSubject+1)+`">` + x +`</div>
                     <div class="chapter_name_part">`+total_modules[i][j].chapter_name+`</div></div>`
                 }
             }
@@ -81,14 +88,19 @@ var app = {
 
         for(var i=0;i<total_parts.length;i++){
            if(total_parts[i].length > 0){
-                parts_list += `<div class="module_details_item">
-                <div>Part `+ (i+1) + `&nbsp;-&nbsp;`+ total_parts[i][0].mop_name +`</div>
-                <div>0` + total_parts[i].length + ` Chapters</div></div>`
-                part3 += `<div class="module_header">PART ` + (i+1) + `&nbsp;-&nbsp;`+total_parts[i][0].mop_name+`</div>`
+                parts_list += `<div class="new-progress-list">
+                <div class="new-progress-list-completion">75% completed</div>
+                <div class="new-progress-list-module"><div>Part `+ (i+1) + `</div><div>`+ total_parts[i][0].mop_name +`</div></div>
+                <div class="new-progress-list-chapter">0` + total_parts[i].length + ` Chapters</div></div>`
+                part3 += `<div class="module_header subject_`+parseInt(this.currentSubject+1)+`_text">PART ` + (i+1) + `&nbsp;-&nbsp;`+total_parts[i][0].mop_name+`</div>`
                 for(var j=0;j<total_parts[i].length;j++){
+                    var x = total_parts[i][j].chapter_number
+                    if(x <= 9){
+                        x = '0'+x
+                    }
                     console.log("chapter_name",total_parts[i][j].chapter_name)                    
                     part3 += `<div class="card chapter_card" id="chapter_card_`+(total_parts[i][j].chapter_number)+`">
-                    <div class="chapter_number_part subject_`+parseInt(this.currentSubject+1)+`">0`+(total_parts[i][j].chapter_number)+`</div>
+                    <div class="chapter_number_part subject_`+parseInt(this.currentSubject+1)+`">`+x+`</div>
                     <div class="chapter_name_part">`+total_parts[i][j].chapter_name+`</div></div>`
                 }
             }
@@ -115,6 +127,9 @@ var app = {
     onDeviceReady: function() {
         StatusBar.backgroundColorByHexString('#003256');
         this.receivedEvent('deviceready');
+        document.getElementById('back_arrow').addEventListener('click', function(e){
+            navigator.app.backHistory();
+        })
     },
 
     handleClick: function(modules){
@@ -138,6 +153,11 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        document.addEventListener("offline", function(){ 
+          console.log("Device offline")
+          alert("Seems your internet is disconnected. Please check and try again") 
+          navigator.app.exitApp();
+        }, false);
     }
 };
 

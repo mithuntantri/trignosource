@@ -36,6 +36,11 @@ var app = {
         StatusBar.backgroundColorByHexString('#003256');
         this.receivedEvent('deviceready');
         var that = this;
+
+        document.addEventListener("backbutton", function(e){
+               e.preventDefault();
+               navigator.app.exitApp();
+        }, false);
         
         var subject1 = document.getElementById('subject_1');
         subject1.addEventListener('click', function(){
@@ -81,6 +86,11 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        document.addEventListener("offline", function(){ 
+          console.log("Device offline")
+          alert("Seems your internet is disconnected. Please check and try again") 
+          navigator.app.exitApp();
+        }, false);
     },
 
     showBottom: function() {

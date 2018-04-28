@@ -3,19 +3,24 @@
       <span class="icon entypo-location"></span>
       <strong>Videos</strong>&nbsp;
     </h2>
-    <h2 class="titular" style="line-height:25px;">
+    <h2 class="titular" style="line-height:25px;"
+     ng-if="currentSubject && currentChapter">
       <span style="font-size:11px;">(Tutorial Name : {{Videos.all_tutorials[currentSubject].subject_name}})</span><br/>
       <span style="font-size:11px;">(Chapter Name : {{Videos.all_tutorials[currentSubject].chapters[currentChapter].chapter_name}})</span>
     </h2>
     <ul class="next-days">
-      <li class="list-item" ng-if="Videos.all_tutorials[currentSubject].chapters[currentChapter].videos.length == 0">
+      <li class="list-item" ng-if="!currentSubject || !currentChapter">
+        <div style="width:100%;text-align:center;padding:15px;font-size:13px;color:#fff;">
+        No Chapter Selected. Please select a chapter from chapters tab to view its videos</div>
+      </li>
+      <li class="list-item" ng-if="currentSubject && currentChapter && Videos.all_tutorials[currentSubject].chapters[currentChapter].videos.length == 0">
         <div style="width:100%;text-align:center;padding:15px;font-size:13px;color:#fff;">No Videos Added. Please create using the side menu</div>
       </li>
         <li style="border-bottom:1px solid #1f253d;cursor:pointer;display:flex;flex-direction:row;"
         ng-repeat="video in Videos.all_tutorials[currentSubject].chapters[currentChapter].videos"
         ng-click="gotoQuestions($index)">
             <div style="width:75px;padding:10px;">
-              <img src="http://localhost:8094/uploads/Thumbnails/{{video.thumbnail_url}}" style="width:100%;height:100%;"/>
+              <img ng-src="http://localhost:8094/uploads/Thumbnails/{{video.thumbnail_url}}" style="width:100%;height:100%;"/>
             </div>
             <div style="display:flex;flex-direction:column;padding:10px 5px;flex-grow:2;">
                 <p class="next-days-date" style="width:100%;text-align:left;">

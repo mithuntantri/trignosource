@@ -39,15 +39,38 @@
         <title>Trignosource | Chapter</title>
     </head>
     <body>
-          <div class="page2">
-            <div class="part1 ppage2">
-              <img class="subject_image" src="img/videos_white.png"/>
+          <div class="page2" style="display: block;background-color: rgb(255,187,51) !important;">
+            <img src="img/back_arrow.png" id="back_arrow"
+            style="position: absolute;top:25px;left:25px;width:30px;" />
+            <div class="part1 ppage2" style="min-height: 300px;padding-top: 30px;background-color: rgb(255,187,51) !important;">
+              <img class="subject_image" src="img/videos_sqaure.png"/>
               <div class="chapter_name ppage2">Interactive Videos</div>
-              <div class="onerounded-card ppage2">
                 <div class="subject_name ppage2" id="subject_name"></div>
                 <div class="chapter_name" id="chapter_name"></div>
                 <div class="chapter_number" id="chapter_number"></div>
-              </div>
+                <div class="part2" style="background-color: transparent;min-height: 100px;padding:25px 0px;">
+                  <div class="track_ur_progress_header videos">TRACK YOUR PROGRESS</div>
+                  <div class="card" style="background-color:white;justify-content: flex-start;border-radius: 8px;min-height: 75px;margin: 0 10px;">
+                      <!-- <div class="chapters_count"></div> -->
+                      <div class="module_details">
+                        <div class="new-progress-list">
+                          <div class="new-progress-list-completion">75% completed</div>
+                          <div class="new-progress-list-module">Videos</div>
+                          <div class="new-progress-list-chapter">
+                            <span id="videos_count_new"></span> Videos
+                          </div>
+                        </div>
+                      </div>
+                      <div class="overall_progress">
+                          <div class="overall_progress_part1">
+                              <div class="overall_progress_title">Overall progress</div>
+                              <div class="overall_progress_pc">45%</div>
+                          </div>
+                          <div class="overall_progress_part2">
+                              <div class="overall_progress_progress"></div>
+                          </div>
+                      </div>
+                  </div>
             </div>
             <div class="part2 ppage2" id="loading" 
                 style="display: flex;flex-direction: column;justify-content: center;"> 

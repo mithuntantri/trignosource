@@ -39,6 +39,7 @@ body {
   flex-direction: column;
   height: 100vh;
   color: rgb(118,167,220);
+  position: absolute;
 }
 
 .page2{
@@ -47,17 +48,19 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: rgb(255,192,0);
+  background-color: rgb(255,187,51);
+  position: absolute;
 }
 
 
 .page3{
-  font-family: 'Eras Medium ITC' !important;
+  font-family: 'TW Cen MT' !important;
   width: 100%;
   display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
+  position: relative;
 }
 
 
@@ -67,7 +70,7 @@ body {
   justify-content: center;
   background-color: rgb(0,43,75);
   width: 100%;
-  height: 35%;
+  height: 40%;
 }
 
 .part2{
@@ -81,10 +84,12 @@ body {
 
 .part2.ppage2,
 .part1.ppage2{
-  padding: 15px 25px 0 25px;
+  padding: 15px;
   width: auto !important;
   background-color: transparent !important;
   justify-content: flex-start;
+  height: auto !important;
+  min-height: 225px;
 }
 
 .cards {
@@ -102,6 +107,19 @@ body {
 	box-sizing: border-box;
 }
 
+.subject_1{
+  color: rgb(103,156,215);
+}
+.subject_2{
+  color: rgb(156,215,103);
+}
+.subject_3{
+  color: rgb(242, 146, 130);
+}
+.subject_4{
+  color: rgb(255,151,87);
+}
+
 .onerounded-card{
   display: flex;
   flex-direction: row;
@@ -111,19 +129,20 @@ body {
   border-color: rgb(208, 206, 206);
   border-top-left-radius: 50px;
   width: 100%;
-  height: 80px;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 0px 8px 0px;
+  height: 90px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px 0px !important;
   box-sizing: border-box;
 }
 
 .onerounded-card.ppage2{
   border-radius: 5px !important;
-  background-color: rgb(255,192,0) !important;
+  background-color: rgb(255,187,51) !important;
   flex-direction: column;
   padding: 15px 35px;
   height: auto !important;
+  min-height: 100px;
   margin: 0 auto !important;
-  box-shadow: rgba(208,206,206) 0px 0px 8px 0px;
+  /*box-shadow: rgba(208,206,206) 0px 0px 8px 0px;*/
 }
 
 .subject_image{
@@ -133,12 +152,13 @@ body {
 }
 
 .subject_name{
-  color: rgb(118,167,220);
-  max-width:250px;
-  width: 250px;
+  /*color: rgb(118,167,220);*/
+  max-width:280px;
+  width: 280px;
   text-align: left;
   font-weight: bold;
   margin: 0 auto;
+  /*padding: 0 50px;*/
 }
 
 .subject_name.ppage2{
@@ -148,27 +168,29 @@ body {
 .subject_name.ppage3{
   color: #fff !important;
   margin: 0 !important;
-  padding-left: 25px;
   text-align: left;
+  font-size: 11px;
 }
 
 .chapter_name{
   color: #fff;
-  font-size: 16px;
+  font-size: 18px;
   text-align: left;
-  width: 250px;
-  max-width: 250px;
+  width: 280px;
+  max-width: 280px;
   margin: 10px auto;
 }
 
 .chapter_name.ppage3{
-  width: 60% !important;
+  width: 75% !important;
   margin: 0 !important;
 }
 .chapter_number.ppage3{
-  width: 40% !important;
+  width: 25% !important;
   margin: 0 !important;
   text-align: right;
+  font-size: 12px;
+  line-height: 23px;
 }
 
 .chapter_name.ppage2{
@@ -178,8 +200,8 @@ body {
 .chapter_number{
   color: #fff;
   text-align: left;
-  max-width:250px;
-  width: 250px;
+  max-width:280px;
+  width: 280px;
   margin:0 auto;
 }
 
@@ -248,38 +270,41 @@ body {
 }
 
 .card__icon{
-  width:50px;
-  height:50px;
+  width:40px;
+  height:40px;
   margin: 10px;
 }
 
 .interactive__videos{
   width: 100%;
   height: auto;
-  padding: 5px 0px;
+  /*padding: 5px 0px;*/
   background-color: transparent !important;
   display: flex;
   justify-content: center;
   flex-direction: row;
+  margin-top: 10px;
 }
 
 .videos__thumbnail{
-  height: 80px !important;
-  width: 100px !important;
+  height: 88px !important;
+  width: 110px !important;
+  min-width: 110px !important;
   background: white !important;
-  padding: 12px !important;
+  padding: 7px !important;
   border-radius: 5px !important;
   box-shadow: rgb(208,206,206) 0px 0px 8px 0px;
+  margin:  0 !important;
 }
 
 .videos__details{
-  height: 80px !important;
+  height: 88px !important;
   width: auto !important;
   flex-grow: 2;
   background: white !important;
   padding: 7px !important;
   border-radius: 5px !important;
-  margin-left: 7px;
+  margin: 0 0 0 7px !important;
   display: flex;
   padding: 15px 12px 12px 12px !important;
   flex-direction: column;
@@ -287,10 +312,13 @@ body {
 }
 
 .videos__title{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   font-family: 'TW Cen MT';
   color: rgb(77,51,3);
-  font-size: 17px;
-  line-height: 33px;
+  font-size: 18px;
+  height: 70px;
   text-align: right;
   border-bottom: 1px solid rgb(77,51,3);
 }
@@ -310,25 +338,30 @@ body {
   display: flex;
   flex-direction: column;
   background-color: rgb(6,152,212);
-  padding: 10px;
+  padding: 10px 25px;
 }
 
 .videos_header{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-left: -5px;
 }
 
 .videos_title{
-  margin: 10px 25px;;
+  margin: 10px 0px;;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   background-color: rgb(0,112, 162);
   color: #fff;
   padding: 7px;
-  border-radius: 15px;
+  border-radius: 30px;
+  height: 30px;
   width: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .page3-part3{
@@ -402,12 +435,68 @@ body {
   line-height: 35px;
 }
 
-.video-player
-.video-controls{
+.question-controls.hide,
+.video-controls.hide{
   display: none;
 }
 
-.video-player:hover
-.video-controls{
+.question-controls.show,
+.video-controls.show{
   display: flex;
+}
+
+
+.question__container{
+  width:100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 25px;
+  background-color: transparent;
+}
+
+.question__name{
+  margin: 10px;
+  border-radius: 5px;
+  background-color: rgb(64,96,50);
+  color: white;
+  font-family: 'Eras Medium ITC';
+  padding: 10px;
+}
+
+.question__options{
+  display: flex;
+  flex-direction: row;
+  padding: 0 5px;
+}
+
+.question__option_item{
+  flex-grow: 1;
+  border-radius: 5px;
+  background: rgb(132, 60, 12);
+  border: 1px solid rgb(192,0,0);
+  color: white;
+  font-family: 'Eras Medium ITC';
+  padding: 10px;
+  margin: 0 5px;
+}
+
+.loading {
+  display: inline-block;
+  margin: 0 auto;
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
 }

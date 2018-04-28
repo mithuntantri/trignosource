@@ -18,6 +18,9 @@
  */
 var app = {
     // Application Constructor
+    tutorials: null,
+    currentSubject: null,
+    currentChapter: null,
     baseUrl: null,
     videos: [],
     initialize: function() {
@@ -26,14 +29,18 @@ var app = {
         this.baseUrl = localStorage.getItem('baseUrl')
 
         var tutorials = localStorage.getItem('tutorials')
-        tutorials = JSON.parse(tutorials).data
-        console.log('tutorials', tutorials)
+        this.tutorials = JSON.parse(tutorials).data
+        console.log('tutorials', this.tutorials)
 
-        document.getElementById('subject_name').innerHTML = tutorials[0].subject_name.toUpperCase()
-        document.getElementById('chapter_name').innerHTML = tutorials[0].chapters[0].chapter_name
-        document.getElementById('chapter_number').innerHTML = 'CHAPTER ' + tutorials[0].chapters[0].chapter_number
+        this.currentSubject = parseInt(localStorage.getItem('currentSubject'))
+        this.currentChapter = parseInt(localStorage.getItem('currentChapter'))
 
-        this.videos = tutorials[0].chapters[0].videos
+        document.getElementById('subject_name').innerHTML = this.tutorials[this.currentSubject].subject_name.toUpperCase()
+        document.getElementById('chapter_name').innerHTML = this.tutorials[this.currentSubject].chapters[this.currentChapter].chapter_name
+        document.getElementById('chapter_number').innerHTML = 'CHAPTER ' + this.tutorials[this.currentSubject].chapters[this.currentChapter].chapter_number
+        document.getElementById('videos_count_new').innerHTML = this.tutorials[this.currentSubject].chapters[this.currentChapter].videos.length
+
+        this.videos = this.tutorials[this.currentSubject].chapters[this.currentChapter].videos
         var final_html = ``
         var img_loaded = []
         for(var i=0;i< this.videos.length;i++){
@@ -86,6 +93,9 @@ var app = {
     onDeviceReady: function() {
         StatusBar.backgroundColorByHexString('#003256');
         this.receivedEvent('deviceready');
+        document.getElementById('back_arrow').addEventListener('click', function(e){
+            navigator.app.backHistory();
+        })
     },
 
     // Update DOM on a Received Event
@@ -103,6 +113,11 @@ var app = {
             }, false);
           })(i);
         }
+        document.addEventListener("offline", function(){ 
+          console.log("Device offline")
+          alert("Seems your internet is disconnected. Please check and try again") 
+          navigator.app.exitApp();
+        }, false);
     },
 
     getDuration: function(duration){

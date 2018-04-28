@@ -40,6 +40,8 @@
     </head>
     <body>
           <div class="page2">
+            <img src="img/back_arrow.png" id="back_arrow"
+            style="position: absolute;top:25px;left:25px;width:30px;" />
             <div class="part1 ppage2">
               <img class="subject_image" src="img/videos_white.png"/>
               <div class="chapter_name ppage2">Interactive Videos</div>
@@ -49,7 +51,11 @@
                 <div class="chapter_number" id="chapter_number"></div>
               </div>
             </div>
-            <div class="part2 ppage2" id="interaction_videos">
+            <div class="part2 ppage2" id="loading" 
+                style="display: flex;flex-direction: column;justify-content: center;"> 
+                <div class="loading"></div>
+            </div>
+            <div class="part2 ppage2" id="interaction_videos" style="display: none;">
             </div>
           </div>
         <script type="text/javascript" src="cordova.js"></script>

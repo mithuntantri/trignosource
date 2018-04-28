@@ -24,6 +24,12 @@
     },
     "cordova-plugin-screen-orientation": {
       "PACKAGE_NAME": "io.cordova.trignosource"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "io.cordova.trignosource"
+    },
+    "cordova-plugin-actionsheet": {
+      "PACKAGE_NAME": "io.cordova.trignosource"
     }
   },
   "dependent_plugins": {

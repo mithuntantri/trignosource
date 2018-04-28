@@ -135,14 +135,22 @@ video::-webkit-media-controls {
           		<video id='video-element' class="video-element" autoplay >
                 <!-- <source src='https://tiozzzzmjc.localtunnel.me/uploads/Videos/tutorials_video.mp4' type='video/mp4'> -->
           		</video>
+               <div class="video-controls" id="video_loading" 
+                  style="display: none;flex-direction: column;justify-content: center;"> 
+                  <div class="loading" style="margin-top: -15px;"></div>
+              </div>
           		<div id='controls' class="video-controls hide">
-                <div class="controls-part1">
-                  <div class="middle-controls">
-                    <img src="img/revind.png" style="width:30px;height:30px;margin-top:10px;" id='btnReplay' class='replay' title='replay' accesskey="R"/>
-                    <img src="img/play.png" style="width:50px;height:50px;" id='btnPlay' class='play' title='play' accesskey="P"/>
-                    <img src="img/pause.png" style="width:50px;height:50px;display:none;" id='btnPause' class='play' title='play' accesskey="P"/>
-                    <img src="img/forwad.png" style="width:30px;height:30px;margin-top:10px;" id='btnReplay' class='replay' title='replay' accesskey="R"/>
-                    <!-- <button id='btnStop' class='stop' title='stop' accesskey="X" onclick='stopVideo();'>Stop</button> -->
+                <div class="controls-part1" style="max-height:70px;flex-grow:1;justify-content: flex-end;flex-direction: row;">
+                  <img src="img/back_arrow.png" id="back_arrow"
+                  style="position: absolute;top:15px;left:25px;width:30px;" />
+                  <img src="img/settings.png" style="width:20px;height:20px;margin-top:15px;margin-right: 25px;" id='btnSettings' class='replay' title='replay' accesskey="R"/>
+                </div>
+                <div class="controls-part1" style="justify-content: center;">
+                  <div class="middle-controls" style="margin-top: -50px;">
+                    <img src="img/revind.png" style="width:30px;height:30px;margin-top:10px;" id='btnRewind' class='replay' title='replay' accesskey="R"/>
+                    <img src="img/play.png" style="width:50px;height:50px;display:none;" id='btnPlay' class='play' title='play' accesskey="P"/>
+                    <img src="img/pause.png" style="width:50px;height:50px;" id='btnPause' class='play' title='play' accesskey="P"/>
+                    <img src="img/forwad.png" style="width:30px;height:30px;margin-top:10px;" id='btnForward' class='replay' title='replay' accesskey="R"/>
                   </div>
                 </div>
                 <div class="controls-part2">
@@ -161,6 +169,7 @@ video::-webkit-media-controls {
                   <!-- <input type="range" id="volume-bar" title="volume" min="0" max="1" step="0.1" value="1"> 
                   -->
                   <div class="pauses"></div>
+                  <div class="unexplored"></div>
                 </div>
               </div>
               <div id='questions' class="question-controls hide">

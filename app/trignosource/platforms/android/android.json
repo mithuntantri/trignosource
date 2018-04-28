@@ -39,6 +39,14 @@
             {
               "xml": "<feature name=\"CDVOrientation\"><param name=\"android-package\" value=\"cordova.plugins.screenorientation.CDVOrientation\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"ActionSheet\"><param name=\"android-package\" value=\"nl.xservices.plugins.actionsheet.ActionSheet\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -48,6 +56,10 @@
           "/*": [
             {
               "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+              "count": 1
+            },
+            {
+              "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
               "count": 1
             }
           ],
@@ -94,6 +106,12 @@
       "PACKAGE_NAME": "io.cordova.trignosource"
     },
     "cordova-plugin-screen-orientation": {
+      "PACKAGE_NAME": "io.cordova.trignosource"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "io.cordova.trignosource"
+    },
+    "cordova-plugin-actionsheet": {
       "PACKAGE_NAME": "io.cordova.trignosource"
     }
   },
@@ -317,6 +335,31 @@
       "clobbers": [
         "cordova.plugins.screenorientation"
       ]
+    },
+    {
+      "id": "cordova-plugin-network-information.network",
+      "file": "plugins/cordova-plugin-network-information/www/network.js",
+      "pluginId": "cordova-plugin-network-information",
+      "clobbers": [
+        "navigator.connection",
+        "navigator.network.connection"
+      ]
+    },
+    {
+      "id": "cordova-plugin-network-information.Connection",
+      "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+      "pluginId": "cordova-plugin-network-information",
+      "clobbers": [
+        "Connection"
+      ]
+    },
+    {
+      "id": "cordova-plugin-actionsheet.ActionSheet",
+      "file": "plugins/cordova-plugin-actionsheet/www/ActionSheet.js",
+      "pluginId": "cordova-plugin-actionsheet",
+      "clobbers": [
+        "window.plugins.actionsheet"
+      ]
     }
   ],
   "plugin_metadata": {
@@ -327,6 +370,8 @@
     "com.hutchind.cordova.plugins.streamingmedia": "0.1.4",
     "cordova-plugin-x-toast": "2.6.2",
     "es6-promise-plugin": "4.2.2",
-    "cordova-plugin-screen-orientation": "3.0.1"
+    "cordova-plugin-screen-orientation": "3.0.1",
+    "cordova-plugin-network-information": "2.0.1",
+    "cordova-plugin-actionsheet": "2.3.3"
   }
 }

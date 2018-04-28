@@ -212,6 +212,31 @@ module.exports = [
     "clobbers": [
       "cordova.plugins.screenorientation"
     ]
+  },
+  {
+    "id": "cordova-plugin-network-information.network",
+    "file": "plugins/cordova-plugin-network-information/www/network.js",
+    "pluginId": "cordova-plugin-network-information",
+    "clobbers": [
+      "navigator.connection",
+      "navigator.network.connection"
+    ]
+  },
+  {
+    "id": "cordova-plugin-network-information.Connection",
+    "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+    "pluginId": "cordova-plugin-network-information",
+    "clobbers": [
+      "Connection"
+    ]
+  },
+  {
+    "id": "cordova-plugin-actionsheet.ActionSheet",
+    "file": "plugins/cordova-plugin-actionsheet/www/ActionSheet.js",
+    "pluginId": "cordova-plugin-actionsheet",
+    "clobbers": [
+      "window.plugins.actionsheet"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -223,7 +248,9 @@ module.exports.metadata =
   "cordova-plugin-http": "1.2.0",
   "com.hutchind.cordova.plugins.streamingmedia": "0.1.4",
   "cordova-plugin-x-toast": "2.6.2",
-  "cordova-plugin-screen-orientation": "3.0.1"
+  "cordova-plugin-screen-orientation": "3.0.1",
+  "cordova-plugin-network-information": "2.0.1",
+  "cordova-plugin-actionsheet": "2.3.3"
 };
 // BOTTOM OF METADATA
 });

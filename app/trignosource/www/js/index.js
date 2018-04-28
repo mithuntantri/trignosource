@@ -18,7 +18,8 @@
  */
 var app = {
     // Application Constructor
-    baseUrl: 'https://helpless-newt-39.localtunnel.me',
+    // baseUrl: 'http://13.126.30.240',
+    baseUrl: 'https://wise-otter-21.localtunnel.me',
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },
@@ -31,12 +32,26 @@ var app = {
         StatusBar.hide();
         this.receivedEvent('deviceready');
         this.getTutorials();
+        document.addEventListener("backbutton", function(e){
+           if($.mobile.activePage.is('#index')){
+               e.preventDefault();
+               navigator.app.exitApp();
+           }
+           else {
+               navigator.app.backHistory();
+           }
+        }, false);
     },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
         console.log('Received Event: ' + id);
+        document.addEventListener("offline", function(){ 
+          console.log("Device offline")
+          alert("Seems your internet is disconnected. Please check and try again") 
+          navigator.app.exitApp();
+        }, false);
     },
 
     getTutorials: function(){

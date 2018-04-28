@@ -3,11 +3,19 @@
       <span class="icon entypo-location"></span>
       <strong>Chapters</strong>&nbsp;
     </h2>
-    <h2 class="titular" style="line-height:25px;">
-      <span style="font-size:11px;">(Tutorial Name : {{Videos.all_tutorials[currentSubject].subject_name}})</span>
+    <h2 class="titular" style="line-height:25px;" 
+    ng-if="currentSubject">
+      <span style="font-size:11px;">
+        (Tutorial Name : {{Videos.all_tutorials[currentSubject].subject_name}})
+      </span>
     </h2>
     <ul class="next-days">
-      <li class="list-item" ng-if="Videos.all_tutorials[currentSubject].chapters.length == 0">
+      <li class="list-item" ng-if="!currentSubject">
+        <div style="width:100%;text-align:center;padding:15px;font-size:13px;color:#fff;">
+        No Subject Selected. Please select a subject from tutorials tab to view its chapters</div>
+      </li>
+      <li class="list-item" 
+        ng-if="currentSubject && Videos.all_tutorials[currentSubject].chapters.length == 0">
         <div style="width:100%;text-align:center;padding:15px;font-size:13px;color:#fff;">No Chapters Added. Please create using the side menu</div>
       </li>
         <li style="border-bottom:1px solid #1f253d;cursor:pointer;"

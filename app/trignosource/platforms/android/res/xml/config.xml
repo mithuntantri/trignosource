@@ -25,7 +25,13 @@
     <feature name="CDVOrientation">
         <param name="android-package" value="cordova.plugins.screenorientation.CDVOrientation" />
     </feature>
-    <name>Trignosource</name>
+    <feature name="NetworkStatus">
+        <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
+    </feature>
+    <feature name="ActionSheet">
+        <param name="android-package" value="nl.xservices.plugins.actionsheet.ActionSheet" />
+    </feature>
+    <name>Trigno Ed</name>
     <description>
         A sample calculator app for trignosource.
     </description>
@@ -43,10 +49,11 @@
     <allow-navigation href="*ytimg*" />
     <access origin="*" />
     <allow-intent href="market:*" />
-    <icon density="ldpi" src="assets/launcher.png" />
-    <icon density="mdpi" src="assets/launcher.png" />
-    <icon density="hdpi" src="assets/launcher.png" />
-    <icon density="xhdpi" src="assets/launcher.png" />
+    <icon density="ldpi" src="assets/mipmap-mdpi/ic_launcher.png" />
+    <icon density="mdpi" src="assets/mipmap-mdpi/ic_launcher.png" />
+    <icon density="hdpi" src="assets/mipmap-hdpi/ic_launcher.png" />
+    <icon density="xhdpi" src="assets/mipmap-xhdpi/ic_launcher.png" />
+    <icon density="xxhdpi" src="assets/mipmap-xxhdpi/ic_launcher.png" />
     <preference name="loglevel" value="DEBUG" />
     <preference name="MediaPlaybackRequiresUserAction" value="false" />
     <preference name="AllowInlineMediaPlayback" value="true" />

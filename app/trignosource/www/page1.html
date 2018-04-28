@@ -36,12 +36,43 @@
         <title>Trignosource | Chapter</title>
     </head>
     <body>
-          <div class="page1">
-            <div class="part1">
+          <div class="page1" style="display: block;">
+             <img src="img/back_arrow.png" id="back_arrow"
+            style="position: absolute;top:25px;left:25px;width:30px;" />
+            <div class="part1" style="min-height: 300px;padding-top: 30px;">
               <div class="subject_image"></div>
               <div class="subject_name" id="subject_name"></div>
               <div class="chapter_name" id="chapter_name"></div>
               <div class="chapter_number" id="chapter_number"></div>
+                <div class="part2" style="background-color: transparent;min-height: 200px;padding:25px 0px;">
+                  <div class="track_ur_progress_header">TRACK YOUR PROGRESS</div>
+                  <div class="card" style="background-color:white;justify-content: flex-start;border-radius: 8px;min-height: 150px;">
+                      <!-- <div class="chapters_count"></div> -->
+                      <div class="module_details">
+                        <div class="new-progress-list">
+                          <div class="new-progress-list-completion">75% completed</div>
+                          <div class="new-progress-list-module">Videos</div>
+                          <div class="new-progress-list-chapter">
+                            <span id="videos_count_new"></span> Videos
+                          </div>
+                        </div>
+                        <div class="new-progress-list">
+                          <div class="new-progress-list-completion">45% completed</div>
+                          <div class="new-progress-list-module">Tests</div>
+                          <div class="new-progress-list-chapter">0 Tests</div>
+                        </div>
+                      </div>
+                      <div class="overall_progress">
+                          <div class="overall_progress_part1">
+                              <div class="overall_progress_title">Overall progress</div>
+                              <div class="overall_progress_pc">45%</div>
+                          </div>
+                          <div class="overall_progress_part2">
+                              <div class="overall_progress_progress"></div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
             </div>
             <div class="part2">
               <div class="cards onerounded-card videos-card" id="videos-card">

@@ -17,6 +17,7 @@ body{
 	height: 100%;
 	width:100%;
 	background: rgb(61,84,40);
+	min-height: 100vh;
 }
 
 .subject_title{
@@ -93,7 +94,7 @@ body{
 	font-size: 15px !important;
 	min-height: 48px;
 }
-.subject_1{
+/*.subject_1{
 	color: rgb(103,156,215);
 }
 .subject_2{
@@ -104,4 +105,19 @@ body{
 }
 .subject_4{
 	color: rgb(255,151,87);
+}*/
+.subject_1{
+	color: rgb(255,151,57) !important;
+}
+
+.subject_2{
+	color: rgb(156,215,103) !important;
+}
+
+.subject_3{
+	color: rgb(255,102,99) !important;
+}
+
+.subject_4{
+	color: rgb(202,181,112) !important;
 }

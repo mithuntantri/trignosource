@@ -3,13 +3,17 @@
       <span class="icon entypo-location"></span>
       <strong>Questions</strong>&nbsp;
     </h2>
-    <h2 class="titular" style="line-height:25px;">
+    <h2 class="titular" style="line-height:25px;"
+    ng-if="currentSubject && currentChapter && currentVideo">
       <span style="font-size:11px;">(Tutorial Name : {{Videos.all_tutorials[currentSubject].subject_name}})</span><br/>
       <span style="font-size:11px;">(Chapter Name : {{Videos.all_tutorials[currentSubject].chapters[currentChapter].chapter_name}})</span>
       <span style="font-size:11px;">(Video Name : {{Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[currentVideo].video_name}})</span>
     </h2>
     <ul class="next-days">
-      <li class="list-item" ng-if="Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[currentVideo].questions.length == 0">
+      <li class="list-item" ng-if="!currentSubject || !currentChapter || !currentVideo">
+        <div style="width:100%;text-align:center;padding:15px;font-size:13px;color:#fff;">No Video selected. Please select a video from Videos tab to show all its questions</div>
+      </li>
+      <li class="list-item" ng-if="currentSubject && currentChapter && currentVideo && Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[currentVideo].questions.length == 0">
         <div style="width:100%;text-align:center;padding:15px;font-size:13px;color:#fff;">No Questions Added. Please create using the side menu</div>
       </li>
         <li style="border-bottom:1px solid #1f253d;cursor:pointer;display:flex;flex-direction:row;"

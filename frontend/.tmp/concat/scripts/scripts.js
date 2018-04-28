@@ -128,35 +128,54 @@ angular.module('trignosourceApp')
 
         $scope.createTutorial = function(){
           if(Videos.create_tutorial.subject_number && Videos.create_tutorial.subject_name){
-            Videos.createTutorial().then((response)=>{
-              Videos.create_tutorial = {
-                'subject_number' : null,
-                'subject_name' : null
-              }
-              if(response.data.status){
-                Videos.all_tutorials = response.data.data
-                Toast.showSuccess('Tutorial created successfully')
-              }else{
-                Toast.showError(response.data.message)
-              }
-            })
+            var tutorial_numbers = _.pluck(Videos.all_tutorials, 'subject_number')
+            if(tutorial_numbers.includes(Videos.create_tutorial.subject_number)){
+                Toast.showError('Tutorial Number already exists')
+            }else{
+              Videos.show_loader = true
+              Videos.createTutorial().then((response)=>{
+                Videos.create_tutorial = {
+                  'subject_number' : null,
+                  'subject_name' : null
+                }
+                if(response.data.status){
+                  Videos.all_tutorials = _.sortBy(response.data.data, 'subject_number')
+                  Videos.sortTutorials()
+                  Toast.showSuccess('Tutorial created successfully')
+                }else{
+                  Toast.showError(response.data.message)
+                }
+                Videos.show_loader = false
+              })
+            }
           }else{
             Toast.showError('Invalid Input')
           }
         }
 
         $scope.createChapter = function(){
+          var currentSubject = parseInt(localStorage.getItem('currentSubject'))
           if(Videos.create_chapter.chapter_number && Videos.create_chapter.chapter_name){
-            Videos.createChapter().then((response)=>{
-              Videos.create_chapter.chapter_number = null
-              Videos.create_chapter.chapter_name = null
-              if(response.data.status){
-                Videos.all_tutorials = response.data.data
-                Toast.showSuccess('Chapter created successfully')
-              }else{
-                Toast.showError(response.data.message)
-              }
-            })
+            var chapter_numbers = _.pluck(Videos.all_tutorials[currentSubject].chapters, 'chapter_number')
+            if(chapter_numbers.includes(Videos.create_chapter.chapter_number)){
+                Toast.showError('Chapter Number already exists')
+            }else{
+              Videos.show_loader = true
+              Videos.createChapter().then((response)=>{
+                Videos.create_chapter.chapter_number = null
+                Videos.create_chapter.chapter_name = null
+                Videos.create_chapter.mop_number = null
+                Videos.create_chapter.mop_name = null
+                if(response.data.status){
+                  Videos.all_tutorials = _.sortBy(response.data.data, 'subject_number')
+                  Videos.sortTutorials()
+                  Toast.showSuccess('Chapter created successfully')
+                }else{
+                  Toast.showError(response.data.message)
+                }
+                Videos.show_loader = false
+              })
+            }
           }else{
             Toast.showError('Invalid Input')
           }
@@ -164,37 +183,70 @@ angular.module('trignosourceApp')
 
 
         $scope.createQuestion = function(){
+          var currentSubject = parseInt(localStorage.getItem('currentSubject'))
+          var currentChapter = parseInt(localStorage.getItem('currentChapter'))
+          var currentVideo = parseInt(localStorage.getItem('currentVideo'))
           if(Videos.create_question.question_number && Videos.create_question.question_name && Videos.create_question.time_of_pause && Videos.create_question.appear_time){
-            Videos.createQuestion().then((response)=>{
-              Videos.create_question.question_number = null
-              Videos.create_question.question_name = null
-              Videos.create_question.time_of_pause = null
-              Videos.create_question.appear_time = null
-              if(response.data.status){
-                Videos.all_tutorials = response.data.data
-                Toast.showSuccess('Question created successfully')
-              }else{
-                Toast.showError(response.data.message)
-              }
-            })
+            var question_numbers = _.pluck(Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[currentVideo].questions, 'question_number')
+            console.log(question_numbers, Videos.create_question)
+            Videos.create_question.question_number = parseInt(Videos.create_question.question_number)
+            if(question_numbers.includes(parseInt(Videos.create_question.question_number))){
+              Toast.showError('Question Number already exists')
+            }else if(Videos.create_question.time_of_pause < Videos.create_question.appear_time){
+               Toast.showError('Pause time cannot be before appear time')
+            }else{
+              Videos.show_loader = true
+              Videos.createQuestion().then((response)=>{
+                Videos.create_question.question_number = null
+                Videos.create_question.question_name = null
+                Videos.create_question.time_of_pause = null
+                Videos.create_question.appear_time = null
+                if(response.data.status){
+                  Videos.all_tutorials = response.data.data
+                  Videos.sortTutorials()
+                  Toast.showSuccess('Question created successfully')
+                }else{
+                  Toast.showError(response.data.message)
+                }
+                Videos.show_loader = false
+              })
+            }
           }else{
             Toast.showError('Invalid Input')
           }
         }
 
         $scope.createOption = function(){
+          var currentSubject = parseInt(localStorage.getItem('currentSubject'))
+          var currentChapter = parseInt(localStorage.getItem('currentChapter'))
+          var currentVideo = parseInt(localStorage.getItem('currentVideo'))
+          var currentQuestion = parseInt(localStorage.getItem('currentQuestion'))
           if(Videos.create_option.option_number && Videos.create_option.option_name && Videos.create_option.skip_time){
-            Videos.createOption().then((response)=>{
-              Videos.create_option.option_number = null
-              Videos.create_option.option_name = null
-              Videos.create_option.skip_time = null
-              if(response.data.status){
-                Videos.all_tutorials = response.data.data
-                Toast.showSuccess('Option created successfully')
+            var option_numbers = _.pluck(Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[currentVideo].questions[currentQuestion].options, 'option_number')
+            Videos.create_option.option_number = parseInt(Videos.create_option.option_number)
+            if(option_numbers.includes(Videos.create_option.option_number)){
+              Toast.showError('Option number already exists')
+            }else{
+              var pause_times = _.pluck(Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[currentVideo].questions, 'time_of_pause')
+              if(pause_times.includes(Videos.create_option.skip_time)){
+                Toast.showError('Skip time conflicts with a pause time of a question! Please check')
               }else{
-                Toast.showError(response.data.message)
+                Videos.show_loader = true
+                Videos.createOption().then((response)=>{
+                  Videos.create_option.option_number = null
+                  Videos.create_option.option_name = null
+                  Videos.create_option.skip_time = null
+                  if(response.data.status){
+                    Videos.all_tutorials = response.data.data
+                    Videos.sortTutorials()
+                    Toast.showSuccess('Option created successfully')
+                  }else{
+                    Toast.showError(response.data.message)
+                  }
+                  Videos.show_loader = false
+                })
               }
-            })
+            }
           }else{
             Toast.showError('Invalid Input')
           }
@@ -241,11 +293,17 @@ angular.module('trignosourceApp')
           $scope.Videos = Videos
           localStorage.activeTab = 'tutorials'
           $rootScope.activeTab = localStorage.activeTab
+          Videos.sortTutorials()
 
           Videos.create_chapter.subject_number = null
           Videos.create_video.subject_number = null
           Videos.create_question.subject_number = null
           Videos.create_option.subject_number = null
+
+          localStorage.removeItem('currentSubject')
+          localStorage.removeItem('currentChapter')
+          localStorage.removeItem('currentVideo')
+          localStorage.removeItem('currentQuestion')
 
           $scope.gotoChapters = function(index){
             localStorage.currentSubject = index
@@ -256,6 +314,7 @@ angular.module('trignosourceApp')
             Videos.deleteTutorial(index).then((response)=>{
               if(response.data.status){
                 Videos.all_tutorials = response.data.data
+                Videos.sortTutorials()
                 Toast.showSuccess('Tutorial deleted successfully')
               }else{
                 Toast.showError(response.data.message)
@@ -272,15 +331,23 @@ angular.module('trignosourceApp')
           $scope.Videos = Videos
           localStorage.activeTab = 'chapters'
           $rootScope.activeTab = localStorage.activeTab
+          Videos.sortTutorials()
 
-          $scope.currentSubject = localStorage.currentSubject
-          Videos.create_chapter.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
-
-          Videos.create_video.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
-
+          $scope.currentSubject = null
+          Videos.create_chapter.subject_number = null
+          if(localStorage.currentSubject){
+            $scope.currentSubject = localStorage.currentSubject     
+            Videos.create_chapter.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
+          }
+          
+          Videos.create_video.subject_number = null
           Videos.create_video.chapter_number = null
           Videos.create_question.chapter_number = null
           Videos.create_option.chapter_number = null
+
+          localStorage.removeItem('currentChapter')
+          localStorage.removeItem('currentVideo')
+          localStorage.removeItem('currentQuestion')
 
           $scope.gotoVideos = function(index){
             localStorage.currentChapter = index
@@ -291,6 +358,7 @@ angular.module('trignosourceApp')
             Videos.deleteChapter($scope.currentSubject, index).then((response)=>{
               if(response.data.status){
                 Videos.all_tutorials = response.data.data
+                Videos.sortTutorials()
                 Toast.showSuccess('Chapter deleted successfully')
               }else{
                 Toast.showError(response.data.message)
@@ -307,15 +375,27 @@ angular.module('trignosourceApp')
           $scope.Videos = Videos
           localStorage.activeTab = 'videos'
           $rootScope.activeTab = localStorage.activeTab
+          Videos.sortTutorials()
 
-          $scope.currentSubject = localStorage.currentSubject
-          $scope.currentChapter = localStorage.currentChapter
+          $scope.currentSubject = null
+          Videos.create_video.subject_number = null
+          if(localStorage.currentSubject){
+            $scope.currentSubject = localStorage.currentSubject
+            Videos.create_video.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
+          }
 
-          Videos.create_video.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
-          Videos.create_video.chapter_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number
-
+          $scope.currentChapter = null
+          Videos.create_video.chapter_number = null
+          if(localStorage.currentChapter){
+            $scope.currentChapter = localStorage.currentChapter
+            Videos.create_video.chapter_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number
+          }
+          
           Videos.create_question.video_number = null
           Videos.create_option.video_number = null
+
+          localStorage.removeItem('currentVideo')
+          localStorage.removeItem('currentQuestion')
 
           $scope.gotoQuestions = function(index){
             localStorage.currentVideo = index
@@ -327,6 +407,7 @@ angular.module('trignosourceApp')
               if(response.data.status){
                 $timeout(function () {
                   Videos.all_tutorials = response.data.data
+                  Videos.sortTutorials()
                 });
                 Toast.showSuccess('Video deleted successfully')
               }else{
@@ -354,17 +435,33 @@ angular.module('trignosourceApp')
           $scope.Videos = Videos
           localStorage.activeTab = 'questions'
           $rootScope.activeTab = localStorage.activeTab
+          Videos.sortTutorials()
 
-          $scope.currentSubject = localStorage.currentSubject
-          $scope.currentChapter = localStorage.currentChapter
-          $scope.currentVideo = localStorage.currentVideo
+          $scope.currentSubject = null
+          Videos.create_question.subject_number = null
+          if(localStorage.currentSubject){
+            $scope.currentSubject = localStorage.currentSubject
+            Videos.create_question.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
+          }
 
-          Videos.create_question.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
-          Videos.create_question.chapter_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number
-          Videos.create_question.video_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].video_number
+          $scope.currentChapter = null
+          Videos.create_question.chapter_number = null
+          if(localStorage.currentChapter){
+            $scope.currentChapter = localStorage.currentChapter
+            Videos.create_question.chapter_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number
+          }
+
+          $scope.currentVideo = null
+          Videos.create_question.video_number = null
+          if(localStorage.currentVideo){
+            $scope.currentVideo = localStorage.currentVideo
+            Videos.create_question.video_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].video_number
+          }
 
           Videos.create_option.question_number = null
 
+          localStorage.removeItem('currentQuestion')
+          
           $scope.gotoOptions = function(index){
             localStorage.currentQuestion = index
             $state.go('dashboard.options')
@@ -375,6 +472,7 @@ angular.module('trignosourceApp')
               if(response.data.status){
                 $timeout(function () {
                   Videos.all_tutorials = response.data.data
+                  Videos.sortTutorials()
                 });
                 Toast.showSuccess('Question deleted successfully')
               }else{
@@ -392,22 +490,42 @@ angular.module('trignosourceApp')
           $scope.Videos = Videos
           localStorage.activeTab = 'options'
           $rootScope.activeTab = localStorage.activeTab
+          Videos.sortTutorials()
 
-          $scope.currentSubject = localStorage.currentSubject
-          $scope.currentChapter = localStorage.currentChapter
-          $scope.currentVideo = localStorage.currentVideo
-          $scope.currentQuestion = localStorage.currentQuestion
+          $scope.currentSubject = null
+          Videos.create_option.subject_number = null
+          if(localStorage.currentSubject){
+            $scope.currentSubject = localStorage.currentSubject
+            Videos.create_option.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
+          }
 
-          Videos.create_option.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
-          Videos.create_option.chapter_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number
-          Videos.create_option.video_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].video_number
-          Videos.create_option.question_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].question_number
+          $scope.currentChapter = null
+          Videos.create_option.chapter_number = null
+          if(localStorage.currentChapter){
+            $scope.currentChapter = localStorage.currentChapter
+            Videos.create_option.chapter_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number
+          }
+          
+          $scope.currentVideo = null
+          Videos.create_option.video_number = null
+          if(localStorage.currentVideo){
+            $scope.currentVideo = localStorage.currentVideo
+            Videos.create_option.video_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].video_number
+          }
+
+          $scope.currentQuestion = null
+          Videos.create_option.question_number = null
+          if(localStorage.currentQuestion){
+            $scope.currentQuestion = localStorage.currentQuestion
+            Videos.create_option.question_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].question_number
+          }
 
           $scope.deleteOption = function(index){
             Videos.deleteOption($scope.currentSubject, $scope.currentChapter, $scope.currentVideo, $scope.currentQuestion, index).then((response)=>{
               if(response.data.status){
                 $timeout(function () {
                   Videos.all_tutorials = response.data.data
+                  Videos.sortTutorials()
                 });
                 Toast.showSuccess('Option deleted successfully')
               }else{
@@ -493,6 +611,7 @@ class Videos{
     this.getAllVideos()
     this.FileMessage = null
     this.durationError = null
+    this.show_loader = false
     this.create_tutorial = {
       'subject_number' : null,
       'subject_name' : null
@@ -544,6 +663,7 @@ class Videos{
     }).then((response)=>{
       if(response.data.status){
         this.all_tutorials = response.data.data
+        this.sortTutorials()
       }else{
         this.Toast.showError(response.data.message)
       }
@@ -755,8 +875,32 @@ class Videos{
     this.validateVideoName()
   }
 
+  sortTutorials(){
+    this.all_tutorials = _.sortBy(this.all_tutorials, 'subject_number')     
+    _.each(this.all_tutorials, (tutorials, i)=>{
+        this.all_tutorials[i].chapters = _.sortBy(this.all_tutorials[i].chapters, 'chapter_number')
+      _.each(tutorials.chapters, (chapters, j)=>{
+        this.all_tutorials[i].chapters[j].videos = _.sortBy(this.all_tutorials[i].chapters[j].videos, 'video_number')
+        _.each(chapters.videos, (videos, k)=>{
+          this.all_tutorials[i].chapters[j].videos[k].questions = _.sortBy(this.all_tutorials[i].chapters[j].videos[k].questions, 'question_number')
+          _.each(videos.questions, (questions, l)=>{
+            this.all_tutorials[i].chapters[j].videos[k].questions[l].options = _.sortBy(this.all_tutorials[i].chapters[j].videos[k].questions[l].options, 'option_number')
+          })
+        })
+      })
+    })
+  }
+
   uploadSubmit(){
-    this.uploadFile(this.temp_element)
+    this.sortTutorials()
+    var currentSubject = parseInt(localStorage.getItem('currentSubject'))
+    var currentChapter = parseInt(localStorage.getItem('currentChapter'))
+    var video_numbers = _.pluck(this.all_tutorials[currentSubject].chapters[currentChapter].videos, 'video_number')
+    if(video_numbers.includes(this.create_video.video_number)){
+      this.Toast.showError('Video Number already exists')
+    }else{
+      this.uploadFile(this.temp_element)
+    }
   }
 
   uploadFile(element){
@@ -772,6 +916,7 @@ class Videos{
         var is_one = element.files.length == 1
         var is_valid_filename = this.theFile.name.length <= 64
         if (is_valid && is_one && is_valid_filename){
+          this.show_loader = true
           var data = new FormData();
           data.append('file', this.theFile);
           var is_module = (this.create_video.is_module == 'module'?true:false)
@@ -788,6 +933,7 @@ class Videos{
           }).then((response)=>{
             if(response.data.status){
               this.all_tutorials = response.data.data
+              this.sortTutorials()
               this.create_video.video_name = null
               this.create_video.video_number = null
               this.create_video.thumbnail_time = null
@@ -799,8 +945,10 @@ class Videos{
             }else{
               this.Toast.showError(`Something went wrong! Please try again`)
             }
+            this.show_loader = false
           }).catch(()=>{
             this.Toast.showError(`Something went wrong while uploading`)
+            this.show_loader = false
           })
           angular.element("input[type='file']").val(null);
         } else if(!is_valid){

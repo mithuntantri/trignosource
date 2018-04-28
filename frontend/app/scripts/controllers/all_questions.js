@@ -6,17 +6,33 @@ angular.module('trignosourceApp')
           $scope.Videos = Videos
           localStorage.activeTab = 'questions'
           $rootScope.activeTab = localStorage.activeTab
+          Videos.sortTutorials()
 
-          $scope.currentSubject = localStorage.currentSubject
-          $scope.currentChapter = localStorage.currentChapter
-          $scope.currentVideo = localStorage.currentVideo
+          $scope.currentSubject = null
+          Videos.create_question.subject_number = null
+          if(localStorage.currentSubject){
+            $scope.currentSubject = localStorage.currentSubject
+            Videos.create_question.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
+          }
 
-          Videos.create_question.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
-          Videos.create_question.chapter_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number
-          Videos.create_question.video_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].video_number
+          $scope.currentChapter = null
+          Videos.create_question.chapter_number = null
+          if(localStorage.currentChapter){
+            $scope.currentChapter = localStorage.currentChapter
+            Videos.create_question.chapter_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number
+          }
+
+          $scope.currentVideo = null
+          Videos.create_question.video_number = null
+          if(localStorage.currentVideo){
+            $scope.currentVideo = localStorage.currentVideo
+            Videos.create_question.video_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].video_number
+          }
 
           Videos.create_option.question_number = null
 
+          localStorage.removeItem('currentQuestion')
+          
           $scope.gotoOptions = function(index){
             localStorage.currentQuestion = index
             $state.go('dashboard.options')
@@ -27,6 +43,7 @@ angular.module('trignosourceApp')
               if(response.data.status){
                 $timeout(function () {
                   Videos.all_tutorials = response.data.data
+                  Videos.sortTutorials()
                 });
                 Toast.showSuccess('Question deleted successfully')
               }else{

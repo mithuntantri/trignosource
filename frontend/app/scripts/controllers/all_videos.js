@@ -6,15 +6,27 @@ angular.module('trignosourceApp')
           $scope.Videos = Videos
           localStorage.activeTab = 'videos'
           $rootScope.activeTab = localStorage.activeTab
+          Videos.sortTutorials()
 
-          $scope.currentSubject = localStorage.currentSubject
-          $scope.currentChapter = localStorage.currentChapter
+          $scope.currentSubject = null
+          Videos.create_video.subject_number = null
+          if(localStorage.currentSubject){
+            $scope.currentSubject = localStorage.currentSubject
+            Videos.create_video.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
+          }
 
-          Videos.create_video.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
-          Videos.create_video.chapter_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number
-
+          $scope.currentChapter = null
+          Videos.create_video.chapter_number = null
+          if(localStorage.currentChapter){
+            $scope.currentChapter = localStorage.currentChapter
+            Videos.create_video.chapter_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number
+          }
+          
           Videos.create_question.video_number = null
           Videos.create_option.video_number = null
+
+          localStorage.removeItem('currentVideo')
+          localStorage.removeItem('currentQuestion')
 
           $scope.gotoQuestions = function(index){
             localStorage.currentVideo = index
@@ -26,6 +38,7 @@ angular.module('trignosourceApp')
               if(response.data.status){
                 $timeout(function () {
                   Videos.all_tutorials = response.data.data
+                  Videos.sortTutorials()
                 });
                 Toast.showSuccess('Video deleted successfully')
               }else{

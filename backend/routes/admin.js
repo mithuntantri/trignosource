@@ -24,7 +24,7 @@ const getDuration = require('get-video-duration');
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    let option = 'Videos'
+    let option = 'Videos/1080p'
     let dir = './uploads/'
     dir += option + "/"
     if (!fs.existsSync(dir)){
@@ -92,7 +92,7 @@ router.post("/upload", function(req, res, next) {
   new Promise((resolve, reject)=>{
     rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
       upload(req,res,function(err){
-        var relative_path = path.join(__dirname, '../uploads/Videos', req.file.filename)
+        var relative_path = path.join(__dirname, '../uploads/Videos/1080p/', req.file.filename)
         getDuration(relative_path).then((duration) => {
           console.log("duration",duration);
           let up_tutorial = null
@@ -145,17 +145,28 @@ router.post("/upload", function(req, res, next) {
     })
   }).then((data)=>{
     let folder_name = 'Videos'
-    var relative_path = "file://" + path.resolve("./uploads/" + folder_name) + '/' + data.file_name
-    var pathToFile = path.join(__dirname, '../uploads/Videos', data.file_name),
-        pathToSnapshot = path.join(__dirname, '../uploads/Thumbnails', data.thumbnail_url);
+    var relative_path = "file://" + path.resolve("./uploads/" + folder_name + "/1080p") + '/' + data.file_name
+    var pathToFile = path.join(__dirname, '../uploads/Videos/1080p/', data.file_name),
+        pathToSnapshot = path.join(__dirname, '../uploads/Thumbnails', data.thumbnail_url),
+        pathToOutput360p = path.join(__dirname, '../uploads/Videos/360p', data.file_name),
+        pathToOutput480p = path.join(__dirname, '../uploads/Videos/480p', data.file_name),
+        pathToOutput720p = path.join(__dirname, '../uploads/Videos/720p', data.file_name);
     console.log(pathToFile, pathToSnapshot)
     child_process.exec(('ffmpeg -ss ' + data.thumbnail_time + ' -i ' + pathToFile + ' -vframes 1 -q:v 2 ' + pathToSnapshot), function (err, stdout, stderr) {
       if (err) {
          console.error(err);
          return;
-       }
-       console.log(stdout);
+      }
+      console.log(stdout);
       console.log('Saved the thumb to:', pathToSnapshot);
+      child_process.exec(('ffmpeg -i ' + pathToFile + ' -s 640x360 ' + pathToOutput360p 
+        + ' -s 640x480 ' + pathToOutput480p + ' -s 1280x720 ' + pathToOutput720p), function(err, stdout, stderr){
+        if(err){
+          console.log(err);
+          return;
+        }
+        console.log("======================Conversion Complete==========================")
+      })
     });
     res.json({'status': true, 'message' : 'Video uploaded successfully', 'data': data.tutorials})
     console.log('snapshot saved to '+thumbnail_url+' (100x100) with a frame at'+thumbnail_time);

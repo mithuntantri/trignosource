@@ -61,6 +61,7 @@
 html,
 body {
 	background: #1f253d;
+	overflow:hidden;
 }
 
 ul {
@@ -257,8 +258,10 @@ h1, h2, p, a, span{
 .main-container {
 	font-family: 'Ubuntu', sans-serif;
 	width: 950px;
-	height: 1725px;
-	margin: 6em auto;
+	height: 100%;
+	max-height:100%;
+	margin: 2em auto;
+	margin-bottom: 0 !important;
 }
 	/*********************************************** HEADER ***********************************************/
 	header {
@@ -1120,4 +1123,29 @@ h1, h2, p, a, span{
 
 .list-option:hover{
   text-decoration: underline;
+}
+
+.newloading-container{
+	padding-top:10px !important;
+	line-height:40px !important;
+}
+
+.newloading {
+  display: inline-block;
+  margin: 0 auto;
+  width: 25px;
+  height: 25px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  margin-top:10px;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
 }

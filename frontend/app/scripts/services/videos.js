@@ -13,6 +13,7 @@ class Videos{
     this.getAllVideos()
     this.FileMessage = null
     this.durationError = null
+    this.show_loader = false
     this.create_tutorial = {
       'subject_number' : null,
       'subject_name' : null
@@ -64,6 +65,7 @@ class Videos{
     }).then((response)=>{
       if(response.data.status){
         this.all_tutorials = response.data.data
+        this.sortTutorials()
       }else{
         this.Toast.showError(response.data.message)
       }
@@ -275,8 +277,32 @@ class Videos{
     this.validateVideoName()
   }
 
+  sortTutorials(){
+    this.all_tutorials = _.sortBy(this.all_tutorials, 'subject_number')     
+    _.each(this.all_tutorials, (tutorials, i)=>{
+        this.all_tutorials[i].chapters = _.sortBy(this.all_tutorials[i].chapters, 'chapter_number')
+      _.each(tutorials.chapters, (chapters, j)=>{
+        this.all_tutorials[i].chapters[j].videos = _.sortBy(this.all_tutorials[i].chapters[j].videos, 'video_number')
+        _.each(chapters.videos, (videos, k)=>{
+          this.all_tutorials[i].chapters[j].videos[k].questions = _.sortBy(this.all_tutorials[i].chapters[j].videos[k].questions, 'question_number')
+          _.each(videos.questions, (questions, l)=>{
+            this.all_tutorials[i].chapters[j].videos[k].questions[l].options = _.sortBy(this.all_tutorials[i].chapters[j].videos[k].questions[l].options, 'option_number')
+          })
+        })
+      })
+    })
+  }
+
   uploadSubmit(){
-    this.uploadFile(this.temp_element)
+    this.sortTutorials()
+    var currentSubject = parseInt(localStorage.getItem('currentSubject'))
+    var currentChapter = parseInt(localStorage.getItem('currentChapter'))
+    var video_numbers = _.pluck(this.all_tutorials[currentSubject].chapters[currentChapter].videos, 'video_number')
+    if(video_numbers.includes(this.create_video.video_number)){
+      this.Toast.showError('Video Number already exists')
+    }else{
+      this.uploadFile(this.temp_element)
+    }
   }
 
   uploadFile(element){
@@ -292,6 +318,7 @@ class Videos{
         var is_one = element.files.length == 1
         var is_valid_filename = this.theFile.name.length <= 64
         if (is_valid && is_one && is_valid_filename){
+          this.show_loader = true
           var data = new FormData();
           data.append('file', this.theFile);
           var is_module = (this.create_video.is_module == 'module'?true:false)
@@ -308,6 +335,7 @@ class Videos{
           }).then((response)=>{
             if(response.data.status){
               this.all_tutorials = response.data.data
+              this.sortTutorials()
               this.create_video.video_name = null
               this.create_video.video_number = null
               this.create_video.thumbnail_time = null
@@ -319,8 +347,10 @@ class Videos{
             }else{
               this.Toast.showError(`Something went wrong! Please try again`)
             }
+            this.show_loader = false
           }).catch(()=>{
             this.Toast.showError(`Something went wrong while uploading`)
+            this.show_loader = false
           })
           angular.element("input[type='file']").val(null);
         } else if(!is_valid){

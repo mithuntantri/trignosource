@@ -18,35 +18,70 @@
  */
 var app = {
     // Application Constructor
+    tutorials: null,
+    currentSubject: null,
+    currentChapter: null,
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
 
-        var tutorials = localStorage.getItem('tutorials')
-        tutorials = JSON.parse(tutorials).data
-        console.log('tutorials', tutorials)
+        this.tutorials = localStorage.getItem('tutorials')
+        this.tutorials = JSON.parse(this.tutorials).data
+        console.log('tutorials', this.tutorials)
 
-        document.getElementById('subject_name').innerHTML = tutorials[0].subject_name.toUpperCase()
-        document.getElementById('chapter_name').innerHTML = tutorials[0].chapters[0].chapter_name
-        document.getElementById('chapter_number').innerHTML = 'CHAPTER ' + tutorials[0].chapters[0].chapter_number
-        document.getElementById('videos_count').innerHTML = tutorials[0].chapters[0].videos.length
+        this.currentSubject = parseInt(localStorage.getItem('currentSubject'))
+        this.currentChapter = parseInt(localStorage.getItem('currentChapter'))
+
+        document.getElementById('subject_name').innerHTML = this.tutorials[this.currentSubject].subject_name.toUpperCase()
+        document.getElementById('subject_name').classList.add("subject_"+parseInt(this.currentSubject+1))
+        document.getElementById('chapter_name').innerHTML = this.tutorials[this.currentSubject].chapters[this.currentChapter].chapter_name
+        document.getElementById('chapter_number').innerHTML = 'CHAPTER ' + this.tutorials[this.currentSubject].chapters[this.currentChapter].chapter_number
+        document.getElementById('videos_count').innerHTML = this.tutorials[this.currentSubject].chapters[this.currentChapter].videos.length
+
+        document.getElementsByClassName('subject_image')[0].innerHTML = '<img style="width:75%;" src="img/subject_icons/subject_'+ parseInt(this.currentSubject + 1) + '_b.png"/>'
 
         var videos_card = document.getElementById('videos-card');
-        videos_card.addEventListener('click', this.gotoVideos, false);
+        var that = this
+        videos_card.addEventListener('click', function(){
+            that.gotoVideos()
+        }, false);
     },
 
     onDeviceReady: function() {
         StatusBar.backgroundColorByHexString('#003256');
         this.receivedEvent('deviceready');
+        document.getElementById('back_arrow').addEventListener('click', function(e){
+            navigator.app.backHistory();
+        })
     },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        document.addEventListener("offline", function(){ 
+          console.log("Device offline")
+          alert("Seems your internet is disconnected. Please check and try again") 
+          navigator.app.exitApp();
+        }, false);
     },
 
     gotoVideos: function(){
-      console.log('gotoVideos')
-      window.location = 'page2.html'
+        if(this.tutorials[this.currentSubject].chapters[this.currentChapter].videos.length == 0){
+            this.showBottom()
+        }else{
+            console.log('gotoVideos')
+            window.location = 'page2.html'
+        }
+    },
+
+    showBottom: function() {
+      window.plugins.toast.showWithOptions(
+        {
+          message: "No videos for the selected chapter",
+          duration: "short",
+          position: "bottom",
+          addPixelsY: -40
+        }
+      );
     }
 };
 
