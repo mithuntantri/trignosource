@@ -21,10 +21,10 @@
         ng-click="gotoOptions($index)">
             <div style="display:flex;flex-direction:column;padding:10px 5px;flex-grow:2;">
                 <p class="next-days-date" style="width:100%;text-align:left;">
-                  <span class="day">{{question.question_name}}</span>
                   <span class="scnd-font-color" style="font-size:11px;">
                     (Question Number {{question.question_number}})
-                  </span>
+                  </span><br/>
+                  <span class="day">{{question.question_name}}</span>
                 </p>
                 <div class="next-days-temperature"
                   style="padding:10px 20px;width:100%;font-size:11px;text-align:right;display:flex;flex-direction:row;justify-content:space-between;">
@@ -36,7 +36,8 @@
                 <div class="next-days-temperature"
                   style="padding:10px 20px;width:100%;font-size:11px;text-align:right;display:flex;flex-direction:row;justify-content:space-between;">
                   <span data-livestamp="{{question.updated_at}}"></span>
-                  <span class="list-option" ng-click="$event.stopPropagation()">Edit</span>
+                  <span class="list-option" ng-click="
+                  editQuestion($index);$event.stopPropagation()">Edit</span>
                   <span class="list-option" ng-click="deleteQuestion($index);$event.stopPropagation()">Delete</span>
                 </div>
             </a>

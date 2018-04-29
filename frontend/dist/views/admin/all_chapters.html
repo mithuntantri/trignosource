@@ -23,15 +23,16 @@
         ng-click="gotoVideos($index)">
             <div style="display:flex;flex-direction:column;padding:10px 5px;">
                 <p class="next-days-date" style="width:100%;text-align:left;">
-                  <span class="day">{{chapter.chapter_name}}</span>
                   <span class="scnd-font-color" style="font-size:11px;">
                     (Chapter Number {{chapter.chapter_number}})
-                  </span>
+                  </span><br/>
+                  <span class="day">{{chapter.chapter_name}}</span>
                 </p>
                 <div class="next-days-temperature"
                   style="padding:10px 20px;width:100%;font-size:11px;text-align:right;display:flex;flex-direction:row;justify-content:space-between;">
                   <span data-livestamp="{{chapter.updated_at}}"></span>
-                  <span class="list-option" ng-click="$event.stopPropagation()">Edit</span>
+                  <span class="list-option" 
+                  ng-click="editChapter($index);$event.stopPropagation()">Edit</span>
                   <span class="list-option" ng-click="deleteChapter($index);$event.stopPropagation()">Delete</span>
                 </div>
             </a>

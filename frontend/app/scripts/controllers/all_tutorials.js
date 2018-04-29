@@ -34,4 +34,32 @@ angular.module('trignosourceApp')
               }
             })
           }
+
+          $scope.editTutorial = function(index){
+            $scope.changeMenu('edittutorials')
+            Videos.create_tutorial.old_subject_number = Videos.all_tutorials[index].subject_number
+            Videos.create_tutorial.subject_number = Videos.all_tutorials[index].subject_number
+            Videos.create_tutorial.subject_name = Videos.all_tutorials[index].subject_name
+          }
+
+          function resetSideMenu(){
+            document.getElementById('addtutorials').style.display = 'none'
+            document.getElementById('edittutorials').style.display = 'none'
+            document.getElementById('addchapters').style.display = 'none'
+            document.getElementById('editchapters').style.display = 'none'
+            document.getElementById('addvideos').style.display = 'none'
+            document.getElementById('editvideos').style.display = 'none'
+            document.getElementById('addquestions').style.display = 'none'
+            document.getElementById('editquestions').style.display = 'none'
+            document.getElementById('addoptions').style.display = 'none'
+            document.getElementById('editoptions').style.display = 'none'
+          }
+
+          resetSideMenu()
+          document.getElementById('addtutorials').style.display = 'block'
+
+          $scope.changeMenu = function(id){
+            resetSideMenu()
+            document.getElementById(id).style.display = 'block'
+          }
 }]);

@@ -153,6 +153,36 @@ angular.module('trignosourceApp')
           }
         }
 
+        $scope.editTutorial = function(){
+          if(Videos.create_tutorial.subject_number && Videos.create_tutorial.subject_name){
+            var tutorial_numbers = _.pluck(Videos.all_tutorials, 'subject_number')
+            if((Videos.create_tutorial.subject_number != Videos.create_tutorial.old_subject_number)
+              && tutorial_numbers.includes(Videos.create_tutorial.subject_number)){
+                Toast.showError('Tutorial Number already exists')
+            }else{
+              Videos.show_loader = true
+              Videos.editTutorial().then((response)=>{
+                Videos.create_tutorial = _.omit(Videos.create_tutorial, 'old_subject_number')
+                Videos.create_tutorial = {
+                  'subject_number' : null,
+                  'subject_name' : null
+                }
+                if(response.data.status){
+                  Videos.all_tutorials = _.sortBy(response.data.data, 'subject_number')
+                  Videos.sortTutorials()
+                  Toast.showSuccess('Tutorial modified successfully')
+                }else{
+                  Toast.showError(response.data.message)
+                }
+                Videos.show_loader = false
+                $scope.changeMenu('addtutorials')
+              })
+            }
+          }else{
+            Toast.showError('Invalid Input')
+          }
+        }
+
         $scope.createChapter = function(){
           var currentSubject = parseInt(localStorage.getItem('currentSubject'))
           if(Videos.create_chapter.chapter_number && Videos.create_chapter.chapter_name){
@@ -181,6 +211,36 @@ angular.module('trignosourceApp')
           }
         }
 
+        $scope.editChapter = function(){
+          var currentSubject = parseInt(localStorage.getItem('currentSubject'))
+          if(Videos.create_chapter.chapter_number && Videos.create_chapter.chapter_name){
+            var chapter_numbers = _.pluck(Videos.all_tutorials[currentSubject].chapters, 'chapter_number')
+            if((Videos.create_chapter.chapter_number != Videos.create_chapter.old_chapter_number)
+              && chapter_numbers.includes(Videos.create_chapter.chapter_number)){
+                Toast.showError('Chapter Number already exists')
+            }else{
+              Videos.show_loader = true
+              Videos.editChapter().then((response)=>{
+                Videos.create_chapter.chapter_number = null
+                Videos.create_chapter.chapter_name = null
+                Videos.create_chapter.mop_number = null
+                Videos.create_chapter.mop_name = null
+                if(response.data.status){
+                  Videos.create_chapter = _.omit(Videos.create_chapter, 'old_chapter_number')
+                  Videos.all_tutorials = _.sortBy(response.data.data, 'subject_number')
+                  Videos.sortTutorials()
+                  Toast.showSuccess('Chapter modified successfully')
+                }else{
+                  Toast.showError(response.data.message)
+                }
+                Videos.show_loader = false
+                $scope.changeMenu('addchapters')
+              })
+            }
+          }else{
+            Toast.showError('Invalid Input')
+          }
+        }
 
         $scope.createQuestion = function(){
           var currentSubject = parseInt(localStorage.getItem('currentSubject'))
@@ -209,6 +269,43 @@ angular.module('trignosourceApp')
                   Toast.showError(response.data.message)
                 }
                 Videos.show_loader = false
+              })
+            }
+          }else{
+            Toast.showError('Invalid Input')
+          }
+        }
+
+        $scope.editQuestion = function(){
+          var currentSubject = parseInt(localStorage.getItem('currentSubject'))
+          var currentChapter = parseInt(localStorage.getItem('currentChapter'))
+          var currentVideo = parseInt(localStorage.getItem('currentVideo'))
+          if(Videos.create_question.question_number && Videos.create_question.question_name && Videos.create_question.time_of_pause && Videos.create_question.appear_time){
+            var question_numbers = _.pluck(Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[currentVideo].questions, 'question_number')
+            console.log(question_numbers, Videos.create_question)
+            Videos.create_question.question_number = parseInt(Videos.create_question.question_number)
+            if((Videos.create_question.question_number != Videos.create_question.old_question_number) 
+              && question_numbers.includes(parseInt(Videos.create_question.question_number))){
+              Toast.showError('Question Number already exists')
+            }else if(Videos.create_question.time_of_pause < Videos.create_question.appear_time){
+               Toast.showError('Pause time cannot be before appear time')
+            }else{
+              Videos.show_loader = true
+              Videos.editQuestion().then((response)=>{
+                Videos.create_question = _.omit(Videos.create_question, 'old_question_number')
+                Videos.create_question.question_number = null
+                Videos.create_question.question_name = null
+                Videos.create_question.time_of_pause = null
+                Videos.create_question.appear_time = null
+                if(response.data.status){
+                  Videos.all_tutorials = response.data.data
+                  Videos.sortTutorials()
+                  Toast.showSuccess('Question created successfully')
+                }else{
+                  Toast.showError(response.data.message)
+                }
+                Videos.show_loader = false
+                $scope.changeMenu('addquestions')
               })
             }
           }else{
@@ -252,12 +349,107 @@ angular.module('trignosourceApp')
           }
         }
 
+        $scope.editOption = function(){
+          var currentSubject = parseInt(localStorage.getItem('currentSubject'))
+          var currentChapter = parseInt(localStorage.getItem('currentChapter'))
+          var currentVideo = parseInt(localStorage.getItem('currentVideo'))
+          var currentQuestion = parseInt(localStorage.getItem('currentQuestion'))
+          if(Videos.create_option.option_number && Videos.create_option.option_name && Videos.create_option.skip_time){
+            var option_numbers = _.pluck(Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[currentVideo].questions[currentQuestion].options, 'option_number')
+            Videos.create_option.option_number = parseInt(Videos.create_option.option_number)
+            if((Videos.create_option.option_number != Videos.create_option.old_option_number) 
+              && option_numbers.includes(Videos.create_option.option_number)){
+              Toast.showError('Option number already exists')
+            }else{
+              var pause_times = _.pluck(Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[currentVideo].questions, 'time_of_pause')
+              if(pause_times.includes(Videos.create_option.skip_time)){
+                Toast.showError('Skip time conflicts with a pause time of a question! Please check')
+              }else{
+                Videos.show_loader = true
+                Videos.editOption().then((response)=>{
+                  Videos.create_option = _.omit(Videos.create_option, 'old_option_number')
+                  Videos.create_option.option_number = null
+                  Videos.create_option.option_name = null
+                  Videos.create_option.skip_time = null
+                  if(response.data.status){
+                    Videos.all_tutorials = response.data.data
+                    Videos.sortTutorials()
+                    Toast.showSuccess('Option modified successfully')
+                  }else{
+                    Toast.showError(response.data.message)
+                  }
+                  Videos.show_loader = false
+                  $scope.changeMenu('addoptions')
+                })
+              }
+            }
+          }else{
+            Toast.showError('Invalid Input')
+          }
+        }
+
+        $scope.editVideo = function(){
+          var currentSubject = parseInt(localStorage.getItem('currentSubject'))
+          var currentChapter = parseInt(localStorage.getItem('currentChapter'))
+          if(Videos.create_video.video_number && Videos.create_video.video_name && Videos.create_video.thumbnail_time){
+            var video_numbers = _.pluck(Videos.all_tutorials[currentSubject].chapters[currentChapter].videos, 'video_number')
+            Videos.create_video.video_number = parseInt(Videos.create_video.video_number)
+            if((Videos.create_video.video_number != Videos.create_video.old_video_number) 
+              && video_numbers.includes(Videos.create_video.video_number)){
+              Toast.showError('Video number already exists')
+            }else{
+              if(!Videos.checkThumbnailTime()){
+                Toast.showError('Invalid Thumnail Time')
+              }else{
+                Videos.show_loader = true
+                Videos.editVideo().then((response)=>{
+                  Videos.create_video = _.omit(Videos.create_video, 'old_video_number')
+                  Videos.create_video = _.omit(Videos.create_video, 'file_name')
+                  Videos.create_video.video_number = null
+                  Videos.create_video.video_name = null
+                  Videos.create_video.thumnail_url = null
+                  if(response.data.status){
+                    Videos.all_tutorials = response.data.data
+                    Videos.sortTutorials()
+                    Toast.showSuccess('Video modified successfully')
+                  }else{
+                    Toast.showError(response.data.message)
+                  }
+                  Videos.show_loader = false
+                  $scope.changeMenu('addvideos')
+                })
+              }
+            }
+          }else{
+            Toast.showError('Invalid Input')
+          }
+        }
+
+        $scope.convertVideo = function(index){
+          var currentSubject = parseInt(localStorage.getItem('currentSubject'))
+          var currentChapter = parseInt(localStorage.getItem('currentChapter'))
+          var file_name = Videos.all_tutorials[currentSubject].chapters[currentChapter].videos[index].file_name
+          Videos.convertVideo(file_name).then((response)=>{
+            if(response.data.status){
+              Toast.showSuccess('Video conversion started successfully! Please check after 10-15 minutes')
+            }else{
+              Toast.showError(response.data.message)
+            }
+          }).catch((err)=>{
+            Toast.showError(err.message)
+          })
+        }
+
         function resetSideMenu(){
-          document.getElementById('addtutorials').style.display = 'none'
-          document.getElementById('addchapters').style.display = 'none'
-          document.getElementById('addvideos').style.display = 'none'
-          document.getElementById('addquestions').style.display = 'none'
-          document.getElementById('addoptions').style.display = 'none'
+            document.getElementById('addtutorials').style.display = 'none'
+            document.getElementById('edittutorials').style.display = 'none'
+            document.getElementById('addchapters').style.display = 'none'
+            document.getElementById('editchapters').style.display = 'none'
+            document.getElementById('addvideos').style.display = 'none'
+            document.getElementById('addquestions').style.display = 'none'
+            document.getElementById('editquestions').style.display = 'none'
+            document.getElementById('addoptions').style.display = 'none'
+            document.getElementById('editoptions').style.display = 'none'
         }
 
         resetSideMenu()
@@ -321,6 +513,34 @@ angular.module('trignosourceApp')
               }
             })
           }
+
+          $scope.editTutorial = function(index){
+            $scope.changeMenu('edittutorials')
+            Videos.create_tutorial.old_subject_number = Videos.all_tutorials[index].subject_number
+            Videos.create_tutorial.subject_number = Videos.all_tutorials[index].subject_number
+            Videos.create_tutorial.subject_name = Videos.all_tutorials[index].subject_name
+          }
+
+          function resetSideMenu(){
+            document.getElementById('addtutorials').style.display = 'none'
+            document.getElementById('edittutorials').style.display = 'none'
+            document.getElementById('addchapters').style.display = 'none'
+            document.getElementById('editchapters').style.display = 'none'
+            document.getElementById('addvideos').style.display = 'none'
+            document.getElementById('editvideos').style.display = 'none'
+            document.getElementById('addquestions').style.display = 'none'
+            document.getElementById('editquestions').style.display = 'none'
+            document.getElementById('addoptions').style.display = 'none'
+            document.getElementById('editoptions').style.display = 'none'
+          }
+
+          resetSideMenu()
+          document.getElementById('addtutorials').style.display = 'block'
+
+          $scope.changeMenu = function(id){
+            resetSideMenu()
+            document.getElementById(id).style.display = 'block'
+          }
 }]);
 
 'use strict';
@@ -364,6 +584,38 @@ angular.module('trignosourceApp')
                 Toast.showError(response.data.message)
               }
             })
+          }
+
+          $scope.editChapter = function(index){
+            $scope.changeMenu('editchapters')
+            Videos.create_chapter.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
+            Videos.create_chapter.old_chapter_number = parseInt(Videos.all_tutorials[$scope.currentSubject].chapters[index].chapter_number)
+            Videos.create_chapter.chapter_number = parseInt(Videos.all_tutorials[$scope.currentSubject].chapters[index].chapter_number)
+            Videos.create_chapter.chapter_name = Videos.all_tutorials[$scope.currentSubject].chapters[index].chapter_name
+            Videos.create_chapter.mop_number = Videos.all_tutorials[$scope.currentSubject].chapters[index].mop_number
+            Videos.create_chapter.mop_name = Videos.all_tutorials[$scope.currentSubject].chapters[index].mop_name
+            Videos.create_chapter.is_module = Videos.all_tutorials[$scope.currentSubject].chapters[index].is_module
+          }
+
+          function resetSideMenu(){
+            document.getElementById('addtutorials').style.display = 'none'
+            document.getElementById('edittutorials').style.display = 'none'
+            document.getElementById('addchapters').style.display = 'none'
+            document.getElementById('editchapters').style.display = 'none'
+            document.getElementById('addvideos').style.display = 'none'
+            document.getElementById('editvideos').style.display = 'none'
+            document.getElementById('addquestions').style.display = 'none'
+            document.getElementById('editquestions').style.display = 'none'
+            document.getElementById('addoptions').style.display = 'none'
+            document.getElementById('editoptions').style.display = 'none'
+          }
+
+          resetSideMenu()
+          document.getElementById('addchapters').style.display = 'block'
+
+          $scope.changeMenu = function(id){
+            resetSideMenu()
+            document.getElementById(id).style.display = 'block'
           }
 }]);
 
@@ -414,6 +666,39 @@ angular.module('trignosourceApp')
                 Toast.showError(response.data.message)
               }
             })
+          }
+
+
+          $scope.editVideo = function(index){
+            $scope.changeMenu('editvideos')
+            Videos.create_video.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
+            Videos.create_video.chapter_number = parseInt(Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number)
+            Videos.create_video.video_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[index].video_number
+            Videos.create_video.old_video_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[index].video_number
+            Videos.create_video.video_name = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[index].video_name
+            Videos.create_video.thumbnail_time = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[index].thumbnail_time
+            Videos.create_video.file_name = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[index].file_name
+          }
+          
+          function resetSideMenu(){
+            document.getElementById('addtutorials').style.display = 'none'
+            document.getElementById('edittutorials').style.display = 'none'
+            document.getElementById('addchapters').style.display = 'none'
+            document.getElementById('editchapters').style.display = 'none'
+            document.getElementById('addvideos').style.display = 'none'
+            document.getElementById('editvideos').style.display = 'none'
+            document.getElementById('addquestions').style.display = 'none'
+            document.getElementById('editquestions').style.display = 'none'
+            document.getElementById('addoptions').style.display = 'none'
+            document.getElementById('editoptions').style.display = 'none'
+          }
+
+          resetSideMenu()
+          document.getElementById('addvideos').style.display = 'block'
+
+          $scope.changeMenu = function(id){
+            resetSideMenu()
+            document.getElementById(id).style.display = 'block'
           }
 }]);
 
@@ -480,6 +765,39 @@ angular.module('trignosourceApp')
               }
             })
           }
+
+          $scope.editQuestion = function(index){
+            $scope.changeMenu('editquestions')
+            Videos.create_question.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
+            Videos.create_question.chapter_number = parseInt(Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number)
+            Videos.create_question.video_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].video_number
+            Videos.create_question.old_question_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[index].question_number
+            Videos.create_question.question_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[index].question_number
+            Videos.create_question.question_name = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[index].question_name
+            Videos.create_question.time_of_pause = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[index].time_of_pause
+            Videos.create_question.appear_time = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[index].appear_time
+          }
+
+          function resetSideMenu(){
+            document.getElementById('addtutorials').style.display = 'none'
+            document.getElementById('edittutorials').style.display = 'none'
+            document.getElementById('addchapters').style.display = 'none'
+            document.getElementById('editchapters').style.display = 'none'
+            document.getElementById('addvideos').style.display = 'none'
+            document.getElementById('editvideos').style.display = 'none'
+            document.getElementById('addquestions').style.display = 'none'
+            document.getElementById('editquestions').style.display = 'none'
+            document.getElementById('addoptions').style.display = 'none'
+            document.getElementById('editoptions').style.display = 'none'
+          }
+
+          resetSideMenu()
+          document.getElementById('addquestions').style.display = 'block'
+
+          $scope.changeMenu = function(id){
+            resetSideMenu()
+            document.getElementById(id).style.display = 'block'
+          }
 }]);
 
 'use strict';
@@ -533,6 +851,41 @@ angular.module('trignosourceApp')
               }
             })
           }
+
+          $scope.editOption = function(index){
+            $scope.changeMenu('editoptions')
+            Videos.create_option.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
+            Videos.create_option.chapter_number = parseInt(Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number)
+            Videos.create_option.video_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].video_number
+            Videos.create_option.question_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].question_number
+            Videos.create_option.old_option_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].options[index].option_number
+            Videos.create_option.option_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].options[index].option_number
+            Videos.create_option.option_name = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].options[index].option_name
+            Videos.create_option.skip_time = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].options[index].skip_time
+            Videos.create_option.is_correct = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].options[index].is_correct.toString()
+          }
+
+          function resetSideMenu(){
+            document.getElementById('addtutorials').style.display = 'none'
+            document.getElementById('edittutorials').style.display = 'none'
+            document.getElementById('addchapters').style.display = 'none'
+            document.getElementById('editchapters').style.display = 'none'
+            document.getElementById('addvideos').style.display = 'none'
+            document.getElementById('editvideos').style.display = 'none'
+            document.getElementById('addquestions').style.display = 'none'
+            document.getElementById('editquestions').style.display = 'none'
+            document.getElementById('addoptions').style.display = 'none'
+            document.getElementById('editoptions').style.display = 'none'
+          }
+
+          resetSideMenu()
+          document.getElementById('addoptions').style.display = 'block'
+
+          $scope.changeMenu = function(id){
+            resetSideMenu()
+            document.getElementById(id).style.display = 'block'
+          }
+
 }]);
 
 angular.module('trignosourceApp')
@@ -678,10 +1031,26 @@ class Videos{
     })
   }
 
+  editTutorial(){
+    return this.$http({
+      url: '/api/admin/tutorials',
+      method: "PUT",
+      data: this.create_tutorial
+    })
+  }
+
   createChapter(){
     return this.$http({
       url: '/api/admin/chapters',
       method: "POST",
+      data: this.create_chapter
+    })
+  }
+
+  editChapter(){
+    return this.$http({
+      url: '/api/admin/chapters',
+      method: "PUT",
       data: this.create_chapter
     })
   }
@@ -694,11 +1063,45 @@ class Videos{
     })
   }
 
+  editQuestion(){
+    return this.$http({
+      url: '/api/admin/questions',
+      method: "PUT",
+      data: this.create_question
+    })
+  }
+
   createOption(){
     return this.$http({
       url: '/api/admin/options',
       method: "POST",
       data: this.create_option
+    })
+  }
+
+  editOption(){
+    return this.$http({
+      url: '/api/admin/options',
+      method: "PUT",
+      data: this.create_option
+    })
+  }
+
+  editVideo(){
+    return this.$http({
+      url: '/api/admin/videos',
+      method: "PUT",
+      data: this.create_video
+    })
+  }
+
+  convertVideo(file_name){
+    return this.$http({
+      url: '/api/admin/convert',
+      method: 'POST',
+      data : {
+        'file_name' : file_name
+      }
     })
   }
 

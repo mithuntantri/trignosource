@@ -80,10 +80,26 @@ class Videos{
     })
   }
 
+  editTutorial(){
+    return this.$http({
+      url: '/api/admin/tutorials',
+      method: "PUT",
+      data: this.create_tutorial
+    })
+  }
+
   createChapter(){
     return this.$http({
       url: '/api/admin/chapters',
       method: "POST",
+      data: this.create_chapter
+    })
+  }
+
+  editChapter(){
+    return this.$http({
+      url: '/api/admin/chapters',
+      method: "PUT",
       data: this.create_chapter
     })
   }
@@ -96,11 +112,45 @@ class Videos{
     })
   }
 
+  editQuestion(){
+    return this.$http({
+      url: '/api/admin/questions',
+      method: "PUT",
+      data: this.create_question
+    })
+  }
+
   createOption(){
     return this.$http({
       url: '/api/admin/options',
       method: "POST",
       data: this.create_option
+    })
+  }
+
+  editOption(){
+    return this.$http({
+      url: '/api/admin/options',
+      method: "PUT",
+      data: this.create_option
+    })
+  }
+
+  editVideo(){
+    return this.$http({
+      url: '/api/admin/videos',
+      method: "PUT",
+      data: this.create_video
+    })
+  }
+
+  convertVideo(file_name){
+    return this.$http({
+      url: '/api/admin/convert',
+      method: 'POST',
+      data : {
+        'file_name' : file_name
+      }
     })
   }
 

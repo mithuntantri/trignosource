@@ -49,4 +49,39 @@ angular.module('trignosourceApp')
               }
             })
           }
+
+          $scope.editOption = function(index){
+            $scope.changeMenu('editoptions')
+            Videos.create_option.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
+            Videos.create_option.chapter_number = parseInt(Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number)
+            Videos.create_option.video_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].video_number
+            Videos.create_option.question_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].question_number
+            Videos.create_option.old_option_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].options[index].option_number
+            Videos.create_option.option_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].options[index].option_number
+            Videos.create_option.option_name = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].options[index].option_name
+            Videos.create_option.skip_time = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].options[index].skip_time
+            Videos.create_option.is_correct = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[$scope.currentVideo].questions[$scope.currentQuestion].options[index].is_correct.toString()
+          }
+
+          function resetSideMenu(){
+            document.getElementById('addtutorials').style.display = 'none'
+            document.getElementById('edittutorials').style.display = 'none'
+            document.getElementById('addchapters').style.display = 'none'
+            document.getElementById('editchapters').style.display = 'none'
+            document.getElementById('addvideos').style.display = 'none'
+            document.getElementById('editvideos').style.display = 'none'
+            document.getElementById('addquestions').style.display = 'none'
+            document.getElementById('editquestions').style.display = 'none'
+            document.getElementById('addoptions').style.display = 'none'
+            document.getElementById('editoptions').style.display = 'none'
+          }
+
+          resetSideMenu()
+          document.getElementById('addoptions').style.display = 'block'
+
+          $scope.changeMenu = function(id){
+            resetSideMenu()
+            document.getElementById(id).style.display = 'block'
+          }
+
 }]);

@@ -92,6 +92,22 @@
                 <div class="newloading"></div>
               </div>
           </div>
+          <div class="account block" id="edittutorials"> <!-- ACCOUNT (RIGHT-CONTAINER) -->
+              <h2 class="titular">EDIT TUTORIAL</h2>
+              <div class="input-container">
+                <input type="number" ng-model="Videos.create_tutorial.subject_number" placeholder="Subject Number" class="password text-input">
+                <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_tutorial.subject_name" placeholder="Subject Name" class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="sign-in button" ng-class="{'hide':Videos.show_loader}"
+                style="cursor:pointer;color: white;" ng-click="editTutorial()">Edit</div>
+              <div class="sign-in button newloading-container" ng-class="{'hide':!Videos.show_loader}">
+                <div class="newloading"></div>
+              </div>
+          </div>
           <div class="account block" id="addchapters">
             <h2 class="titular">CREATE CHAPTERS</h2>
             <div ng-if="Videos.create_chapter.subject_number">
@@ -119,6 +135,43 @@
               </div>
               <div class="sign-in button" ng-class="{'hide':Videos.show_loader}"
                 style="cursor:pointer;color: white;" ng-click="createChapter()">Create</div>
+              <div class="sign-in button newloading-container" ng-class="{'hide':!Videos.show_loader}">
+                <div class="newloading"></div>
+              </div>
+            </div>
+            <div ng-if="!Videos.create_chapter.subject_number">
+              <div style="width:100%;padding:25px 10px;color:#fff;font-size:13px;text-align:center">
+                No Tutorial Selected. To add a chapter - Select Tutorial > Add Chapters
+              </div>
+            </div>
+          </div>
+          <div class="account block" id="editchapters">
+            <h2 class="titular">EDIT CHAPTER</h2>
+            <div ng-if="Videos.create_chapter.subject_number">
+              <div class="input-container">
+                <input type="number" ng-model="Videos.create_chapter.chapter_number" placeholder="Chapter Number" class="password text-input">
+                <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_chapter.chapter_name" placeholder="Chapter Name" class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                <select id="module_or_part" ng-model="Videos.create_chapter.is_module">
+                  <option value="module">Module</option>
+                  <option value="part">Part</option>
+                </select>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_chapter.mop_number" placeholder="Module/Part Number" class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_chapter.mop_name" placeholder="Module/Part Name" class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="sign-in button" ng-class="{'hide':Videos.show_loader}"
+                style="cursor:pointer;color: white;" ng-click="editChapter()">Edit</div>
               <div class="sign-in button newloading-container" ng-class="{'hide':!Videos.show_loader}">
                 <div class="newloading"></div>
               </div>
@@ -161,6 +214,34 @@
               </div>
             </div>
           </div>
+          <div class="account block" id="editvideos">
+            <h2 class="titular">EDIT VIDEO</h2>
+            <div ng-if="Videos.create_video.subject_number && Videos.create_video.chapter_number">
+              <div class="input-container">
+                <input type="number" ng-model="Videos.create_video.video_number" placeholder="Video Number" ng-change="Videos.validateVideoName()" class="password text-input">
+                <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_video.video_name" placeholder="Video Title" ng-change="Videos.validateVideoName()"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_video.thumbnail_time" placeholder="Thumbnail Time" ng-change="Videos.validateVideoName()"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="sign-in button" ng-class="{'hide':Videos.show_loader}"
+                style="cursor:pointer;color: white;" ng-click="editVideo()">
+                Edit</div>
+              <div class="sign-in button newloading-container" ng-class="{'hide':!Videos.show_loader}">
+                <div class="newloading"></div>
+              </div>
+            </div>
+            <div ng-if="!Videos.create_video.subject_number || !Videos.create_video.chapter_number">
+              <div style="width:100%;padding:25px 10px;color:#fff;font-size:13px;text-align:center">
+                No Tutorial/Chapter Selected. To add a video - Select Tutorial > Select Chapter > Add Videos
+              </div>
+            </div>
+          </div>
           <div class="account block" id="addquestions">
             <h2 class="titular">CREATE QUESTIONS</h2>
             <div ng-if="Videos.create_question.subject_number && Videos.create_question.chapter_number && Videos.create_question.video_number">
@@ -183,6 +264,38 @@
               
               <div class="sign-in button" ng-class="{'hide':Videos.show_loader}"
                 style="cursor:pointer;color: white;" ng-click="createQuestion()">Create</div>
+              <div class="sign-in button newloading-container" ng-class="{'hide':!Videos.show_loader}">
+                <div class="newloading"></div>
+              </div>
+            </div>
+            <div ng-if="!Videos.create_question.subject_number || !Videos.create_question.chapter_number || !Videos.create_question.video_number">
+              <div style="width:100%;padding:25px 10px;color:#fff;font-size:13px;text-align:center">
+                No Tutorial/Chapter/Video Selected. To add a question - Select Tutorial > Select Chapter > Select Video > Add Questions
+              </div>
+            </div>
+          </div>
+          <div class="account block" id="editquestions">
+            <h2 class="titular">EDIT QUESTION</h2>
+            <div ng-if="Videos.create_question.subject_number && Videos.create_question.chapter_number && Videos.create_question.video_number">
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_question.question_number" placeholder="Question No."  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_question.time_of_pause" placeholder="Time of Pause"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_question.question_name" placeholder="Question Text"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_question.appear_time" placeholder="Appear Time"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              
+              <div class="sign-in button" ng-class="{'hide':Videos.show_loader}"
+                style="cursor:pointer;color: white;" ng-click="editQuestion()">Edit</div>
               <div class="sign-in button newloading-container" ng-class="{'hide':!Videos.show_loader}">
                 <div class="newloading"></div>
               </div>
@@ -216,6 +329,39 @@
               </div>
               <div class="sign-in button" ng-class="{'hide':Videos.show_loader}"
                 style="cursor:pointer;color: white;" ng-click="createOption()">Create</div>
+              <div class="sign-in button newloading-container" ng-class="{'hide':!Videos.show_loader}">
+                <div class="newloading"></div>
+              </div>
+            </div>
+            <div ng-if="!Videos.create_option.subject_number || !Videos.create_option.chapter_number || !Videos.create_option.video_number || !Videos.create_option.question_number">
+              <div style="width:100%;padding:25px 10px;color:#fff;font-size:13px;text-align:center">
+                No Tutorial/Chapter/Video/Question Selected. To add a question - Select Tutorial > Select Chapter > Select Video > Select Question > Add Options
+              </div>
+            </div>
+          </div>
+          <div class="account block" id="editoptions">
+            <h2 class="titular">EDIT OPTION</h2>
+            <div ng-if="Videos.create_option.subject_number && Videos.create_option.chapter_number && Videos.create_option.video_number && Videos.create_option.question_number">
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_option.option_number" placeholder="Option Number"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_option.option_name" placeholder="Option Text"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+              <div class="input-container">
+                  <input type="text" ng-model="Videos.create_option.skip_time" placeholder="Skip Time"  class="email text-input">
+                  <div class="input-icon envelope-icon-acount"><span class="fontawesome-envelope scnd-font-color"></span></div>
+              </div>
+               <div class="input-container">
+                <select id="module_or_part" ng-model="Videos.create_option.is_correct">
+                  <option value="true">Right Answer</option>
+                  <option value="false">Wrong Answer</option>
+                </select>
+              </div>
+              <div class="sign-in button" ng-class="{'hide':Videos.show_loader}"
+                style="cursor:pointer;color: white;" ng-click="editOption()">Edit</div>
               <div class="sign-in button newloading-container" ng-class="{'hide':!Videos.show_loader}">
                 <div class="newloading"></div>
               </div>

@@ -18,8 +18,8 @@
  */
 var app = {
     // Application Constructor
-    // baseUrl: 'http://13.126.30.240',
-    baseUrl: 'https://wise-otter-21.localtunnel.me',
+    baseUrl: 'http://13.126.30.240',
+    // baseUrl: 'https://wise-otter-21.localtunnel.me',
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },

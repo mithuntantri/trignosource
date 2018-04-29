@@ -35,7 +35,8 @@
                 <div class="next-days-temperature"
                   style="padding:10px 20px;width:100%;font-size:11px;text-align:right;display:flex;flex-direction:row;justify-content:space-between;">
                   <span data-livestamp="{{option.updated_at}}"></span>
-                  <span class="list-option" ng-click="$event.stopPropagation()">Edit</span>
+                  <span class="list-option" ng-click="
+                  editOption($index);$event.stopPropagation()">Edit</span>
                   <span class="list-option" ng-click="deleteOption($index);$event.stopPropagation()">Delete</span>
                 </div>
             </a>

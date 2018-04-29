@@ -46,4 +46,37 @@ angular.module('trignosourceApp')
               }
             })
           }
+
+
+          $scope.editVideo = function(index){
+            $scope.changeMenu('editvideos')
+            Videos.create_video.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
+            Videos.create_video.chapter_number = parseInt(Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].chapter_number)
+            Videos.create_video.video_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[index].video_number
+            Videos.create_video.old_video_number = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[index].video_number
+            Videos.create_video.video_name = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[index].video_name
+            Videos.create_video.thumbnail_time = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[index].thumbnail_time
+            Videos.create_video.file_name = Videos.all_tutorials[$scope.currentSubject].chapters[$scope.currentChapter].videos[index].file_name
+          }
+          
+          function resetSideMenu(){
+            document.getElementById('addtutorials').style.display = 'none'
+            document.getElementById('edittutorials').style.display = 'none'
+            document.getElementById('addchapters').style.display = 'none'
+            document.getElementById('editchapters').style.display = 'none'
+            document.getElementById('addvideos').style.display = 'none'
+            document.getElementById('editvideos').style.display = 'none'
+            document.getElementById('addquestions').style.display = 'none'
+            document.getElementById('editquestions').style.display = 'none'
+            document.getElementById('addoptions').style.display = 'none'
+            document.getElementById('editoptions').style.display = 'none'
+          }
+
+          resetSideMenu()
+          document.getElementById('addvideos').style.display = 'block'
+
+          $scope.changeMenu = function(id){
+            resetSideMenu()
+            document.getElementById(id).style.display = 'block'
+          }
 }]);

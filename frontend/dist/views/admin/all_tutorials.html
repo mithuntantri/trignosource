@@ -12,15 +12,15 @@
         ng-click="gotoChapters($index)">
             <div style="display:flex;flex-direction:column;padding:10px 5px;">
                 <p class="next-days-date" style="width:100%;text-align:left;">
-                  <span class="day">{{tutorial.subject_name}}</span>
                   <span class="scnd-font-color" style="font-size:11px;">
                     (Tutorial Number {{tutorial.subject_number}})
-                  </span>
+                  </span><br/>
+                  <span class="day">{{tutorial.subject_name}}</span>
                 </p>
                 <div class="next-days-temperature"
                   style="padding:10px 20px;width:100%;font-size:11px;text-align:right;display:flex;flex-direction:row;justify-content:space-between;">
                   <span data-livestamp="{{tutorial.updated_at}}"></span>
-                  <span class="list-option" ng-click="$event.stopPropagation()">Edit</span>
+                  <span class="list-option" ng-click="editTutorial($index);$event.stopPropagation()">Edit</span>
                   <span class="list-option" ng-click="deleteTutorial($index);$event.stopPropagation()">Delete</span>
                 </div>
             </div>

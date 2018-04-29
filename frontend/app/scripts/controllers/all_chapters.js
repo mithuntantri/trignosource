@@ -40,4 +40,36 @@ angular.module('trignosourceApp')
               }
             })
           }
+
+          $scope.editChapter = function(index){
+            $scope.changeMenu('editchapters')
+            Videos.create_chapter.subject_number = Videos.all_tutorials[$scope.currentSubject].subject_number
+            Videos.create_chapter.old_chapter_number = parseInt(Videos.all_tutorials[$scope.currentSubject].chapters[index].chapter_number)
+            Videos.create_chapter.chapter_number = parseInt(Videos.all_tutorials[$scope.currentSubject].chapters[index].chapter_number)
+            Videos.create_chapter.chapter_name = Videos.all_tutorials[$scope.currentSubject].chapters[index].chapter_name
+            Videos.create_chapter.mop_number = Videos.all_tutorials[$scope.currentSubject].chapters[index].mop_number
+            Videos.create_chapter.mop_name = Videos.all_tutorials[$scope.currentSubject].chapters[index].mop_name
+            Videos.create_chapter.is_module = Videos.all_tutorials[$scope.currentSubject].chapters[index].is_module
+          }
+
+          function resetSideMenu(){
+            document.getElementById('addtutorials').style.display = 'none'
+            document.getElementById('edittutorials').style.display = 'none'
+            document.getElementById('addchapters').style.display = 'none'
+            document.getElementById('editchapters').style.display = 'none'
+            document.getElementById('addvideos').style.display = 'none'
+            document.getElementById('editvideos').style.display = 'none'
+            document.getElementById('addquestions').style.display = 'none'
+            document.getElementById('editquestions').style.display = 'none'
+            document.getElementById('addoptions').style.display = 'none'
+            document.getElementById('editoptions').style.display = 'none'
+          }
+
+          resetSideMenu()
+          document.getElementById('addchapters').style.display = 'block'
+
+          $scope.changeMenu = function(id){
+            resetSideMenu()
+            document.getElementById(id).style.display = 'block'
+          }
 }]);

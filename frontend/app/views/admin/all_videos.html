@@ -19,20 +19,26 @@
         <li style="border-bottom:1px solid #1f253d;cursor:pointer;display:flex;flex-direction:row;"
         ng-repeat="video in Videos.all_tutorials[currentSubject].chapters[currentChapter].videos"
         ng-click="gotoQuestions($index)">
-            <div style="width:75px;padding:10px;">
-              <img ng-src="http://localhost:8094/uploads/Thumbnails/{{video.thumbnail_url}}" style="width:100%;height:100%;"/>
+            <div style="width:125px;padding:10px;">
+              <img ng-src="/uploads/Thumbnails/{{video.thumbnail_url}}" style="width:100%;height:100%;"/>
             </div>
             <div style="display:flex;flex-direction:column;padding:10px 5px;flex-grow:2;">
                 <p class="next-days-date" style="width:100%;text-align:left;">
-                  <span class="day">{{video.video_name}}</span>
                   <span class="scnd-font-color" style="font-size:11px;">
                     (Video Number {{video.video_number}})
-                  </span>
+                  </span><br/>
+                  <span class="day">{{video.video_name}}</span>
                 </p>
                 <div class="next-days-temperature"
                   style="padding:10px 20px;width:100%;font-size:11px;text-align:right;display:flex;flex-direction:row;justify-content:space-between;">
-                  <span data-livestamp="{{video.updated_at}}"></span>
-                  <span class="list-option" ng-click="$event.stopPropagation()">Edit</span>
+                  <span data-livestamp="{{video.updated_at}}"></span><br/>
+                </div>
+                <div class="next-days-temperature"
+                  style="padding:10px 20px;width:100%;font-size:11px;text-align:right;display:flex;flex-direction:row;justify-content:space-between;">
+                  <span class="list-option" ng-click="
+                  convertVideo($index);$event.stopPropagation()">Convert</span>
+                  <span class="list-option" ng-click="
+                  editVideo($index);$event.stopPropagation()">Edit</span>
                   <span class="list-option" ng-click="deleteVideo($index);$event.stopPropagation()">Delete</span>
                 </div>
             </a>

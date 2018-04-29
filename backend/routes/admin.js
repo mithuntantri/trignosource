@@ -159,12 +159,25 @@ router.post("/upload", function(req, res, next) {
       }
       console.log(stdout);
       console.log('Saved the thumb to:', pathToSnapshot);
-      child_process.exec(('ffmpeg -i ' + pathToFile + ' -s 640x360 ' + pathToOutput360p 
-        + ' -s 640x480 ' + pathToOutput480p + ' -s 1280x720 ' + pathToOutput720p), function(err, stdout, stderr){
+      child_process.exec(('ffmpeg -i ' + pathToFile + ' -strict -2 -s 640x360' + pathToOutput360p), function(err, stdout, stderr){
         if(err){
           console.log(err);
           return;
         }
+        child_process.exec(('ffmpeg -i ' + pathToFile + ' -strict -2 -s 640x480 ' + pathToOutput480p), function(err, stdout, stderr){
+          if(err){
+            console.log(err);
+            return;
+          }
+          child_process.exec(('ffmpeg -i ' + pathToFile + ' -strict -2 -s 1280x720 ' + pathToOutput720p), function(err, stdout, stderr){
+            if(err){
+              console.log(err);
+              return;
+            }
+            console.log("======================Conversion Complete==========================")
+          })
+          console.log("======================Conversion Complete==========================")
+        })
         console.log("======================Conversion Complete==========================")
       })
     });
@@ -868,12 +881,25 @@ router.post("/convert", function(req, res, next){
         pathToOutput360p = path.join(__dirname, '../uploads/Videos/360p', file_name),
         pathToOutput480p = path.join(__dirname, '../uploads/Videos/480p', file_name),
         pathToOutput720p = path.join(__dirname, '../uploads/Videos/720p', file_name);
-      child_process.exec(('ffmpeg -i ' + pathToFile + ' -s 640x360 ' + pathToOutput360p 
-        + ' -s 640x480 ' + pathToOutput480p + ' -s 1280x720 ' + pathToOutput720p), function(err, stdout, stderr){
+      child_process.exec(('ffmpeg -i ' + pathToFile + ' -strict -2 -s 640x360' + pathToOutput360p), function(err, stdout, stderr){
         if(err){
           console.log(err);
           return;
         }
+        child_process.exec(('ffmpeg -i ' + pathToFile + ' -strict -2 -s 640x480 ' + pathToOutput480p), function(err, stdout, stderr){
+          if(err){
+            console.log(err);
+            return;
+          }
+          child_process.exec(('ffmpeg -i ' + pathToFile + ' -strict -2 -s 1280x720 ' + pathToOutput720p), function(err, stdout, stderr){
+            if(err){
+              console.log(err);
+              return;
+            }
+            console.log("======================Conversion Complete==========================")
+          })
+          console.log("======================Conversion Complete==========================")
+        })
         console.log("======================Conversion Complete==========================")
       })
       resolve()
