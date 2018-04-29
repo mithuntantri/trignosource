@@ -329,7 +329,7 @@ router.put('/chapters', function(req, res, next){
   var old_chapter_number = parseInt(req.body.old_chapter_number)
   var chapter_number = parseInt(req.body.chapter_number)
   var chapter_name = req.body.chapter_name
-  var subject_number = parseInt(req.body.subjext_number)
+  var subject_number = parseInt(req.body.subject_number)
   var is_module = req.body.is_module
   var mop_name = req.body.mop_name
   var mop_number = parseInt(req.body.mop_number)
@@ -538,6 +538,121 @@ router.post('/questions', function(req, res, next){
   })
 })
 
+router.put('/videos', function(req, res, next){
+  var old_video_number = parseInt(req.body.old_video_number)
+  var chapter_number = parseInt(req.body.chapter_number)
+  var video_number = req.body.video_number
+  var subject_number = parseInt(req.body.subject_number)
+  var video_name = req.body.video_name
+  var thumbnail_time = req.body.thumbnail_time
+  var thumbnail_url = moment().unix() + '.png'
+  var file_name = req.body.file_name
+  new Promise(function(resolve, reject) {
+    rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
+      let up_tutorial = null
+      _.each(tutorials, (tutorial)=>{
+        if(tutorial.subject_number == subject_number){
+          tutorial.updated_at = moment().unix()
+          _.each(tutorial.chapters, (chapter)=>{
+            if(chapter.chapter_number == chapter_number){
+              chapter.updated_at = moment().unix()
+              _.each(chapter.videos, (video)=>{
+                if(video.video_number == old_video_number){
+                  video.updated_at = moment().unix()
+                  video.video_number = video_number
+                  video.video_name = video_name
+                  video.thumbnail_time = thumbnail_time
+                  video.thumbnail_url = thumbnail_url
+                }
+              })
+            }
+          })
+          up_tutorial = tutorial
+        }
+      })
+      if(up_tutorial){
+        rethinkOps.updateData('tutorials', up_tutorial).then(()=>{
+          resolve(tutorials)
+        })
+      }else{
+        resolve(tutorials)
+      }
+    })
+  }).then((response)=>{
+    let folder_name = 'Videos'
+    var relative_path = "file://" + path.resolve("./uploads/" + folder_name + "/1080p") + '/' + file_name
+    var pathToFile = path.join(__dirname, '../uploads/Videos/1080p/', file_name),
+        pathToSnapshot = path.join(__dirname, '../uploads/Thumbnails', thumbnail_url);
+    console.log(pathToFile, pathToSnapshot)
+    child_process.exec(('ffmpeg -ss ' + thumbnail_time + ' -i ' + pathToFile + ' -vframes 1 -q:v 2 ' + pathToSnapshot), function (err, stdout, stderr) {
+      if (err) {
+         console.error(err);
+         return;
+      }
+      console.log(stdout);
+      console.log('Saved the thumb to:', pathToSnapshot);
+    });
+    res.json({'status': true, 'message' : 'Video modified successfully', 'data': response})
+    console.log('snapshot saved to '+thumbnail_url+' (100x100) with a frame at'+thumbnail_time);
+  }).catch((err)=>{
+    res.json({'status': false, 'message' : 'Video modify failed'})
+  })
+})
+
+router.put('/questions', function(req, res, next){
+  var old_question_number = parseInt(req.body.old_question_number)
+  var chapter_number = parseInt(req.body.chapter_number)
+  var video_number = req.body.video_number
+  var subject_number = parseInt(req.body.subject_number)
+  var question = {
+    'question_number': parseInt(req.body.question_number),
+    'question_name': req.body.question_name,
+    'time_of_pause': req.body.time_of_pause,
+    'appear_time' : req.body.appear_time
+  }
+  new Promise(function(resolve, reject) {
+    rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
+      let up_tutorial = null
+      _.each(tutorials, (tutorial)=>{
+        if(tutorial.subject_number == subject_number){
+          tutorial.updated_at = moment().unix()
+          _.each(tutorial.chapters, (chapter)=>{
+            if(chapter.chapter_number == chapter_number){
+              chapter.updated_at = moment().unix()
+              _.each(chapter.videos, (video)=>{
+                if(video.video_number == video_number){
+                  video.updated_at = moment().unix()
+                  _.each(video.questions, (new_question)=>{
+                    if(new_question.question_number == old_question_number){
+                      new_question.question_number = question.question_number
+                      new_question.question_name = question.question_name
+                      new_question.time_of_pause = question.time_of_pause
+                      new_question.appear_time = question.appear_time
+                      new_question.updated_at = moment().unix()
+                    }
+                  })
+                }
+              })
+            }
+          })
+          up_tutorial = tutorial
+        }
+      })
+      if(up_tutorial){
+        rethinkOps.updateData('tutorials', up_tutorial).then(()=>{
+          resolve(tutorials)
+        })
+      }else{
+        resolve(tutorials)
+      }
+    })
+  }).then((response)=>{
+    res.json({'status': true, 'data': response})
+  }).catch((err)=>{
+    res.json({'status': false, 'message': err})
+  })
+})
+
 router.delete('/questions', function(req, res, next){
   var subject_number = parseInt(req.query.subject_number)
   var chapter_number = parseInt(req.query.chapter_number)
@@ -634,6 +749,67 @@ router.post('/options', function(req, res, next){
   })
 })
 
+router.put('/options', function(req, res, next){
+  var old_option_number = parseInt(req.body.old_option_number)
+  var chapter_number = parseInt(req.body.chapter_number)
+  var video_number = parseInt(req.body.video_number)
+  var subject_number = parseInt(req.body.subject_number)
+  var question_number = parseInt(req.body.question_number)
+  var option = {
+    'option_number': parseInt(req.body.option_number),
+    'option_name': req.body.option_name,
+    'skip_time': parseFloat(req.body.skip_time),
+    'is_correct': (req.body.is_correct=='true'?true:false)
+  }
+  new Promise(function(resolve, reject) {
+    rethinkOps.getAllSpecificData('tutorials').then((tutorials)=>{
+      let up_tutorial = null
+      _.each(tutorials, (tutorial)=>{
+        if(tutorial.subject_number == subject_number){
+          tutorial.updated_at = moment().unix()
+          _.each(tutorial.chapters, (chapter)=>{
+            if(chapter.chapter_number == chapter_number){
+              chapter.updated_at = moment().unix()
+              _.each(chapter.videos, (video)=>{
+                if(video.video_number == video_number){
+                  video.updated_at = moment().unix()
+                  _.each(video.questions, (question)=>{
+                    if(question.question_number == question_number){
+                      question.updated_at = moment().unix()
+                      _.each(question.options, (new_option)=>{
+                        if(new_option.option_number == old_option_number){
+                          new_option.option_number = option.option_number
+                          new_option.option_name = option.option_name
+                          new_option.skip_time = option.skip_time
+                          new_option.is_correct = option.is_correct
+                          new_option.updated_at = moment().unix()
+                        }
+                      })
+                    }
+                  })
+                }
+              })
+            }
+          })
+          up_tutorial = tutorial
+        }
+      })
+      if(up_tutorial){
+        rethinkOps.updateData('tutorials', up_tutorial).then(()=>{
+          resolve(tutorials)
+        })
+      }else{
+        resolve(tutorials)
+      }
+    })
+  }).then((response)=>{
+    res.json({'status': true, 'data': response})
+  }).catch((err)=>{
+    res.json({'status': false, 'message': err})
+  })
+})
+
+
 router.delete('/options', function(req, res, next){
   var subject_number = parseInt(req.query.subject_number)
   var chapter_number = parseInt(req.query.chapter_number)
@@ -680,6 +856,29 @@ router.delete('/options', function(req, res, next){
     res.json({'status': true, 'data': response})
   }).catch((err)=>{
     res.json({'status': false, 'message': err})
+  })
+})
+
+router.post("/convert", function(req, res, next){
+  var file_name = req.body.file_name
+  new Promise((resolve, reject)=>{
+    let folder_name = 'Videos'
+    var relative_path = "file://" + path.resolve("./uploads/" + folder_name + "/1080p") + '/' + file_name
+    var pathToFile = path.join(__dirname, '../uploads/Videos/1080p/', file_name),
+        pathToOutput360p = path.join(__dirname, '../uploads/Videos/360p', file_name),
+        pathToOutput480p = path.join(__dirname, '../uploads/Videos/480p', file_name),
+        pathToOutput720p = path.join(__dirname, '../uploads/Videos/720p', file_name);
+      child_process.exec(('ffmpeg -i ' + pathToFile + ' -s 640x360 ' + pathToOutput360p 
+        + ' -s 640x480 ' + pathToOutput480p + ' -s 1280x720 ' + pathToOutput720p), function(err, stdout, stderr){
+        if(err){
+          console.log(err);
+          return;
+        }
+        console.log("======================Conversion Complete==========================")
+      })
+      resolve()
+  }).then(()=>{
+    res.json({'status': true, 'message' : 'Video conversion started successfully'})
   })
 })
 
