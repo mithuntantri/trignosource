@@ -68,10 +68,14 @@ var app = {
 
         for(var i=0;i<total_modules.length;i++){
             if(total_modules[i].length > 0){
+                var y = total_modules[i].length;
+                if(y <= 9){
+                    y = '0'+y
+                }
                 module_list += `<div class="new-progress-list">
                 <div class="new-progress-list-completion">75% completed</div>
                 <div class="new-progress-list-module">Module `+ (i+1) + `</div>
-                <div class="new-progress-list-chapter">0` + total_modules[i].length + ` Chapters</div></div>`
+                <div class="new-progress-list-chapter">` + y + ` Chapters</div></div>`
                 part3 += `<div class="module_header subject_`+parseInt(this.currentSubject+1)+`_text">MODULE ` + (i+1) + `</div>`
                 for(var j=0;j<total_modules[i].length;j++){
                     var x = total_modules[i][j].chapter_number
@@ -88,10 +92,14 @@ var app = {
 
         for(var i=0;i<total_parts.length;i++){
            if(total_parts[i].length > 0){
+                var y = total_parts[i].length;
+                if(y <= 9){
+                    y = '0'+y
+                }
                 parts_list += `<div class="new-progress-list">
                 <div class="new-progress-list-completion">75% completed</div>
                 <div class="new-progress-list-module"><div>Part `+ (i+1) + `</div><div>`+ total_parts[i][0].mop_name +`</div></div>
-                <div class="new-progress-list-chapter">0` + total_parts[i].length + ` Chapters</div></div>`
+                <div class="new-progress-list-chapter">` + y + ` Chapters</div></div>`
                 part3 += `<div class="module_header subject_`+parseInt(this.currentSubject+1)+`_text">PART ` + (i+1) + `&nbsp;-&nbsp;`+total_parts[i][0].mop_name+`</div>`
                 for(var j=0;j<total_parts[i].length;j++){
                     var x = total_parts[i][j].chapter_number

@@ -77,6 +77,29 @@ var app = {
         this.handleNext();
     },
 
+    changeVideo: function(currentTime){
+      document.getElementById('controls').classList.remove("hide")
+      document.getElementById('controls').classList.remove("show")
+      document.getElementById('controls').classList.add("hide")
+      document.getElementById('loading').style.display = 'flex'
+      document.getElementById('player').style.display = 'none'
+      this.player.pause()
+      console.log("Changing video", currentTime)
+      if(this.currentQuality == 'Auto'){
+        document.getElementById('video-element').innerHTML = "<source src='"+this.baseUrl+"/uploads/Videos/360p/"+this.video.file_name+"' type='video/mp4'>"
+      }else{
+        document.getElementById('video-element').innerHTML = "<source src='"+this.baseUrl+"/uploads/Videos/"+this.currentQuality+"/"+this.video.file_name+"' type='video/mp4'>"
+      }
+      this.player.load()
+      this.player.currentTime = currentTime
+      this.player.addEventListener('loadeddata', function(){
+          console.log("Video Loaded Successfully!")
+          document.getElementById('loading').style.display = 'none'
+          document.getElementById('player').style.display = 'flex'
+      }, false)
+      this.player.play()
+    },
+
     reloadVideo: function(currentTime){
       if(this.currentQuality == 'Auto'){
         document.getElementById('video-element').innerHTML = "<source src='"+this.baseUrl+"/uploads/Videos/360p/"+this.video.file_name+"' type='video/mp4'>"
@@ -440,9 +463,9 @@ var app = {
           if(buttonIndex <= 5){
             that.currentQuality = buttonLabels[buttonIndex-1];
             localStorage.setItem('streaming', that.currentQuality)
-            that.reloadVideo(that.player.currentTime)
+            that.changeVideo(that.player.currentTime)
           }
-        },1000)
+        })
       });
     },
 
