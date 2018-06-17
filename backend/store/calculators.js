@@ -29,7 +29,15 @@ var S01C05CALC005 = require('../store/S01C05CALC005');
 
 var calculators = [
 	//Subject 1
-	[	//Chapter 1
+	[	//Chapter 1 
+		[],
+		//Chapter 2
+		[],
+		//Chapter 3
+		[],
+		//Chapter 4
+		[],
+		//Chapter 5
 		[	//Calculator 1
 			{
 				"number" : "01",
@@ -110,13 +118,18 @@ var calculators = [
 							]
 			}
 		],
-		//Chapter 2
+		//Chapter 6
 		[],
-		//Chapter 3
+		//Chapter 7
 		[],
-		//Chapter 4
+		//Chapter 8
 		[],
-		//Chapter 5
+		//Chapter 9
+		[],
+		//Chapter 10
+		[],
+		//Chapter 11
+		[]
 	],
 	//Subject 2
 	[],
