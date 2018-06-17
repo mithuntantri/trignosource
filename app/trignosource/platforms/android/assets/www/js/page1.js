@@ -21,12 +21,20 @@ var app = {
     tutorials: null,
     currentSubject: null,
     currentChapter: null,
+    calculators: [],
+
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        this.initPage()
+    },
 
+    initPage: function(){
         this.tutorials = localStorage.getItem('tutorials')
         this.tutorials = JSON.parse(this.tutorials).data
-        console.log('tutorials', this.tutorials)
+        this.calculators = localStorage.getItem('calculators')
+        this.calculators = JSON.parse(this.calculators).data
+
+        console.log('tutorials', this.tutorials, this.calculators)
 
         this.currentSubject = parseInt(localStorage.getItem('currentSubject'))
         this.currentChapter = parseInt(localStorage.getItem('currentChapter'))
@@ -37,13 +45,20 @@ var app = {
         document.getElementById('chapter_number').innerHTML = 'CHAPTER ' + this.tutorials[this.currentSubject].chapters[this.currentChapter].chapter_number
         document.getElementById('videos_count').innerHTML = this.tutorials[this.currentSubject].chapters[this.currentChapter].videos.length
         document.getElementById('videos_count_new').innerHTML = this.tutorials[this.currentSubject].chapters[this.currentChapter].videos.length
+        document.getElementById('calculators_count').innerHTML = this.calculators[parseInt(this.currentSubject)][parseInt(this.currentChapter)].length
 
         document.getElementsByClassName('subject_image')[0].innerHTML = '<img style="width:75%;" src="img/subject_icons/subject_'+ parseInt(this.currentSubject + 1) + '_b.png"/>'
 
-        var videos_card = document.getElementById('videos-card');
         var that = this
+
+        var videos_card = document.getElementById('videos-card');
         videos_card.addEventListener('click', function(){
             that.gotoVideos()
+        }, false);
+
+        var calculators_card = document.getElementById('calculators-card');
+        calculators_card.addEventListener('click', function(){
+            that.gotoCalculators()
         }, false);
     },
 
@@ -67,17 +82,25 @@ var app = {
 
     gotoVideos: function(){
         if(this.tutorials[this.currentSubject].chapters[this.currentChapter].videos.length == 0){
-            this.showBottom()
+            this.showBottom("No videos for the selected chapter")
         }else{
             console.log('gotoVideos')
             window.location = 'page2.html'
         }
     },
 
-    showBottom: function() {
+    gotoCalculators: function(){
+        if(this.calculators[parseInt(this.currentSubject)][parseInt(this.currentChapter)].length == 0){
+            this.showBottom("No calculators for the selected chapter")
+        }else{
+            window.location = 'calculators.html'
+        }
+    },
+
+    showBottom: function(message) {
       window.plugins.toast.showWithOptions(
         {
-          message: "No videos for the selected chapter",
+          message: message,
           duration: "short",
           position: "bottom",
           addPixelsY: -40

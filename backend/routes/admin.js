@@ -21,6 +21,7 @@ var thumbler = require('video-thumb');
 var ffmpeg = require('fluent-ffmpeg');
 var child_process = require('child_process')
 const getDuration = require('get-video-duration');
+var calculators = require('../store/calculators');
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -38,6 +39,31 @@ var storage = multer.diskStorage({
   }
 })
 var upload = multer({ storage: storage, limits: { fileSize: '150MB' } }).single('file')
+
+router.get("/calculators/details", function(req, res, next) {
+  new Promise(function(resolve, reject) {
+    calculators.getCalculatorDetails().then((result)=>{
+      resolve(result)
+    })
+  }).then((response)=>{
+    res.json({'status': true, 'data': response})
+  }).catch((err)=>{
+    res.json({'status' : false, 'message': err.message})
+  })
+})
+
+router.post("/calculators/calculate", function(req, res, next) {
+  console.log(req.body)
+  new Promise(function(resolve, reject) {
+    calculators.getResults(req.body.calculator_id, req.body.input_object).then((result)=>{
+      resolve(result)
+    })
+  }).then((response)=>{
+    res.json({'status': true, 'data': response})
+  }).catch((err)=>{
+    res.json({'status' : false, 'message': err.message})
+  })
+})
 
 router.get("/upload", function(req, res, next) {
   new Promise(function(resolve, reject) {

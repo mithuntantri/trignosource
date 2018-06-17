@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;"> -->
+        <meta http-equiv="Content-Security-Policy" content="default-src *;
+   img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;
+   style-src  'self' 'unsafe-inline' *">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/page1.css">
+        <link rel="stylesheet" type="text/css" href="css/calculator.css">
+        <title>Trignosource | Result</title>
+          <script type="text/javascript" 
+                    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    </head>
+    <body>
+          <div class="page2" 
+            style="display: flex;background-color: rgb(6,152,212) !important;">
+            <img src="img/back_arrow.png" id="back_arrow"
+            style="position: absolute;top:25px;left:25px;width:30px;" />
+            <div class="part2 ppage2" id="interaction_videos" style="flex-grow: 2;margin-top: 50px;">
+                <div class="calculator-card">
+                    <div class="calculator-top" style="flex-direction: row-reverse;justify-content: space-between;padding: 7px 0;">
+                        <div class="calculator-title" id="open_inputs"
+                        style="border:none;text-align: right;display: flex;flex-direction: row;justify-content: flex-end;">
+                            View/Edit Input
+                            <img src="img/arrow_down.png" style="width:11px;height: 9px;margin:6px;">
+                        </div>
+                        <div class="calculator-title" id="close_inputs"
+                        style="border:none;text-align: right;display: none;flex-direction: row;justify-content: flex-end;">
+                            View/Edit Input
+                            <img src="img/arrow_up.png" style="width:11px;height: 9px;margin:6px;">
+                        </div>
+                        <div style="display: flex;flex-direction: column;justify-content: center;padding: 5px;margin-left: 20px;">
+                            <img src="img/calculators/click_to_mute.png" class="calculator-img"
+                            style="width: 20px;height: 20px;">
+                        </div>
+                    </div>
+                    <div class="calculator-mid" id="calculator_mid" style="overflow: scroll;">
+                        
+                    </div>
+                    <div class="calculator-btm" style="display: flex;">
+                        <div class="calculate-btn" id="next_step_btn">NEXT STEP</div>
+                        <div class="calculate-btn" id="skip_all_btn" style="margin-left: 7px;">SKIP ALL</div>
+                        <div class="calculate-btn" id="back_btn" style="margin-left: 7px;display: none;">BACK TO MAIN RESULTS</div>
+                    </div>
+                </div>
+                <div class="input-card" id="input_card">
+                </div>
+            </div>
+            <div class="expanded_section" id="expanded_section">
+                <div class="expanded_section_overlay"></div>
+                <div class="expanded_section_overlay_2">
+                    <div class="expanded_section_card">
+                        <div class="expanded_section_header">
+                            Detailed Explanation
+                            <img class="expanded_section_close" id="expanded_section_close"
+                            src="img/calculators/close_expansion.png"/>
+                        </div>
+                        <div class="expanded_section_mid">
+                            <div class="expanded_section_details" id="expanded_section_details">
+                            </div>
+                            <div class="expanded_section_explanation" id="expanded_section_explanation">
+                            </div>
+                        </div>
+                        <div class="expanded_section_footer">
+                            <img class="expanded_section_indicators" 
+                                id="expanded_section_indicators1"
+                                src="img/calculators/expansion_page_indicator1.png"/>
+                            <img class="expanded_section_indicators" 
+                                id="expanded_section_indicators2"
+                                src="img/calculators/expansion_page_indicator2.png"/>
+                            <img class="expanded_section_next" id="expanded_section_next"
+                            src="img/calculators/expansion_next_step.png"/>
+                             <img class="expanded_section_prev" id="expanded_section_prev"
+                            src="img/calculators/expansion_previous_step.png"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/stepwise_page.js"></script>
+    </body>
+</html>

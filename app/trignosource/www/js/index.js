@@ -18,7 +18,7 @@
  */
 var app = {
     // Application Constructor
-    baseUrl: 'http://13.126.30.240',
+    baseUrl: 'https://fast-lizard-17.localtunnel.me',
     // baseUrl: 'https://wise-otter-21.localtunnel.me',
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
@@ -55,6 +55,7 @@ var app = {
     },
 
     getTutorials: function(){
+      var that = this
       localStorage.setItem('baseUrl', this.baseUrl)
       cordovaHTTP.get(this.baseUrl+"/api/admin/tutorials", {},
         { Authorization: "" }, function(response) {
@@ -62,12 +63,27 @@ var app = {
           if(response.status){
             var tutorials = response.data
             localStorage.tutorials = tutorials
+            that.getCalculator()
+          }
+        }, function(response) {
+          console.log(response);
+      })
+    },
+
+    getCalculator: function(){
+      var that = this
+      cordovaHTTP.get(that.baseUrl+"/api/admin/calculators/details", {},
+        { Authorization: "" }, function(response) {
+          console.log(response)
+          if(response.status){
+            var calculators = response.data
+            localStorage.calculators = calculators
             window.location.href = `subject_page.html`
           }
         }, function(response) {
           console.log(response);
       })
-    }
+    },
 };
 
 app.initialize();

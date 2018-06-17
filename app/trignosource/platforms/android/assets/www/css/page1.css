@@ -357,6 +357,7 @@ body {
   height: 70px;
   font-weight: bold;
   text-align: left;
+  padding-right: 12px;
 }
 
 .videos__subdetails{
