@@ -28,18 +28,33 @@ var calculator = (input_object)=>{
 		let input_array = []
 		console.log(input, input.cost_of_machinery)
 		let cost_of_machinery = parseFloat(input["cost_of_machinery"])
+		if(isNaN(cost_of_machinery) || cost_of_machinery <= 0){
+			reject({'position': 0,'error': 'The cost of the machinery cannot be Rs. 0.'})
+		}
 		input_array.push({"key": "Cost of the Machinery", "unit": "₹", "value":cost_of_machinery})
 		console.log("cost_of_machinery", cost_of_machinery)
 
 		let scrap_value = parseFloat(input.scrap_value)
+		if(isNaN(scrap_value) || scrap_value >= cost_of_machinery){
+			reject({'position': 1,'error': 'The scrap value cannot be greater than the cost of the asset'})
+		}
 		input_array.push({"key": "Scrap Value", "unit": "₹", "value":scrap_value})
 
 		let estimated_working_capacity = parseFloat(input.estimated_working_capacity)
+		if(isNaN(estimated_working_capacity) || estimated_working_capacity <= 0){
+			reject({'position': 2, 'error': 'The total working capacity of the machinery cannot be zero hours.'})
+		}
 		input_array.push({"key": "Estimated Working Capacity (Hours)", "value": estimated_working_capacity, "unit": ""})
 
 		let annual_machinery_usage = []
+		let total_sum_of_hours = 0
 		for(var i=0;i<input.annual_machinery_usage.length;i++){
+			total_sum_of_hours+=parseFloat(input.annual_machinery_usage[i])
 			annual_machinery_usage.push(parseFloat(input.annual_machinery_usage[i]))
+		}
+		if(isNaN(total_sum_of_hours) || total_sum_of_hours <= 0 || total_sum_of_hours > estimated_working_capacity){
+			reject({'position': 2, 'error': `The sum of hours used over ${input.annual_machinery_usage.length}
+years cannot exceed ${estimated_working_capacity}`})
 		}
 		input_array.push({"key": "Annual Machinery Usage (Hours)", "value": annual_machinery_usage, "unit": ""})
 		console.log("annual_machinery_usage", annual_machinery_usage)
@@ -51,7 +66,7 @@ var calculator = (input_object)=>{
 
 		let result = [], stepwise = [], tables = []
 
-		var result3_table = `<table class="result-table" cellspacing="0">
+		var result3_table = `<table class="result-table" cellspacing="0" style="width:100%;">
 						<thead class="heading-cell">
 							<tr>
 								<th class="first-heading">Years</th>
@@ -99,7 +114,12 @@ var calculator = (input_object)=>{
 					<th>${table_values[0][2].toFixed(2)}</th>
 					<th>${table_values[0][3].toFixed(2)}</th>
 				</tr>`
-
+		var xdata = [1], ydata = [], 
+		line1data = [table_values[0][2].toFixed(2)], 
+		line1datalbl = ["₹"+table_values[0][2].toFixed(2)]
+		line2data=[table_values[0][1].toFixed(2)], 
+		line2datalbl=["₹"+table_values[0][1].toFixed(2)], 
+		closing_balance = table_values[0][3].toFixed(2)
 		for(var i=1;i<annual_machinery_usage.length;i++){
 			table_sum += result3_table_values[i][2]
 			table_values.push(
@@ -110,6 +130,14 @@ var calculator = (input_object)=>{
 						<th>${table_values[i][2].toFixed(2)}</th>
 						<th>${table_values[i][3].toFixed(2)}</th>
 					</tr>`
+			xdata.push(i+1)
+			line1data.push(table_values[i][2].toFixed(2))
+			line1datalbl.push("₹"+table_values[i][2].toFixed(2))
+			line2data.push(table_values[i][1].toFixed(2))
+			line2datalbl.push("₹"+table_values[i][1].toFixed(2))
+			// if(i == (parseInt(annual_machinery_usage.length)-1)){
+				closing_balance = table_values[i][3].toFixed(2)
+			// }
 		}
 		table_sum = parseFloat(table_sum).toFixed(2)
 		table += `<tr>
@@ -130,11 +158,11 @@ var calculator = (input_object)=>{
 		result.push({
 			"label": `Total depreciable amount`,
 			"value": result1.toFixed(2),
-			"unit": "Rs."
+			"unit": "₹"
 		},{
 			"label": `Depreciation per hour`,
 			"value": parseFloat(table_sum).toFixed(2),
-			"unit": "Rs."
+			"unit": "₹"
 		})
 
 		stepwise.push({
@@ -146,9 +174,9 @@ var calculator = (input_object)=>{
 				"Simplifying the above equation, we get",
 			],
 			"content": [
-				"$$ \\text{Depreciation per hour} = \\frac{\\text{Cost of Machinery}-\\text{Scrap Value}}{\\text{Estimated Working Capacity(Hrs)}} $$",
+				"$$ \\style{font-family:Arial}{\\text{Depreciation per hour} = \\frac{\\text{Cost of Machinery}-\\text{Scrap Value}}{\\text{Estimated Working Capacity(Hrs)}}} $$",
 				"$$ \\text{Depreciation per hour} = \\frac{"+cost_of_machinery+"-"+scrap_value+"}{"+estimated_working_capacity+"} $$",
-				"$$ \\text{Depreciation per hour} = \\frac{"+cost_of_machinery+"-"+scrap_value+"}{"+estimated_working_capacity+"}=₹"+depreciation.toFixed(2)+" $$",
+				"$$ \\text{Depreciation per hour} = \\frac{"+(cost_of_machinery-scrap_value)+"}{"+estimated_working_capacity+"}=₹"+depreciation.toFixed(2)+" $$",
 			],
 			"detailed_explanation": [
 				null,
@@ -157,13 +185,13 @@ var calculator = (input_object)=>{
 					"page_number": 1,
 					"content": [
 						"$$ \\text{Depreciation per hour} = \\frac{"+cost_of_machinery+"-"+scrap_value+"}{"+estimated_working_capacity+"} $$",
-						"$$ \\text{Depreciation} = \\frac{"+cost_of_machinery+"-"+scrap_value+"}{"+estimated_working_capacity+"}=₹"+depreciation.toFixed(2)+" $$",
+						"$$ \\text{Depreciation} = \\frac{"+(cost_of_machinery-scrap_value)+"}{"+estimated_working_capacity+"}=₹"+depreciation.toFixed(2)+" $$",
 					],
 					"explanation":`The numerator indicates that the value of the asset reduces from ₹${cost_of_machinery} to ₹${scrap_value}. That is, the total reduction (depreciation) in the asset's value is ₹${result1.toFixed(2)} after using the machinery for its entire capacity of ${estimated_working_capacity} hours.`
 				},{
 					"page_number": 2,
 					"content": [
-						"$$ \\text{Depreciation per hour} = \\frac{"+cost_of_machinery+"-"+scrap_value+"}{"+estimated_working_capacity+"}="+depreciation.toFixed(2)+" $$"
+						"$$ \\text{Depreciation per hour} = \\frac{"+(cost_of_machinery-scrap_value)+"}{"+estimated_working_capacity+"}="+depreciation.toFixed(2)+" $$"
 					],
 					"explanation": `Since the machinery will be used for ${estimated_working_capacity} hours, the total depreciable amount must be divided among all ${estimated_working_capacity} hours of estimated usage, thereby allocating ${depreciation.toFixed(2)} of depreciation per hour of usage`
 				}],
@@ -186,7 +214,21 @@ var calculator = (input_object)=>{
 				null
 			]
 		})
-		resolve({input: input_array, result: result, stepwise: stepwise, table:table})
+		var graph = {
+			'x_label': 'Years',
+			'y_label': 'Amount',
+			'x_data': xdata,
+			'y_data': [],
+			'line_1_label': 'Annual Depreciation',
+			'line_2_label': 'Opening Balance',
+			'line_1_data':line1data,
+			'line_1_data_lbl': line1datalbl,
+			'line_2_data':line2data,
+			'line_2_data_lbl':line2datalbl,
+			'timeline_count':annual_machinery_usage.length,
+			'closing': "₹"+closing_balance
+		}
+		resolve({input: input_array, result: result, stepwise: stepwise, tables:tables, graph:graph})
 	})
 }
 

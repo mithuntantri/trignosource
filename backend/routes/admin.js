@@ -57,11 +57,14 @@ router.post("/calculators/calculate", function(req, res, next) {
   new Promise(function(resolve, reject) {
     calculators.getResults(req.body.calculator_id, req.body.input_object).then((result)=>{
       resolve(result)
+    }).catch((err)=>{
+      reject(err)
     })
   }).then((response)=>{
     res.json({'status': true, 'data': response})
   }).catch((err)=>{
-    res.json({'status' : false, 'message': err.message})
+    console.log("ERROR=====", err)
+    res.json({'status' : false, 'err': err})
   })
 })
 

@@ -28,13 +28,24 @@ var calculator = (input_object)=>{
 		let input_array = []
 		console.log(input, input.cost_of_asset)
 		let cost_of_asset = parseFloat(input["cost_of_asset"])
+		if(isNaN(cost_of_asset) || cost_of_asset <= 0){
+			reject({'position': 0, 'error': 'The cost of the asset cannot be 0'})
+		}
 		input_array.push({"key": "Cost of Asset", "unit": "₹", "value":cost_of_asset})
 		console.log("cost_of_asset", cost_of_asset)
 
 		let scrap_value = parseFloat(input.scrap_value)
+		if(isNaN(scrap_value) || scrap_value >= cost_of_asset){
+			reject({'position': 1, 'error': 'The scrap value cannot be greater than the cost of the asset'})
+		}
 		input_array.push({"key": "Scrap Value", "unit": "₹", "value":scrap_value})
 
 		let useful_life_of_asset = parseFloat(input.useful_life_of_asset)
+		if(isNaN(useful_life_of_asset) || useful_life_of_asset <= 0){
+			reject({'position': 2, 'error': 'The estimated useful life cannot be zero years'})
+		}else if(useful_life_of_asset > 20){
+			reject({'position': 2, 'error': 'Please limit the duration to 20 years or below'})
+		}
 		input_array.push({"key": "Useful Asset of Life (Years)", "value": useful_life_of_asset, "unit": ""})
 
 		let result1 = (cost_of_asset - scrap_value)
@@ -48,11 +59,11 @@ var calculator = (input_object)=>{
 		result.push({
 			"label": `Total depreciable amount (over ${useful_life_of_asset} years)`,
 			"value": result1.toFixed(2),
-			"unit": "Rs."
+			"unit": "₹"
 		},{
 			"label": `Sum of years' digits`,
 			"value": depreciation.toFixed(2),
-			"unit": "Rs."
+			"unit": ""
 		})
 
 		var result3_table = `<table class="result-table" cellspacing="0">
@@ -68,14 +79,28 @@ var calculator = (input_object)=>{
 						<tbody class="value-cell">`
 
 		var results_table_values = [[1,result1,useful_life_of_asset,useful_life_of_asset/depreciation, result1*useful_life_of_asset/depreciation]]
+		var results_table_labels = [
+						[	1,
+							result1,
+							useful_life_of_asset,
+							useful_life_of_asset+"/"+depreciation, 
+							result1+"("+useful_life_of_asset+"/"+depreciation+") = "+results_table_values[0][4].toFixed(2)
+						]
+					]
 		result3_table += `<tr>
 					<th>${results_table_values[0][0]}</th>
 					<th>${results_table_values[0][1].toFixed(2)}</th>
 					<th>${results_table_values[0][2]}</th>
-					<th>${results_table_values[0][3].toFixed(2)}</th>
-					<th>${results_table_values[0][4].toFixed(2)}</th>
+					<th>${results_table_labels[0][3]}</th>
+					<th>${results_table_labels[0][4]}</th>
 				</tr>`
 		var result3_table_sum = results_table_values[0][4].toFixed(2)
+		var xdata = [1], ydata = [], 
+		line1data = [results_table_values[0][2].toFixed(2)], 
+		line1datalbl = ["₹"+results_table_values[0][2].toFixed(2)]
+		line2data=[results_table_values[0][1].toFixed(2)], 
+		line2datalbl=["₹"+results_table_values[0][1].toFixed(2)], 
+		closing_balance = 0
 		for(var i=1;i<parseInt(useful_life_of_asset);i++){
 			results_table_values.push(
 				[
@@ -86,14 +111,31 @@ var calculator = (input_object)=>{
 					result1*(results_table_values[i-1][2]-1)/depreciation
 				]
 			)
+			results_table_labels.push(
+				[
+					i+1,
+					result1,
+					results_table_values[i-1][2]-1,
+					results_table_values[i-1][2]-1+"/"+depreciation,
+					result1+"("+(results_table_values[i-1][2]-1)+"/"+depreciation+") = " + results_table_values[i][4].toFixed(2)
+				]
+			)
 			result3_table_sum += results_table_values[i][4].toFixed(2)
 			result3_table += `<tr>
 						<th>${results_table_values[i][0]}</th>
 						<th>${results_table_values[i][1].toFixed(2)}</th>
 						<th>${results_table_values[i][2]}</th>
-						<th>${results_table_values[i][3].toFixed(2)}</th>
-						<th>${results_table_values[i][4].toFixed(2)}</th>
+						<th>${results_table_labels[i][3]}</th>
+						<th>${results_table_labels[i][4]}</th>
 					</tr>`
+			xdata.push(i+1)
+			line1data.push(results_table_values[i][2].toFixed(2))
+			line1datalbl.push("₹"+results_table_values[i][2].toFixed(2))
+			line2data.push(results_table_values[i][1].toFixed(2))
+			line2datalbl.push("₹"+results_table_values[i][1].toFixed(2))
+			if(i == (parseInt(useful_life_of_asset)-1)){
+				closing_balance = results_table_values[i][3].toFixed(2)
+			}
 		}
 
 		result3_table_sum = parseFloat(result3_table_sum).toFixed(2)
@@ -105,6 +147,8 @@ var calculator = (input_object)=>{
 						<th>${result3_table_sum}</th>
 					</tr>
 		`
+
+		result3_table += `</tbody></table>`
 
 		tables.push({
 			"label": "Annual depreciation rates and amounts",
@@ -122,28 +166,42 @@ var calculator = (input_object)=>{
 						</thead>
 						<tbody class="value-cell">`
 		var table_values = [[1,cost_of_asset,results_table_values[0][4],cost_of_asset-results_table_values[0][4]]]
-		var table_sum = parseFloat(table_values[0][3])
+		var table_sum = parseFloat(table_values[0][2])
 		table += `<tr>
 					<th>${table_values[0][0]}</th>
 					<th>${table_values[0][1].toFixed(2)}</th>
 					<th>${table_values[0][2].toFixed(2)}</th>
 					<th>${table_values[0][3].toFixed(2)}</th>
 				</tr>`
-
+		var xdata = [1], ydata = [], 
+		line1data = [table_values[0][2].toFixed(2)], 
+		line1datalbl = ["₹"+table_values[0][2].toFixed(2)]
+		line2data=[table_values[0][1].toFixed(2)], 
+		line2datalbl=["₹"+table_values[0][1].toFixed(2)], 
+		closing_balance = table_values[0][3].toFixed(2)
 		for(var i=1;i<parseInt(useful_life_of_asset);i++){
 			table_values.push(
 				[
 					i+1,
 					table_values[i-1][3],
 					results_table_values[i][4],
-					table_values[i-1][3]-results_table_values[i][4]])
-			table_sum += table_values[i][3]
+					table_values[i-1][3]-results_table_values[i][4]
+				])
+			table_sum += table_values[i][2]
 			table += `<tr>
 						<th>${table_values[i][0]}</th>
 						<th>${table_values[i][1].toFixed(2)}</th>
 						<th>${table_values[i][2].toFixed(2)}</th>
 						<th>${table_values[i][3].toFixed(2)}</th>
 					</tr>`
+			xdata.push(i+1)
+			line1data.push(table_values[i][2].toFixed(2))
+			line1datalbl.push("₹"+table_values[i][2].toFixed(2))
+			line2data.push(table_values[i][1].toFixed(2))
+			line2datalbl.push("₹"+table_values[i][1].toFixed(2))
+			if(i == (parseInt(useful_life_of_asset)-1)){
+				closing_balance = table_values[i][3].toFixed(2)
+			}
 		}
 
 		table_sum = parseFloat(table_sum).toFixed(2)
@@ -196,11 +254,11 @@ var calculator = (input_object)=>{
 			"title": "Sum of years' digits",
 			"explanation": [
 				"The sum of years' digits is simply the total of the digits of all years from 1 to "+useful_life_of_asset+ ". This can be calculated as: ",
-				"Or, the sum can also be calculated using the Formula for `sum of n terms` as follows:",
+				"Or, the sum can also be calculated using the Formula for `sum of n terms` as follows:"
 			],
 			"content": [
 				"$$ \\text{Sum of Years' digits} = \\text{"+sum_of_years_text+"} = "+depreciation.toFixed(2)+"$$",
-				"$$ \\text{Sum of n terms} = \\frac{n(n+1)}{2} = \\frac{"+useful_life_of_asset+"("+useful_life_of_asset+"+1)}{2} = "+depreciation+" $$"
+				"$$ \\text{Sum of n terms} = \\frac{n(n+1)}{2} $$ \n $$ \\text{Sum of "+useful_life_of_asset+" terms} = \\frac{"+useful_life_of_asset+"("+useful_life_of_asset+"+1)}{2} = "+depreciation+" $$"
 			],
 			"detailed_explanation":[
 				null,
@@ -221,7 +279,21 @@ var calculator = (input_object)=>{
 				null,
 			]
 		})
-		resolve({input: input_array, result: result, stepwise: stepwise, table:table})
+		var graph = {
+			'x_label': 'Years',
+			'y_label': 'Amount',
+			'x_data': xdata,
+			'y_data': [],
+			'line_1_label': 'Annual Depreciation',
+			'line_2_label': 'Opening Balance',
+			'line_1_data':line1data,
+			'line_1_data_lbl': line1datalbl,
+			'line_2_data':line2data,
+			'line_2_data_lbl':line2datalbl,
+			'timeline_count':useful_life_of_asset,
+			'closing': "₹"+closing_balance
+		}
+		resolve({input: input_array, result: result, stepwise: stepwise, tables:tables, graph:graph})
 	})
 }
 

@@ -28,13 +28,24 @@ var calculator = (input_object)=>{
 		let input_array = []
 		console.log(input, input.cost_of_asset)
 		let cost_of_asset = parseFloat(input["cost_of_asset"])
+		if(isNaN(cost_of_asset) || cost_of_asset <= 0){
+			reject({'position': 0, 'error': 'The cost of the asset cannot be 0'})
+		}
 		input_array.push({"key": "Cost of Asset", "unit": "₹", "value":cost_of_asset})
 		console.log("cost_of_asset", cost_of_asset)
 
 		let scrap_value = parseFloat(input.scrap_value)
+		if(isNaN(scrap_value) || scrap_value >= cost_of_asset){
+			reject({'position': 1, 'error': 'The scrap value cannot be greater than the cost of the asset'})
+		}
 		input_array.push({"key": "Scrap Value", "unit": "₹", "value":scrap_value})
 
 		let useful_life_of_asset = parseFloat(input.useful_life_of_asset)
+		if(isNaN(useful_life_of_asset) || useful_life_of_asset <= 0){
+			reject({'position': 2, 'error': 'The estimated useful life cannot be zero years'})
+		}else if(useful_life_of_asset > 20){
+			reject({'position': 2, 'error': 'Please limit the duration to 20 years or below'})
+		}
 		input_array.push({"key": "Useful Asset of Life (Years)", "value": useful_life_of_asset, "unit": ""})
 
 		let result1 = (cost_of_asset - scrap_value)
@@ -48,9 +59,9 @@ var calculator = (input_object)=>{
 		result.push({
 			"label": `Total depreciation (over ${useful_life_of_asset} years)`,
 			"value": result1.toFixed(2),
-			"unit": "Rs."
+			"unit": "₹"
 		},{
-			"label": "Annual rate of depreciation (on cost)",
+			"label": "Annual rate of depreciation (on book value)",
 			"value": depreciation_rate.toFixed(2),
 			"unit": "%"
 		})
@@ -77,7 +88,12 @@ var calculator = (input_object)=>{
 					<th>${table_values[0][2].toFixed(2)}</th>
 					<th>${table_values[0][3].toFixed(2)}</th>
 				</tr>`
-
+		var xdata = [1], ydata = [], 
+		line1data = [table_values[0][2].toFixed(2)], 
+		line1datalbl = ["₹"+table_values[0][2].toFixed(2)]
+		line2data=[table_values[0][1].toFixed(2)], 
+		line2datalbl=["₹"+table_values[0][1].toFixed(2)], 
+		closing_balance = table_values[0][3].toFixed(2)
 		for(var i=1;i<parseInt(useful_life_of_asset);i++){
 			table_values.push(
 				[	i+1,
@@ -92,6 +108,14 @@ var calculator = (input_object)=>{
 						<th>${table_values[i][2].toFixed(2)}</th>
 						<th>${table_values[i][3].toFixed(2)}</th>
 					</tr>`
+			xdata.push(i+1)
+			line1data.push(table_values[i][2].toFixed(2))
+			line1datalbl.push("₹"+table_values[i][2].toFixed(2))
+			line2data.push(table_values[i][1].toFixed(2))
+			line2datalbl.push("₹"+table_values[i][1].toFixed(2))
+			if(i == (parseInt(useful_life_of_asset)-1)){
+				closing_balance = table_values[i][3].toFixed(2)
+			}
 		}
 
 		table += `<tr>
@@ -119,9 +143,9 @@ var calculator = (input_object)=>{
 				null
 			],
 			"content": [
-				"$$ \\text{Depreciation Rate} = \\left(1 - \\sqrt[\\leftroot{-2}\\uproot{2}\\text{n}]{\\frac{\\text{Scarp Value}}{\\text{Cost of Asset}}}\\right) * 100 $$",
+				"$$ \\text{Depreciation Rate} = \\left(1 - \\sqrt[\\leftroot{-2}\\uproot{2}\\text{n}]{\\frac{\\text{Scrap Value}}{\\text{Cost of Asset}}}\\right) * 100 $$\n $$ \\text{where, n is the estimated useful life} $$",
 				"$$ \\text{Depreciation Rate} = \\left(1 - \\sqrt[\\leftroot{-2}\\uproot{2}\\text{"+useful_life_of_asset+"}]{\\frac{"+scrap_value+"}{"+cost_of_asset+"}}\\right) * 100 $$",
-				"$$ \\text{Depreciation Rate} = \\left(1 - \\sqrt[\\leftroot{-2}\\uproot{2}\\text{"+useful_life_of_asset+"}]{\\frac{"+scrap_value+"}{"+cost_of_asset+"}}\\right) * 100 = "+depreciation_rate.toFixed(2)+"\\text{%} $$",
+				"$$ \\text{Depreciation Rate} = \\left(1 - "+Math.pow((scrap_value/cost_of_asset),(1/useful_life_of_asset)).toFixed(4)+"\\right) * 100 = "+depreciation_rate.toFixed(2)+"\\text{%} $$",
 				"Therefore, "+depreciation_rate.toFixed(2)+"% of the book value of the asset is Written down(depreciated) every year."
 			],
 			"detailed_explanation": [
@@ -131,8 +155,21 @@ var calculator = (input_object)=>{
 				null,
 			]
 		})
-
-		resolve({input: input_array, result: result, stepwise: stepwise, table:table})
+		var graph = {
+			'x_label': 'Years',
+			'y_label': 'Amount',
+			'x_data': xdata,
+			'y_data': [],
+			'line_1_label': 'Annual Depreciation',
+			'line_2_label': 'Opening Balance',
+			'line_1_data':line1data,
+			'line_1_data_lbl': line1datalbl,
+			'line_2_data':line2data,
+			'line_2_data_lbl':line2datalbl,
+			'timeline_count':useful_life_of_asset,
+			'closing': "₹"+closing_balance
+		}
+		resolve({input: input_array, result: result, stepwise: stepwise, tables:tables, graph:graph})
 	})
 }
 

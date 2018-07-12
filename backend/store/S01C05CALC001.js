@@ -28,13 +28,24 @@ var calculator = (input_object)=>{
 		let input_array = []
 		console.log(input, input.cost_of_asset)
 		let cost_of_asset = parseFloat(input["cost_of_asset"])
+		if(isNaN(cost_of_asset) || cost_of_asset <= 0){
+			reject({'position': 0, 'error': 'The cost of the asset cannot be 0'})
+		}
 		input_array.push({"key": "Cost of Asset", "unit": "₹", "value":cost_of_asset})
 		console.log("cost_of_asset", cost_of_asset)
 
 		let scrap_value = parseFloat(input.scrap_value)
+		if(isNaN(scrap_value) || scrap_value >= cost_of_asset){
+			reject({'position': 1, 'error': 'The scrap value cannot be greater than the cost of the asset'})
+		}
 		input_array.push({"key": "Scrap Value", "unit": "₹", "value":scrap_value})
 
 		let useful_life_of_asset = parseFloat(input.useful_life_of_asset)
+		if(isNaN(useful_life_of_asset) || useful_life_of_asset <= 0){
+			reject({'position': 2, 'error': 'The estimated useful life cannot be zero years'})
+		}else if(useful_life_of_asset > 20){
+			reject({'position': 2, 'error': 'Please limit the duration to 20 years or below'})
+		}
 		input_array.push({"key": "Useful Asset of Life (Years)", "value": useful_life_of_asset, "unit": ""})
 
 		let result1 = (cost_of_asset - scrap_value)
@@ -48,11 +59,11 @@ var calculator = (input_object)=>{
 		result.push({
 			"label": `Total depreciation (over ${useful_life_of_asset} years)`,
 			"value": result1.toFixed(2),
-			"unit": "Rs."
+			"unit": "₹"
 		},{
 			"label": `Annual depreciation amount`,
 			"value": depreciation.toFixed(2),
-			"unit": "Rs."
+			"unit": "₹"
 		},{
 			"label": "Annual rate of depreciation (on cost)",
 			"value": depreciation_rate.toFixed(2),
@@ -77,6 +88,12 @@ var calculator = (input_object)=>{
 					<th>${table_values[0][3].toFixed(2)}</th>
 				</tr>`
 
+		var xdata = [1], ydata = [], 
+		line1data = [table_values[0][2].toFixed(2)], 
+		line1datalbl = ["₹"+table_values[0][2].toFixed(2)]
+		line2data=[table_values[0][1].toFixed(2)], 
+		line2datalbl=["₹"+table_values[0][1].toFixed(2)], 
+		closing_balance = table_values[0][3].toFixed(2)
 		for(var i=1;i<parseInt(useful_life_of_asset);i++){
 			table_values.push(
 				[i+1,table_values[i-1][1]-depreciation,depreciation,table_values[i-1][3]-depreciation])
@@ -86,6 +103,14 @@ var calculator = (input_object)=>{
 						<th>${table_values[i][2].toFixed(2)}</th>
 						<th>${table_values[i][3].toFixed(2)}</th>
 					</tr>`
+			xdata.push(i+1)
+			line1data.push(table_values[i][2].toFixed(2))
+			line1datalbl.push("₹"+table_values[i][2].toFixed(2))
+			line2data.push(table_values[i][1].toFixed(2))
+			line2datalbl.push("₹"+table_values[i][1].toFixed(2))
+			if(i == (parseInt(useful_life_of_asset)-1)){
+				closing_balance = table_values[i][3].toFixed(2)
+			}
 		}
 
 		table += `<tr>
@@ -115,7 +140,7 @@ var calculator = (input_object)=>{
 			"content": [
 				"$$ \\text{Depreciation} = \\frac{\\text{Cost of asset}-\\text{Scrap Value}}{\\text{Useful life}} $$",
 				"$$ \\text{Depreciation} = \\frac{"+cost_of_asset+"-"+scrap_value+"}{"+useful_life_of_asset+"} $$",
-				"$$ \\text{Depreciation} = \\frac{"+cost_of_asset+"-"+scrap_value+"}{"+useful_life_of_asset+"}=₹"+depreciation+" $$",
+				"$$ \\text{Depreciation} = \\frac{"+(cost_of_asset-scrap_value)+"}{"+useful_life_of_asset+"}=₹"+depreciation+" $$",
 				"A depreciation of ₹"+depreciation+" is charged every year on the asset for "+useful_life_of_asset+" years, until it reaches a scrap value of ₹"+scrap_value
 			],
 			"detailed_explanation": [
@@ -125,7 +150,7 @@ var calculator = (input_object)=>{
 					"page_number": 1,
 					"content": [
 						"$$ \\text{Depreciation} = \\frac{"+cost_of_asset+"-"+scrap_value+"}{"+useful_life_of_asset+"} $$",
-						"$$ \\text{Depreciation} = \\frac{"+cost_of_asset+"-"+scrap_value+"}{"+useful_life_of_asset+"}=₹"+depreciation+" $$",
+						"$$ \\text{Depreciation} = \\frac{"+(cost_of_asset-scrap_value)+"}{"+useful_life_of_asset+"}=₹"+depreciation+" $$",
 					],
 					"explanation":`The numerator indicates that the value of the asset reduces from ₹${cost_of_asset} to ₹${scrap_value}. That is, the total reduction (depreciation) in the asset's value is ₹${depreciation} over a period of ${useful_life_of_asset} years.`
 				},{
@@ -156,7 +181,21 @@ var calculator = (input_object)=>{
 				null
 			]
 		})
-		resolve({input: input_array, result: result, stepwise: stepwise, table:table})
+		var graph = {
+			'x_label': 'Years',
+			'y_label': 'Amount',
+			'x_data': xdata,
+			'y_data': [],
+			'line_1_label': 'Annual Depreciation',
+			'line_2_label': 'Opening Balance',
+			'line_1_data':line1data,
+			'line_1_data_lbl': line1datalbl,
+			'line_2_data':line2data,
+			'line_2_data_lbl':line2datalbl,
+			'timeline_count':useful_life_of_asset,
+			'closing': "₹"+closing_balance
+		}
+		resolve({input: input_array, result: result, stepwise: stepwise, tables:tables, graph:graph})
 	})
 }
 

@@ -28,13 +28,26 @@ var calculator = (input_object)=>{
 		let input_array = []
 		console.log(input, input.cost_of_lease)
 		let cost_of_lease = parseFloat(input["cost_of_lease"])
+		if(isNaN(cost_of_lease) || cost_of_lease <= 0){
+			reject({'position': 0, 'error': 'The cost of the lease cannot be Rs. 0.'})
+		}
 		input_array.push({"key": "Cost of Lease", "unit": "₹", "value":cost_of_lease})
 		console.log("cost_of_lease", cost_of_lease)
 
 		let duration_of_lease = parseFloat(input.duration_of_lease)
+		if(isNaN(duration_of_lease) || duration_of_lease <= 0){
+			reject({'position': 1, 'error': 'The duration of the lease cannot be zero years.'})
+		}else if(duration_of_lease > 20){
+			reject({'position': 1, 'error': 'Please limit the duration to 20 years or below'})
+		}
 		input_array.push({"key": "Duration of Lease (Years)", "unit": "", "value":duration_of_lease})
 
 		let roi_on_investment = parseFloat(input.roi_on_investment)
+		if(isNaN(roi_on_investment) || roi_on_investment <= 0){
+			reject({'position': 2, 'error': 'The rate of interest cannot be 0%.'})
+		}else if(roi_on_investment >= 100){
+			reject({'position': 2, 'error': 'Please enter a valid interest below 100%'})
+		}
 		input_array.push({"key": "Rate of Intereset on Investment (%)", "value": roi_on_investment, "unit": ""})
 
 		let a = 1 + (roi_on_investment/100)
@@ -47,13 +60,13 @@ var calculator = (input_object)=>{
 
 		let result = [], stepwise = [], tables = []
 		result.push({
-			"label": "Rate of depreciation per Rs. 1 for "+duration_of_lease+" years @"+roi_on_investment+"% intereset",
-			"value": result1.toFixed(2),
-			"unit": "%"
+			"label": "Amount of depreciation per ₹1 for "+duration_of_lease+" years @"+roi_on_investment+"% interest",
+			"value": result1.toFixed(4),
+			"unit": "₹"
 		},{
-			"label": `Annual depreciation amount`,
+			"label": `Annual depreciation amount for lease`,
 			"value": annual_depreciation.toFixed(2),
-			"unit": "Rs."
+			"unit": "₹"
 		})
 
 		var table = `<table class="result-table" cellspacing="0">
@@ -84,7 +97,12 @@ var calculator = (input_object)=>{
 					<th>${table_values[0][4].toFixed(2)}</th>
 					<th>${table_values[0][5].toFixed(2)}</th>
 				</tr>`
-
+		var xdata = [1], ydata = [], 
+		line1data = [table_values[0][2].toFixed(2)], 
+		line1datalbl = ["₹"+table_values[0][2].toFixed(2)]
+		line2data=[table_values[0][1].toFixed(2)], 
+		line2datalbl=["₹"+table_values[0][1].toFixed(2)], 
+		closing_balance = table_values[0][3].toFixed(2)
 		for(var i=1;i<parseInt(duration_of_lease);i++){
 			table_values.push(
 				[	i+1,
@@ -103,6 +121,14 @@ var calculator = (input_object)=>{
 						<th>${table_values[i][4].toFixed(2)}</th>
 						<th>${table_values[i][5].toFixed(2)}</th>
 					</tr>`
+			xdata.push(i+1)
+			line1data.push(table_values[i][2].toFixed(2))
+			line1datalbl.push("₹"+table_values[i][2].toFixed(2))
+			line2data.push(table_values[i][1].toFixed(2))
+			line2datalbl.push("₹"+table_values[i][1].toFixed(2))
+			if(i == (parseInt(duration_of_lease)-1)){
+				closing_balance = table_values[i][3].toFixed(2)
+			}
 		}
 
 		table += `<tr>
@@ -124,13 +150,13 @@ var calculator = (input_object)=>{
 
 		stepwise.push({
 			"number": 1,
-			"title": "Annual Depreciation Amount",
+			"title": "Annual Depreciation Amount for lease",
 			"explanation" : [
-				"The amount of depreciation per Rs.1 for "+duration_of_lease+ " years at "+roi_on_investment+"% intereset(found in annuity tables is)",
+				"The amount of depreciation per ₹1 for "+duration_of_lease+ " years at "+roi_on_investment+"% intereset(found in annuity tables is)",
 				"The annual depreciation amount for the lease is,"
 			],
 			"content": [
-				"$$ \\text{Rs. " + result1.toFixed(2)+"} $$",
+				"$$ \\text{₹ " + result1.toFixed(4)+"} $$",
 				"$$ \\text{"+cost_of_lease+"}*\\text{"+result1.toFixed(2)+"} = "+annual_depreciation.toFixed(2)+"$$",
 			],
 			"detailed_explanation": [
@@ -138,7 +164,21 @@ var calculator = (input_object)=>{
 				null
 			]
 		})
-		resolve({input: input_array, result: result, stepwise: stepwise, table:table})
+		var graph = {
+			'x_label': 'Years',
+			'y_label': 'Amount',
+			'x_data': xdata,
+			'y_data': [],
+			'line_1_label': 'Annual Depreciation',
+			'line_2_label': 'Opening Balance',
+			'line_1_data':line1data,
+			'line_1_data_lbl': line1datalbl,
+			'line_2_data':line2data,
+			'line_2_data_lbl':line2datalbl,
+			'timeline_count':duration_of_lease,
+			'closing': "₹"+closing_balance
+		}
+		resolve({input: input_array, result: result, stepwise: stepwise, tables:tables, graph:graph})
 	})
 }
 

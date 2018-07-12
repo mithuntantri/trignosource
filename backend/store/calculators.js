@@ -30,13 +30,13 @@ var S01C05CALC005 = require('../store/S01C05CALC005');
 var calculators = [
 	//Subject 1
 	[	//Chapter 1 
-		[],
+		// [],
 		//Chapter 2
-		[],
+		// [],
 		//Chapter 3
-		[],
+		// [],
 		//Chapter 4
-		[],
+		// [],
 		//Chapter 5
 		[	//Calculator 1
 			{
@@ -44,8 +44,8 @@ var calculators = [
 				"calculator_id" : "S01C05CALC001",
 				"name" : "Annual depreciation amount - Straight line method",
 				"inputs": 	[
-								{"label": "Cost of the asset", "unit": "Rs.", "key":"cost_of_asset"},
-								{"label": "Scrap value / Salvage value", "unit": "Rs.", "key": "scrap_value"},
+								{"label": "Cost of the asset", "unit": "₹", "key":"cost_of_asset"},
+								{"label": "Scrap value / Salvage value", "unit": "₹", "key": "scrap_value"},
 								{"label": "Useful life of the asset", "unit": "Years", "key": "useful_life_of_asset"}
 						 	],
 				"results": 	[
@@ -53,21 +53,39 @@ var calculators = [
 								"Annual depreciation amount - SLM",
 								"Annual rate of depreciation - SLM",
 								"Depreciation schedule - table, graph, timeline"
+							],
+				"tooltips": [
+								`The total amount spent on purchasing the machinery or
+								its acquisition including additional costs spent on installation, commissioning,
+								etc.`,
+								`Residual value or the value that the machinery could
+								fetch after its useful life.`,
+								`The total number of hours for which the machinery can
+								be expected to run efficiently.`
 							]
 			},
 			{
 				"number" : "02",
 				"calculator_id" : "S01C05CALC002",
-				"name" : "Annual depreciation amount - Written down value method",
+				"name" : "Annual rate of Depreciation - Written down value method",
 				"inputs": 	[
-								{"label": "Cost of the asset", "unit": "Rs.", "key":"cost_of_asset"},
-								{"label": "Scrap value / Salvage value", "unit": "Rs.", "key": "scrap_value"},
+								{"label": "Cost of the asset", "unit": "₹", "key":"cost_of_asset"},
+								{"label": "Scrap value / Salvage value", "unit": "₹", "key": "scrap_value"},
 								{"label": "Useful life of the asset", "unit": "Years", "key": "useful_life_of_asset"}
 						 	],
 				"results": 	[
 								"Total depreciation",
-								"Annual rate of depreciation - On book value",
+								"Annual rate of depreciation - WDV",
 								"Depreciation schedule - table, graph, timeline"
+							],
+				"tooltips": [
+								`The total amount spent on purchasing the machinery or
+								its acquisition including additional costs spent on installation, commissioning,
+								etc.`,
+								`Residual value or the value that the machinery could
+								fetch after its useful life.`,
+								`The total number of hours for which the machinery can
+								be expected to run efficiently.`
 							]
 			},
 			{
@@ -75,14 +93,23 @@ var calculators = [
 				"calculator_id" : "S01C05CALC003",
 				"name" : "Annual depreciation amount - Sum of Years' Digits method",
 				"inputs": 	[
-								{"label": "Cost of the asset", "unit": "Rs.", "key":"cost_of_asset"},
-								{"label": "Scrap value / Salvage value", "unit": "Rs.", "key": "scrap_value"},
+								{"label": "Cost of the asset", "unit": "₹", "key":"cost_of_asset"},
+								{"label": "Scrap value / Salvage value", "unit": "₹", "key": "scrap_value"},
 								{"label": "Useful life of the asset", "unit": "Years", "key": "useful_life_of_asset"}
 						 	],
 				"results": 	[
 								"Total depreciable amount",
 								"Sum of Years' Digits",
 								"Depreciation schedule - table, graph, timeline"
+							],
+				"tooltips": [
+								`The total amount spent on purchasing the machinery or
+								its acquisition including additional costs spent on installation, commissioning,
+								etc.`,
+								`Residual value or the value that the machinery could
+								fetch after its useful life.`,
+								`The total number of hours for which the machinery can
+								be expected to run efficiently.`
 							]
 			},
 			{
@@ -90,14 +117,20 @@ var calculators = [
 				"calculator_id" : "S01C05CALC004",
 				"name" : "Annual depreciation amount - Annuity method",
 				"inputs": 	[
-								{"label": "Cost of the lease", "unit": "Rs.", "key":"cost_of_lease"},
+								{"label": "Cost of the lease", "unit": "₹", "key":"cost_of_lease"},
 								{"label": "Duration of lease", "unit": "Years", "key": "duration_of_lease"},
 								{"label": "Rate of Interest on Investment", "unit": "%", "key": "roi_on_investment"}
 						 	],
 				"results": 	[
-								"Rate of depreciation per Rs.1",
 								"Annual Depreciation Amount",
 								"Depreciation schedule - table, graph, timeline"
+							],
+				"tooltips": [
+								`The total amount spent on purchasing the lease or on
+								acquisition of the lease contract including any additional costs`,
+								`The total number of years of the lease`,
+								`The percentage of interest considered to be charged and
+								written off on the lease.`
 							]
 			},
 			{
@@ -105,8 +138,8 @@ var calculators = [
 				"calculator_id" : "S01C05CALC005",
 				"name" : "Hourly & Annual depreciation amounts - Machine Hour method",
 				"inputs": 	[
-								{"label": "Cost of the machinery", "unit": "Rs.", "key":"cost_of_machinery"},
-								{"label": "Scrap Value/Salvage Value", "unit": "Rs.", "key": "scrap_value"},
+								{"label": "Cost of the machinery", "unit": "₹", "key":"cost_of_machinery"},
+								{"label": "Scrap Value/Salvage Value", "unit": "₹", "key": "scrap_value"},
 								{"label": "Estimated total working capacity", "unit": "Hours", "key": "estimated_working_capacity"},
 								{"label": "Annual Machinery Usage", "unit": "Hours", "key": "annual_machinery_usage", "array": true, "button_name": "Add Year", "column_name": "Year"}
 						 	],
@@ -115,6 +148,15 @@ var calculators = [
 								"Depreciation per hour",
 								"Annual Depreciation Amount",
 								"Depreciation schedule - table, graph, timeline"
+							],
+				"tooltips": [
+								`The total amount spent on purchasing the machinery or
+								its acquisition including additional costs spent on installation, commissioning,
+								etc.`,
+								`Residual value or the value that the machinery could
+								fetch after its useful life`,
+								`The total number of hours for which the machinery can
+								be expected to run efficiently`
 							]
 			}
 		],
