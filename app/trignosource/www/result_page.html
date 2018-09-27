@@ -35,25 +35,27 @@
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <script type="text/javascript" 
+        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
         <link rel="stylesheet" type="text/css" href="css/page1.css">
         <link rel="stylesheet" type="text/css" href="css/calculator.css">
         <title>Trignosource | Result</title>
     </head>
     <body>
           <div class="page2" 
-            style="display: flex;background-color: rgb(6,152,212) !important;">
+            style="display: flex;background-color: rgb(6,152,212) !important;overflow: hidden;">
             <img src="img/back_arrow.png" id="back_arrow"
             style="position: absolute;top:25px;left:25px;width:30px;" />
             <div class="part2 ppage2" id="interaction_videos" style="flex-grow: 2;margin-top: 50px;">
                 <div class="calculator-card">
-                    <div class="calculator-top" style="flex-direction: row-reverse;justify-content: space-between;padding: 7px 0;">
-                        <div class="calculator-title" id="open_inputs"
-                        style="border:none;text-align: right;display: flex;flex-direction: row;justify-content: flex-end;">
+                    <div class="calculator-top" style="flex-direction: row-reverse;justify-content: space-between;min-height: 38px;">
+                        <div class="calculator-edit-title" id="open_inputs"
+                        style="border:none;text-align: right;display: flex;flex-direction: row;justify-content: flex-end;line-height: 21px;">
                             View/Edit Input
                             <img src="img/arrow_down.png" style="width:11px;height: 9px;margin:6px;">
                         </div>
-                        <div class="calculator-title" id="close_inputs"
-                        style="border:none;text-align: right;display: none;flex-direction: row;justify-content: flex-end;">
+                        <div class="calculator-edit-title" id="close_inputs"
+                        style="border:none;text-align: right;display: none;flex-direction: row;justify-content: flex-end;line-height: 21px;">
                             View/Edit Input
                             <img src="img/arrow_up.png" style="width:11px;height: 9px;margin:6px;">
                         </div>
@@ -62,12 +64,12 @@
                             style="width: 20px;height: 20px;">
                         </div>
                     </div>
-                    <div class="calculator-mid" id="calculator_mid">
-                        
+                    <div class="calculator-mid" id="calculator_mid" 
+                    style="padding-bottom: 10px;">
                     </div>
-                    <div class="calculator-btm">
-                        <div class="calculate-btn" id="calculate_btn">STEP-BY-STEP RESULTS</div>
-                    </div>
+                </div>
+                <div class="calculator-btm" style="padding: 12px 0;">
+                    <div class="calculate-btn" id="calculate_btn">STEP-BY-STEP RESULTS</div>
                 </div>
                 <div class="input-card" id="input_card">
                 </div>

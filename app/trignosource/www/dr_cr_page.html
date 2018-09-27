@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;"> -->
+        <meta http-equiv="Content-Security-Policy" content="default-src *;
+   img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;
+   style-src  'self' 'unsafe-inline' *">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <!-- <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" type="text/css" href="css/page1.css">
+        <link rel="stylesheet" type="text/css" href="css/calculator.css">
+        <title>Trignosource | Calculator</title>
+        <style> <item name="android:windowTranslucentStatus">true</item></style>
+    </head>
+    <body>
+          <div class="page2" id="page" 
+            style="display: flex;background-color: rgb(6,152,212) !important;overflow: hidden;">
+            <div class="accounts-header">
+                <div>Dr.</div>
+                <div><span class="asset_name"></span> a/c</div>
+                <div>Cr.</div>
+            </div>
+            <div class="part2 ppage2" id="interaction_videos" style="flex-grow: 2;margin: 2%;width:96%;padding: 0;">
+                <div class="calculator-card" 
+                    style="border-radius: 12px;background: white;width: 100%;overflow: hidden;">
+                    <div class="dr_cr_modal_container" id="dr_cr_modal">
+                        <div class="dr_cr_modal_screen"></div>
+                        <div class="dr_cr_modal">
+                            <div class="dr_cr_modal_header">Working Note
+                                <img src="img/close.png" id="close_modal" style="position: absolute;right:10px;top:10px;height: 20px;">
+                            </div>
+                            <div class="working_note">
+                                <div class="working_note_name" id="working_note_name"></div>
+                                <div class="working_note_container" id="working_note_container">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form class="calc-form" onsubmit="return false" name="calculator"
+                    style="display: flex;flex-direction: row;overflow: scroll;">
+                        <div class="debits">
+                            <div class="col-header">
+                                <div class="date-header">Date</div>
+                                <div class="particulars-header">Particulars</div>
+                                <div class="amount-header">Amount (₹)</div>
+                            </div>
+                            <div class="col-body" id="debits-body">
+                                <div class="row-col" id="first-debit-row">
+                                    <div class="date-body"></div>
+                                    <div class="particulars-body"></div>
+                                    <div class="amount-body"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credits">
+                            <div class="col-header">
+                                <div class="date-header">Date</div>
+                                <div class="particulars-header">Particulars</div>
+                                <div class="amount-header">Amount (₹)</div>
+                            </div>
+                            <div class="col-body" id="credits-body">
+                                <div class="row-col" id="first-credit-row">
+                                    <div class="date-body"></div>
+                                    <div class="particulars-body"></div>
+                                    <div class="amount-body"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="calculate-btn" style="height: 75px; position: relative;margin:2%;width:96%;margin-top: 0;" id="start-btn">
+                <span class="c-spinner"></span>
+                <span class="c-text">BEGIN GENERATING ACCOUNT</span>
+                <div class="next-icon">
+                    <img src="img/next_button_arrow.png">
+                </div>
+            </div>
+            <div style="display: none;flex-direction: row;justify-content: space-between;height: 95px;"
+                id="after-first">
+                <div class="calculate-btn" style="height: 57px; position: relative;margin:2%;width:300px;margin-top: 0;">
+                    <span class="c-text">Read / View problem</span>
+                </div>
+                <div class="calculate-btn" id="skip_btn" style="height: 57px; position: relative;margin:2%;width:500px;margin-top: 0;">
+                    <span class="c-text">SKIP ALL STEPS</span>
+                </div>
+                <div class="calculate-btn" style="height: 57px; position: relative;margin:2%;margin-top: 0;flex-grow:2;justify-content: flex-start;
+    flex-direction: row;
+    padding: 0 25px;" id="next-btn">
+                    <span class="c-spinner"></span>
+                    <span class="c-text" id="total_steps"></span>
+                    <div class="next-icon">
+                        <span class="c-text" style="margin-right: 7px;">NEXT STEP</span>
+                        <img src="img/next_button_arrow.png" style="height: 12px;">
+                    </div>
+                </div>
+            </div>
+            <div style="display: none;flex-direction: row;justify-content: space-between;height: 95px;"
+                id="after-last">
+                <div class="calculate-btn" id="view_other" style="height: 57px; position: relative;margin:2%;width:300px;margin-top: 0;flex-grow: 2;">
+                    <span class="c-text">VIEW OTHER ACCOUNTS</span>
+                </div>
+                <div class="calculate-btn" id="learn_again" style="height: 57px; position: relative;margin:2%;width:500px;margin-top: 0;width: 200px;">
+                    <span class="c-text">LEARN AGAIN</span>
+                </div>
+            </div>
+          </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/dr_cr_page.js"></script>
+    </body>
+</html>

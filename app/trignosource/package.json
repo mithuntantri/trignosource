@@ -13,11 +13,14 @@
     "Html5Video": "git+https://github.com/jaeger25/Html5Video.git",
     "com.hutchind.cordova.plugins.streamingmedia": "~0.1.4",
     "cordova-android": "^6.3.0",
+    "cordova-custom-config": "^5.0.2",
     "cordova-ios": "^4.5.4",
     "cordova-jquery": "^0.1.6",
     "cordova-plugin-actionsheet": "^2.3.3",
+    "cordova-plugin-dialogs": "^2.0.1",
     "cordova-plugin-file": "^6.0.1",
     "cordova-plugin-http": "^1.2.0",
+    "cordova-plugin-keyboard": "^1.2.0",
     "cordova-plugin-network-information": "^2.0.1",
     "cordova-plugin-screen-orientation": "^3.0.1",
     "cordova-plugin-statusbar": "^2.4.1",
@@ -38,7 +41,10 @@
       "cordova-plugin-x-toast": {},
       "cordova-plugin-screen-orientation": {},
       "cordova-plugin-network-information": {},
-      "cordova-plugin-actionsheet": {}
+      "cordova-plugin-actionsheet": {},
+      "cordova-custom-config": {},
+      "cordova-plugin-keyboard": {},
+      "cordova-plugin-dialogs": {}
     },
     "platforms": [
       "ios",

@@ -62,29 +62,72 @@ var app = {
           `
         }
 
-         final_html += `
-            <div class="tabbedPanels">
-      <ul class="tabs">
-        <li><a href="#panel1" class = "tabOne">Table</a></li>
-        <li><a href="#panel2" class = "tabTwo inactive">Graph</a></li>
-        <li><a href="#panel3" class = "tabThree inactive">Timeline</a></li>
-      </ul>
-      <div class="panelContainer">
-        <div class="panel" id="panel1" style="display:block;">
-        ${that.currentResult.table}
-        </div>
-            <div class="panel" id="panel2" style="display:none;">
-          <h1 class = "panelContent">Graph</h1>
-          <p class = "panelContent"><span></span></p>
-                    <p class = "panelContent"><span></span></p>
-        </div>
-            <div class="panel" id="panel2" style="display:none;">
-          <h1 class = "panelContent"></h1>
-          <p class = "panelContent"><span></span></p>
-        </div>
-      </div>
-    </div>
-        `
+        for(var i=0;i< this.currentResult.tables.length;i++){
+            final_html += `
+            <div class="calculator-input" style="min-height:0px;">
+                <div class="input-label">${that.currentResult.tables[i].label}</div>
+            </div>
+            <div class="tabbedPanels">`
+            if(i==(this.currentResult.tables.length-1)){
+                final_html +=` <ul class="tabs">
+                    <li><a id="panel1_id_${i}" class = "tabOne activeTab">Table</a></li>
+                    <li><a id="panel2_id_${i}" class = "tabTwo">Graph</a></li>
+                    <li><a id="panel3_id_${i}" class = "tabThree">Timeline</a></li>
+                </ul>`
+            }
+            final_html +=`<div class="panelContainer">
+                    <div class="panel" id="panel1_${i}" style="display:block;">
+                    ${that.currentResult.tables[i].table}
+                    </div>`
+            if(i==(this.currentResult.tables.length-1)){
+                    final_html+=`<div class="panel" id="panel2_${i}" style="display:none;padding:20px 0;">
+                        <canvas id="myChart" width="350" height="170" style="width:342px;height:180px !important;"></canvas>
+                    </div>`
+            }
+            final_html+=`<div class="panel" id="panel3_${i}" style="display:none;flex-direction:column;">
+                        <div class="timeline-part1">`
+                    for(var j=0;j<that.currentResult.graph.timeline_count;j++){
+                        if(j==(that.currentResult.graph.timeline_count-1)){
+                            final_html += `<div class="timeline-arrow">
+                                        <div class="timeline-arrow-dep">${that.currentResult.graph.line_1_data_lbl[j]}</div>
+                                        <img class="timeline-arrow-img" src="img/calculators/arrow.png"/>
+                                        <div class="timeline-btm-line" style="border-right:3px solid white;width:90%;">
+                                           <div class="timeline-arrow-bal">${that.currentResult.graph.line_2_data_lbl[j]}</div>
+                                           <div class="timeline-arrow-bal-next">${that.currentResult.graph.closing}</div>
+                                           <div class="timeline-arrow-yr">${j}</div>
+                                           <div class="timeline-arrow-yr-next">${j+1}</div>
+                                        </div>
+                                    </div>`
+                        }else{
+                            final_html += `<div class="timeline-arrow">
+                                        <div class="timeline-arrow-dep">${that.currentResult.graph.line_1_data_lbl[j]}</div>
+                                        <img class="timeline-arrow-img" src="img/calculators/arrow.png"/>
+                                        <div class="timeline-btm-line">
+                                           <div class="timeline-arrow-bal">${that.currentResult.graph.line_2_data_lbl[j]}</div>
+                                           <div class="timeline-arrow-yr">${j}</div>
+                                        </div>
+                                    </div>`
+                        }
+                    }
+                    final_html += `</div><div class="timeline-legends">
+                                        <div class="timeline-legend">
+                                            <div class="timeline-legend-ic yr"></div>
+                                            <div class="timeline-legend-name yrname">${that.currentResult.graph.x_label}</div>
+                                        </div>
+                                        <div class="timeline-legend">
+                                            <div class="timeline-legend-ic dep"></div>
+                                            <div class="timeline-legend-name depname">${that.currentResult.graph.line_1_label}</div>
+                                        </div>
+                                        <div class="timeline-legend">
+                                            <div class="timeline-legend-ic bal"></div>
+                                            <div class="timeline-legend-name balname">${that.currentResult.graph.line_2_label}</div>
+                                        </div>
+                                    </div>`
+            final_html+=`</div>
+                </div>
+            </div>
+            `
+        }
         document.getElementById('calculator_mid').innerHTML = final_html
 
         var final_input = ``
@@ -94,6 +137,108 @@ var app = {
         final_input += `
                     <img src="img/calculators/edit_input.png" id="edit_input" style="width:20px;height: 20px;position: absolute;right: 15px;top: 25px;">`
         document.getElementById('input_card').innerHTML = final_input
+
+        var total_length = this.currentResult.tables.length-1
+        for(var i=0;i< this.currentResult.tables.length;i++){
+            (function(i){
+                if(i==(total_length)){
+                var j = i
+                var tabOne = document.getElementById('panel1_id_'+j)
+                var tabTwo = document.getElementById('panel2_id_'+j)
+                var tabThree = document.getElementById('panel3_id_'+j)
+
+                tabOne.addEventListener('click', function(){
+                    var tab1 = document.getElementById('panel1_'+j)
+                    var tab2 = document.getElementById('panel2_'+j)
+                    var tab3 = document.getElementById('panel3_'+j)
+                    tabOne.classList.add("activeTab");
+                    tabTwo.classList.remove("activeTab");
+                    tabThree.classList.remove("activeTab");
+                    tab1.style.display = 'block'
+                    tab2.style.display = 'none'
+                    tab3.style.display = 'none'
+                })
+                tabTwo.addEventListener('click', function(){
+                    var tab1 = document.getElementById('panel1_'+j)
+                    var tab2 = document.getElementById('panel2_'+j)
+                    var tab3 = document.getElementById('panel3_'+j)
+                    tabOne.classList.remove("activeTab");
+                    tabTwo.classList.add("activeTab");
+                    tabThree.classList.remove("activeTab");
+                    tab1.style.display = 'none'
+                    tab2.style.display = 'block'
+                    tab3.style.display = 'none'
+                })
+
+                tabThree.addEventListener('click', function(){
+                    var tab1 = document.getElementById('panel1_'+j)
+                    var tab2 = document.getElementById('panel2_'+j)
+                    var tab3 = document.getElementById('panel3_'+j)
+                    tabOne.classList.remove("activeTab");
+                    tabTwo.classList.remove("activeTab");
+                    tabThree.classList.add("activeTab");
+                    tab1.style.display = 'none'
+                    tab2.style.display = 'none'
+                    tab3.style.display = 'flex'
+                })}            
+            })(i);
+        }
+        this.loadChart()
+    },
+    loadChart: function(){
+        var that = this
+        var ctx = document.getElementById("myChart").getContext('2d');
+        Chart.defaults.global.defaultFontColor = '#fff';
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            scaleFontColor: "white",
+            data: {
+                labels: that.currentResult.graph.x_data,
+                datasets: [{
+                    label: that.currentResult.graph.line_1_label,
+                    data: that.currentResult.graph.line_1_data,
+                    backgroundColor: 'rgb(255, 192, 0)',
+                    borderColor: 'rgb(255, 192, 0)',
+                    borderWidth: 1,
+                    fill: false
+                },{
+                    label: that.currentResult.graph.line_2_label,
+                    data: that.currentResult.graph.line_2_data,
+                    backgroundColor: 'rgb(146, 208, 80)',
+                    borderColor: 'rgb(146, 208, 80)',
+                    borderWidth: 1,
+                    fill:false
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            fontColor: "white",
+                            beginAtZero:true
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: that.currentResult.graph.x_label
+                          }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: "white",
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: that.currentResult.graph.y_label
+                          }
+                    }]
+                },
+                legend: {
+                    fontColor: "white",
+                    position: 'bottom'
+                }
+            }
+        });
+        myChart.defaults.global.defaultFontColor = "#fff";
     },
 
     // deviceready Event Handler

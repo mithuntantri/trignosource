@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;"> -->
+        <meta http-equiv="Content-Security-Policy" content="default-src *;
+   img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;
+   style-src  'self' 'unsafe-inline' *">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <!-- <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" type="text/css" href="css/page1.css">
+        <link rel="stylesheet" type="text/css" href="css/calculator.css">
+        <title>Trignosource | Calculator</title>
+        <style> <item name="android:windowTranslucentStatus">true</item></style>
+    </head>
+    <body>
+          <div class="page2" id="page" 
+            style="display: flex;background-color: rgb(6,152,212) !important;overflow: hidden;">
+            <img src="img/back_arrow.png" id="back_arrow"
+            style="position: absolute;top:25px;left:25px;width:30px;" />
+            <div class="part2 ppage2" id="interaction_videos" style="flex-grow: 2;margin-top:50px;">
+                <div class="calculator-card" style="border-radius: 12px;">
+                    <form class="calc-form" onsubmit="return false" name="calculator">
+                        <div class="transactions-top">
+                            <div class="transactions-title" id="transactions_name" style="display: block;">
+                                Add sale of <span class="asset_name"></span> (if any):
+                            </div>
+                        </div>
+                        <div class="calculator-mid" id="calculator_mid" style="display: block;padding: 0;overflow: scroll;">
+                           
+                        </div>
+                    </form>
+                </div>
+                <div class="calculator-btm">
+                     <input type="submit" class="calculate-btn" id="close_keyboard" 
+                    value="CLOSE" style="display: none;" />
+                    <div class="calculate-btn" id="next_btn" style="position: relative;">
+                        <span class="c-spinner"></span>
+                        <span class="c-text">ADD MORE TRANSACTIONS</span>
+                        <!-- <div class="next-icon">
+                            <img src="img/next_button_arrow.png">
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+          </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/sales.js"></script>
+    </body>
+</html>

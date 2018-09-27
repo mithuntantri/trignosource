@@ -34,14 +34,16 @@
    style-src  'self' 'unsafe-inline' *">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <!-- <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <link rel="stylesheet" type="text/css" href="css/page1.css">
         <link rel="stylesheet" type="text/css" href="css/calculator.css">
         <title>Trignosource | Calculator</title>
+        <style> <item name="android:windowTranslucentStatus">true</item></style>
     </head>
     <body>
-          <div class="page2" 
-            style="display: flex;background-color: rgb(6,152,212) !important;">
+          <div class="page2" id="page" 
+            style="display: flex;background-color: rgb(6,152,212) !important;overflow: hidden;">
             <img src="img/back_arrow.png" id="back_arrow"
             style="position: absolute;top:25px;left:25px;width:30px;" />
             <div class="part1 ppage2" style="min-height: 120px;padding-top: 30px;background-color: rgb(6,152,212) !important;">
@@ -55,16 +57,30 @@
             </div>
             <div class="part2 ppage2" id="interaction_videos" style="flex-grow: 2;">
                 <div class="calculator-card">
-                    <div class="calculator-top">
-                        <div class="calculator-title" id="calculator_name"></div>
-                        <div style="display: flex;flex-direction: column;justify-content: center;padding: 5px;"><img src="img/bookmark.png" class="calculator-img"
-                        style="width: 60px;height: 40px;"></div>
-                    </div>
-                    <div class="calculator-mid" id="calculator_mid" style="display: block;padding: 25px 0;overflow: scroll;">
-                    </div>
-                    <div class="calculator-btm">
-                        <div class="calculate-btn" id="calculate_btn">CALCULATE</div>
-                    </div>
+                    <form class="calc-form" onsubmit="return false" name="calculator">
+                        <div class="calculator-top">
+                            <div class="calculator-title" id="calculator_name"></div>
+                            <div style="display: flex;flex-direction: column;justify-content: center;padding: 5px;"><img src="img/bookmark.png" class="calculator-img"
+                            style="width: 60px;height: 40px;"></div>
+                        </div>
+                        <div class="calculator-mid" id="calculator_mid" style="display: block;padding: 25px 0;overflow: visible;">
+                        </div>
+                        <div class="calculator-btm">
+                             <input type="submit" class="calculate-btn" id="close_keyboard" 
+                            value="CLOSE" style="display: none;" />
+                            <div class="calculate-btn" id="calculate_btn">
+                                <span class="c-spinner"></span>
+                                <span class="c-text">CALCULATE</span>
+                            </div>
+                            <div class="calculate-btn" id="next_btn" style="display: none;position: relative;">
+                                <span class="c-spinner"></span>
+                                <span class="c-text">NEXT</span>
+                                <div class="next-icon">
+                                    <img src="img/next_button_arrow.png">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
           </div>

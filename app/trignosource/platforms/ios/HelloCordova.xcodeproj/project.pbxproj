@@ -40,6 +40,10 @@
 		0CE784A8AA214040AFE44053 /* CDVReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D7025A6CA1040699F24EF95 /* CDVReachability.m */; };
 		FEF0E7FB1B9B4FF9812A31FE /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6CC363E071241E3ACE6B72D /* CoreTelephony.framework */; };
 		4D7929BABBCF4E1EBA30FFC0 /* ActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB20518A198454EBE9A86AD /* ActionSheet.m */; };
+		61226B5FFF37441D9B38B972 /* CDVKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FA4B7F9AE2B444091406B2D /* CDVKeyboard.m */; };
+		2F78F28755BB4A518CDA3282 /* CDVNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F7DC22689547E4B4F75791 /* CDVNotification.m */; };
+		463E0B51CA1447A1B9F153B5 /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4FD8554A3B7749B3838C4DD5 /* CDVNotification.bundle */; };
+		56B5706264974601B6CA8C69 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A2A0F08F42F46308B6344CC /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +128,12 @@
 		F6CC363E071241E3ACE6B72D /* CoreTelephony.framework */ = {isa = PBXFileReference; name = "CoreTelephony.framework"; path = "System/Library/Frameworks/CoreTelephony.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		CCB20518A198454EBE9A86AD /* ActionSheet.m */ = {isa = PBXFileReference; name = "ActionSheet.m"; path = "cordova-plugin-actionsheet/ActionSheet.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		3CE9DC5865404D23AAD62C82 /* ActionSheet.h */ = {isa = PBXFileReference; name = "ActionSheet.h"; path = "cordova-plugin-actionsheet/ActionSheet.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		0FA4B7F9AE2B444091406B2D /* CDVKeyboard.m */ = {isa = PBXFileReference; name = "CDVKeyboard.m"; path = "cordova-plugin-keyboard/CDVKeyboard.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		A3A2F249E2324D5F85C64468 /* CDVKeyboard.h */ = {isa = PBXFileReference; name = "CDVKeyboard.h"; path = "cordova-plugin-keyboard/CDVKeyboard.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		25F7DC22689547E4B4F75791 /* CDVNotification.m */ = {isa = PBXFileReference; name = "CDVNotification.m"; path = "cordova-plugin-dialogs/CDVNotification.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		5424DB8C9E1C4E698E913AEA /* CDVNotification.h */ = {isa = PBXFileReference; name = "CDVNotification.h"; path = "cordova-plugin-dialogs/CDVNotification.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		4FD8554A3B7749B3838C4DD5 /* CDVNotification.bundle */ = {isa = PBXFileReference; name = "CDVNotification.bundle"; path = "CDVNotification.bundle"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.plug-in; explicitFileType = undefined; includeInIndex = 0; };
+		5A2A0F08F42F46308B6344CC /* AudioToolbox.framework */ = {isa = PBXFileReference; name = "AudioToolbox.framework"; path = "System/Library/Frameworks/AudioToolbox.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +147,7 @@
 				509B1CD020E649B68A3D96FD /* MediaPlayer.framework in Frameworks */,
 				161A5B880E28448AA6FCC2A7 /* QuartzCore.framework in Frameworks */,
 				FEF0E7FB1B9B4FF9812A31FE /* CoreTelephony.framework in Frameworks */,
+				56B5706264974601B6CA8C69 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +210,7 @@
 				3047A50E1AB8057F00498E2A /* config */,
 				8D1107310486CEB800E47090 /* HelloCordova-Info.plist */,
 				6AFF5BF81D6E424B00AB3073 /* CDVLaunchScreen.storyboard */,
+				4FD8554A3B7749B3838C4DD5 /* CDVNotification.bundle */,
 			);
 			name = Resources;
 			path = "HelloCordova/Resources";
@@ -212,6 +224,7 @@
 				F963698A6E754427A81E3707 /* MediaPlayer.framework */,
 				45D18025525A4D2B815C2DD9 /* QuartzCore.framework */,
 				F6CC363E071241E3ACE6B72D /* CoreTelephony.framework */,
+				5A2A0F08F42F46308B6344CC /* AudioToolbox.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -276,6 +289,10 @@
 				96F4EECF1E7641B2A886AE14 /* CDVReachability.h */,
 				CCB20518A198454EBE9A86AD /* ActionSheet.m */,
 				3CE9DC5865404D23AAD62C82 /* ActionSheet.h */,
+				0FA4B7F9AE2B444091406B2D /* CDVKeyboard.m */,
+				A3A2F249E2324D5F85C64468 /* CDVKeyboard.h */,
+				25F7DC22689547E4B4F75791 /* CDVNotification.m */,
+				5424DB8C9E1C4E698E913AEA /* CDVNotification.h */,
 			);
 			name = Plugins;
 			path = "HelloCordova/Plugins";
@@ -357,6 +374,7 @@
 				302D95F214D2391D003F00A1 /* MainViewController.xib in Resources */,
 				0207DA581B56EA530066E2B4 /* Images.xcassets in Resources */,
 				6AFF5BF91D6E424B00AB3073 /* CDVLaunchScreen.storyboard in Resources */,
+				463E0B51CA1447A1B9F153B5 /* CDVNotification.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,6 +425,8 @@
 				21F60F375333418A85FEF72C /* CDVConnection.m in Sources */,
 				0CE784A8AA214040AFE44053 /* CDVReachability.m in Sources */,
 				4D7929BABBCF4E1EBA30FFC0 /* ActionSheet.m in Sources */,
+				61226B5FFF37441D9B38B972 /* CDVKeyboard.m in Sources */,
+				2F78F28755BB4A518CDA3282 /* CDVNotification.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -71,7 +71,7 @@ var app = {
                         </div>`
                 }   
                 final_html += `
-                    <div class="result-content" id="result_content_${j}_${i}" style="display:none;">
+                    <div class="result-content" id="result_content_${j}_${i}" style="display:none;font-size:15px !important">
                         ${this.currentResult.stepwise[j].content[i]}
                 `
                 if(this.currentResult.stepwise[j].detailed_explanation[i]){

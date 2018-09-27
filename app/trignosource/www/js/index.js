@@ -18,8 +18,8 @@
  */
 var app = {
     // Application Constructor
-    baseUrl: 'https://fast-lizard-17.localtunnel.me',
-    // baseUrl: 'https://wise-otter-21.localtunnel.me',
+    baseUrl: 'http://13.126.30.240',
+    // baseUrl: 'https://sour-pug-14.localtunnel.me',
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },
