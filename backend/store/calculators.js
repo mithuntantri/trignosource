@@ -26,6 +26,7 @@ var S01C05CALC002 = require('../store/S01C05CALC002');
 var S01C05CALC003 = require('../store/S01C05CALC003');
 var S01C05CALC004 = require('../store/S01C05CALC004');
 var S01C05CALC005 = require('../store/S01C05CALC005');
+var S01C05CALC006 = require('../store/S01C05CALC005');
 
 var calculators = [
 	//Subject 1
@@ -142,6 +143,68 @@ var calculators = [
 								{"label": "Scrap Value/Salvage Value", "unit": "₹", "key": "scrap_value"},
 								{"label": "Estimated total working capacity", "unit": "Hours", "key": "estimated_working_capacity"},
 								{"label": "Annual Machinery Usage", "unit": "Hours", "key": "annual_machinery_usage", "array": true, "button_name": "Add Year", "column_name": "Year"}
+						 	],
+				"results": 	[
+								"Total depreciable amount",
+								"Depreciation per hour",
+								"Annual Depreciation Amount",
+								"Depreciation schedule - table, graph, timeline"
+							],
+				"tooltips": [
+								`The total amount spent on purchasing the machinery or
+								its acquisition including additional costs spent on installation, commissioning,
+								etc.`,
+								`Residual value or the value that the machinery could
+								fetch after its useful life`,
+								`The total number of hours for which the machinery can
+								be expected to run efficiently`
+							]
+			},
+			{
+				"number" : "06",
+				"calculator_id" : "S01C05CALC006",
+				"name" : "Accounts generator - Straight Line Method(SLM)",
+				"inputs": 	[
+								{	"label": "Select the asset to be depreciated", 
+									"unit": null, 
+									"key": "asset_to_be_depreciated", 
+									"dropdown": true, 
+									"button_name": "Select an asset", 
+									"options": [
+										"Machinery",
+										"Plant",
+										"Building",
+										"Vehicle",
+										"Furniture",
+										"Plant and Machinery",
+										"Create custom asset"
+									],
+									"disable": true,
+									"display": 'flex'
+								},
+								{
+									"label" : "Name of the asset",
+									"unit": null,
+									"key": "name_of_the_asset",
+									"button_name": "", 
+									"dropdown": false,
+									"extra": true, 
+									"options": [],
+									"disable": false,
+									"display": 'none',
+								},
+								{	"label": "Date of closing books of accounts", 
+									"unit": null, 
+									"key": "closing_date", 
+									"dropdown": true, 
+									"button_name": "Select date of closing books", 
+									"options": [
+										"31st December",
+										"31st March"
+									],
+									"disable": true,
+									"display": 'flex'
+								}
 						 	],
 				"results": 	[
 								"Total depreciable amount",
