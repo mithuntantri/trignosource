@@ -82,6 +82,20 @@ var app = {
             if(i==(this.currentResult.tables.length-1)){
                     final_html+=`<div class="panel" id="panel2_${i}" style="display:none;padding:20px 0;">
                         <canvas id="myChart" width="350" height="170" style="width:342px;height:180px !important;"></canvas>
+                        <div class="timeline-legends">
+                            <div class="timeline-legend">
+                                <div class="timeline-legend-ic yr"></div>
+                                <div class="timeline-legend-name yrname">${that.currentResult.graph.x_label}</div>
+                            </div>
+                            <div class="timeline-legend">
+                                <div class="timeline-legend-ic dep"></div>
+                                <div class="timeline-legend-name depname">${that.currentResult.graph.line_1_label}</div>
+                            </div>
+                            <div class="timeline-legend">
+                                <div class="timeline-legend-ic bal"></div>
+                                <div class="timeline-legend-name balname">${that.currentResult.graph.line_2_label}</div>
+                            </div>
+                        </div>
                     </div>`
             }
             final_html+=`<div class="panel" id="panel3_${i}" style="display:none;flex-direction:column;">
@@ -215,26 +229,34 @@ var app = {
                     yAxes: [{
                         ticks: {
                             fontColor: "white",
-                            beginAtZero:true
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: that.currentResult.graph.x_label
-                          }
-                    }],
-                    xAxes: [{
-                        ticks: {
-                            fontColor: "white",
+                            beginAtZero:true,
+                            min: 0,
+                            max: that.currentResult.graph.line_2_data[0] * 2,
+                            stepSize: that.currentResult.graph.line_2_data[0] / parseInt(that.currentResult.graph.line_2_data[0].substr(0,1))
                         },
                         scaleLabel: {
                             display: true,
                             labelString: that.currentResult.graph.y_label
                           }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: "white",
+                            beginAtZero:true,
+                            min: 0,
+                            max: 20,
+                            stepSize: 1
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: that.currentResult.graph.x_label
+                          }
                     }]
                 },
                 legend: {
                     fontColor: "white",
-                    position: 'bottom'
+                    position: 'bottom',
+                    display: false
                 }
             }
         });
