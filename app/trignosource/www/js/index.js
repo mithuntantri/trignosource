@@ -46,6 +46,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
+        screen.orientation.lock('portrait');
         console.log('Received Event: ' + id);
         document.addEventListener("offline", function(){ 
           console.log("Device offline")

@@ -120,15 +120,18 @@ var app = {
     onDeviceReady: function() {
         StatusBar.backgroundColorByHexString('#003256');
         this.receivedEvent('deviceready');
+        document.addEventListener("backbutton", function(){
+            window.location = 'transactions.html'
+        }, false);
         document.getElementById('back_arrow').addEventListener('click', function(e){
-            navigator.app.backHistory();
+            window.location = 'transactions.html'
         })
     },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
-
+        screen.orientation.lock('portrait');
         var that = this
         var next_btn = document.getElementById('next_btn');
         next_btn.addEventListener('click', function(){
@@ -270,8 +273,8 @@ var app = {
             gtdy: [], gtdc: [], gtdpy: [], gtdi: [], gtdpm: [], gtdpdp: [], gtdyopd: [], gtdyopcb: [],
             gtdm: [], gtddp: [], gtdyotdob: [], gtdyotdd: [], gtdbv: [], gtdpl: [],
             atdi: [], atdy: [], atdm: [], atddp: [], ayotdob: [], ayotdd: [], atdbv: [], atdpl: [],
-            aptdi: [], aptdy: [], aptdc: [], aptddp: [], ayoptdob: [], ayoptdd: [], aptdbv: [], aptdpl: [],
-            gtdc2: [], gtdc7: [], atdc5: [], aptdc5: []
+            aptdi: [], aptdy: [], aptdm: [], aptdc: [], aptddp: [], ayoptdob: [], ayoptdd: [], aptdbv: [], aptdpl: [],
+            gtdc2: [], gtdc7: [], atdc5: [], aptdc5: [], aptdyopd:[], aptdyopcb: [], aptdpbv: []
         }
 
         var addition = {
@@ -286,7 +289,7 @@ var app = {
             grc: [], gry: [], grm: [], grdp: [], gryord: [], gryorcb: [],
             arc: [], ary: [], arm: [], ardp: [], ayord: [], ayorcb: [],
             aprc: [], apry: [], aprn: [], aprm: [], aprdp: [], ayoprd: [], ayoprcb: [],
-            grc5: [], arc5: [], aprc: []
+            grc5: [], arc5: [], aprc: [], aprc5: []
         }
 
 
@@ -402,15 +405,15 @@ var app = {
                     sales.apsc5.push(parseInt(obj.year_of_sale)+1)
                 }
                 sales.apsdp.push(sales.apsm[i])
+                sales.apyopd.push(sales.apsc[i] * d * purchase.apdp[i] / 12)
+                sales.apyopcb.push(sales.apsc[i] - sales.apyopd[i])
                 let asset_number = parseInt(this.transactionObject[2].values[i].asset.split(" ")[1]) -1
                 let ayopsob = this.createAssetPartSaleSchedule(closing_date, d, opening_date, sales, i, asset_number)
                 sales.ayopsob.push(ayopsob)
                 sales.ayopsd.push(sales.ayopsob[i] * d * sales.apsdp[i] / 12)
                 sales.apsbv.push(sales.ayopsob[i] - sales.ayopsd[i])
                 sales.apspl.push(sales.apsbv[i] - sales.aps[i])
-                sales.apyopd.push(sales.apsc[i] * d * purchase.apdp[i] / 12)
-                sales.apyopcb.push(sales.apsc[i] - sales.apyopd[i])
-                this.updatePurchaseScheduleSalePart(this.transactionObject[2].values[i].asset, sales, i, closing_date)
+                this.updatePurchaseScheduleSalePart(this.transactionObject[2].values[i].asset, sales, i, closing_date, opening_date, d)
             }
         }
         this.transactionVariables.sales = sales
@@ -488,15 +491,15 @@ var app = {
                     scrapped.apscrc5.push(parseInt(obj.year_of_sale)+1)
                 }
                 scrapped.apscrdp.push(scrapped.apscrm[i])
+                scrapped.apscryopd.push(scrapped.apscrc[i] * d * purchase.apdp[i] / 12)
+                scrapped.apscryopcb.push(scrapped.apscr[i] - scrapped.apscryopd[i])
                 let asset_number = parseInt(this.transactionObject[3].values[i].asset.split(" ")[1]) -1
                 let ayopscrob = this.createAssetPartScrapSchedule(closing_date, d, opening_date, scrapped, i, asset_number)
                 scrapped.ayopscrob.push(ayopscrob)
                 scrapped.ayopscrd.push(scrapped.ayopscrob[i] * d * scrapped.apscrdp[i] / 12)
                 scrapped.apscrbv.push(scrapped.ayopscrob[i] - scrapped.ayopscrd[i])
                 scrapped.apscrpl.push(scrapped.apscrbv[i] - scrapped.apscr[i])
-                scrapped.apscryopd.push(scrapped.apscrc[i] * d * purchase.apdp[i] / 12)
-                scrapped.apscryopcb.push(scrapped.apscr[i] - scrapped.apscryopd[i])
-                this.updatePurchaseScheduleScrapPart(this.transactionObject[3].values[i].asset, scrapped, i, closing_date)
+                this.updatePurchaseScheduleScrapPart(this.transactionObject[3].values[i].asset, scrapped, i, closing_date, opening_date, d)
             }
         }
         this.transactionVariables.scrapped = scrapped
@@ -548,13 +551,13 @@ var app = {
                 }else{
                     destroyed.atdc5.push(parseInt(obj.year_of_sale)+1)
                 }
-                destroyed.atddp.push(destroyed.asm[i])
+                destroyed.atddp.push(destroyed.atdm[i])
                 let asset_number = parseInt(this.transactionObject[4].values[i].asset.split(" ")[1]) - 1
                 let ayotdob
                 if(closing_date == '31st December'){
                     ayotdob = this.stopPurchaseScheduleStart(asset_number, parseInt(obj.year_of_sale))
                 }else{
-                    ayotdob = this.stopPurchaseScheduleEnd(asset_number, parseInt(destroyed.atdc[i]))
+                    ayotdob = this.stopPurchaseScheduleEnd(asset_number, parseInt(destroyed.atdc5[i]))
                 }
                 destroyed.ayotdob.push(ayotdob)
                 destroyed.ayotdd.push(destroyed.ayotdob[i] * d * destroyed.atddp[i] / 12)
@@ -575,15 +578,15 @@ var app = {
                     destroyed.aptdc5.push(parseInt(obj.year_of_sale)+1)
                 }
                 destroyed.aptddp.push(destroyed.aptdm[i])
+                destroyed.aptdyopd.push(destroyed.aptdc[i] * d * purchase.apdp[i] / 12)
+                destroyed.aptdyopcb.push(destroyed.aptdc[i] - destroyed.aptdyopd[i])
                 let asset_number = parseInt(this.transactionObject[4].values[i].asset.split(" ")[1]) -1
                 let ayoptdob = this.createAssetPartTheftSchedule(closing_date, d, opening_date, destroyed, i, asset_number)
                 destroyed.ayoptdob.push(ayoptdob)
                 destroyed.ayoptdd.push(destroyed.ayoptdob[i] * d * destroyed.aptddp[i] / 12)
                 destroyed.aptdpbv.push(destroyed.ayoptdob[i] - destroyed.ayoptdd[i])
-                destroyed.aptdpl.push(destroyed.aptdbv[i] - destroyed.aptd[i])
-                destroyed.aptdyopd.push(destroyed.aptdc[i] * d * purchase.apdp[i] / 12)
-                destroyed.aptdyopcb.push(destroyed.aptdc[i] - destroyed.aptdyopd[i])
-                this.updatePurchaseScheduleTheftPart(this.transactionObject[4].values[i].asset, destroyed, i, closing_date)
+                destroyed.aptdpl.push(destroyed.aptdbv[i] - destroyed.aptdi[i])
+                this.updatePurchaseScheduleTheftPart(this.transactionObject[4].values[i].asset, destroyed, i, closing_date, opening_date, d)
             }
         }
         this.transactionVariables.destroyed = destroyed
@@ -610,7 +613,7 @@ var app = {
             }else{
                 addition.aa.push(parseFloat(obj.sale_proceeds))
                 addition.aay.push(parseInt(obj.year_of_sale))
-                addition.aan.push(parseFloat(obj.extent_of_sale))  
+                addition.aan.push(obj.extent_of_sale)
                 if(closing_date == '31st December'){
                     addition.aam.push(that.getAPMDec(obj.date_of_sale))
                 }else{
@@ -624,7 +627,7 @@ var app = {
                 addition.aadp.push(12 - addition.aam[i])
                 addition.ayoad.push(addition.aa[i] * d * addition.aadp[i] / 12)
                 addition.ayoacb.push(addition.aa[i] - addition.ayoad[i])
-                this.updatePurchaseScheduleAdd(this.transactionObject[5].values[i].asset, addition, i, closing_date)
+                this.updatePurchaseScheduleAdd(this.transactionObject[5].values[i].asset, addition, i, closing_date, d)
             }
         }
         this.transactionVariables.addition = addition
@@ -664,7 +667,7 @@ var app = {
                 replacement.ardp.push(12 - replacement.arm[i])
                 replacement.ayord.push(replacement.arc[i] * d * replacement.ardp[i] / 12)
                 replacement.ayorcb.push(replacement.arc[i] - replacement.ayord[i])
-                this.updatePurchaseScheduleReplaceWhole(this.transactionObject[6].values[i].asset, replacement, i, closing_date)
+                this.updatePurchaseScheduleReplaceWhole(this.transactionObject[6].values[i].asset, replacement, i, closing_date, d)
             }else{
                 replacement.name.push(this.transactionObject[6].values[i].asset)
                 replacement.aprc.push(parseFloat(obj.sale_proceeds))
@@ -684,13 +687,15 @@ var app = {
                 replacement.ayoprd.push(replacement.aprc[i] * d * replacement.aprdp[i] / 12)
                 replacement.ayoprcb.push(replacement.aprc[i] - replacement.ayoprd[i])
                 if(obj.extent_of_sale == "Significant"){
-                    this.updatePurchaseScheduleReplacePart(this.transactionObject[6].values[i].asset, replacement, i, closing_date)
+                    this.updatePurchaseScheduleReplacePart(this.transactionObject[6].values[i].asset, replacement, i, closing_date, d)
                 }
             }
         }
         this.transactionVariables.replacement = replacement
 
         console.log(this.transactionVariables, "transactionVariables")
+        localStorage.setItem('transactionVariables', JSON.stringify(this.transactionVariables))
+        localStorage.setItem('schedules', JSON.stringify(this.schedules))
         this.createBalanceSchedule(closing_date, d, opening_date, total_years)
         this.createTotalAssetsBlockSchedule(closing_date)
         console.log(this.schedules, "schedules")
@@ -813,6 +818,7 @@ var app = {
     },
 
     createBalanceSchedule: function(closing_date, d, opening_date, total_years){
+        console.log("--------------------------------------------------------")
         let obj = this.transactionVariables
         if(obj.goby){
             var schedule = [], max = parseInt(obj.goby)+parseInt(total_years)-1
@@ -853,30 +859,45 @@ var app = {
             }
             this.schedules.balance = schedule
             for(j=0;j<this.schedules.balance.length;j++){
+                if(j>0){
+                    this.schedules.balance[j].opening_balance = this.schedules.balance[j-1].closing_balance
+                    this.schedules.balance[j].depreciation = parseFloat((this.schedules.balance[j].opening_balance * d).toFixed(2))
+                    this.schedules.balance[j].closing_balance = parseFloat((this.schedules.balance[j].opening_balance - (this.schedules.balance[j].opening_balance * d)).toFixed(2))
+                }
                 let schedule = this.schedules.balance[j]
                 for(var i=0;i<obj.sales.gsyosob.length;i++){
                     if(schedule.year_begining == ((closing_date == '31st March')?obj.sales.gsc7[i]-1:obj.sales.gsy[i])){
-                        this.schedules.balance[j].opening_balance -= obj.sales.gsyosob[i]                        
+                        this.schedules.balance[j].opening_balance -= obj.sales.gsyosob[i]  
+                        this.schedules.balance[j].depreciation = parseFloat((this.schedules.balance[j].opening_balance * d).toFixed(2))
+                        this.schedules.balance[j].closing_balance = parseFloat((this.schedules.balance[j].opening_balance - (this.schedules.balance[j].opening_balance * d)).toFixed(2))
                     }
                 }
                 for(var i=0;i<obj.scrapped.gscryosob.length;i++){
                     if(schedule.year_begining == ((closing_date == '31st March')?obj.scrapped.gscrc7[i]-1:obj.scrapped.gscry[i])){
-                        this.schedules.balance[j].opening_balance -= obj.scrapped.gscryosob[i]                        
+                        this.schedules.balance[j].opening_balance -= obj.scrapped.gscryosob[i]  
+                        this.schedules.balance[j].depreciation = parseFloat((this.schedules.balance[j].opening_balance * d).toFixed(2))
+                        this.schedules.balance[j].closing_balance = parseFloat((this.schedules.balance[j].opening_balance - (this.schedules.balance[j].opening_balance * d)).toFixed(2))
                     }
                 }
                 for(var i=0;i<obj.destroyed.gtdyotdob.length;i++){
                     if(schedule.year_begining == ((closing_date == '31st March')?obj.destroyed.gtdc7[pos]-1:obj.destroyed.gtdy[i])){
-                        this.schedules.balance[j].opening_balance -= obj.destroyed.gtdyotdob[i]                        
+                        this.schedules.balance[j].opening_balance -= obj.destroyed.gtdyotdob[i] 
+                        this.schedules.balance[j].depreciation = parseFloat((this.schedules.balance[j].opening_balance * d).toFixed(2))
+                        this.schedules.balance[j].closing_balance = parseFloat((this.schedules.balance[j].opening_balance - (this.schedules.balance[j].opening_balance * d)).toFixed(2))                      
                     }
                 }
                 for(var i=0;i<obj.addition.gayoacb.length;i++){
-                    if(obj.gan[i] == 'Significant' && schedule.year_begining == ((closing_date == '31st March')?obj.addition.gac5[pos]:obj.addition.gay[i])){
-                        this.schedules.balance[j].closing_balance += obj.addition.gayoacb[i]                        
+                    if(obj.addition.gan[i] == 'Significant' && schedule.year_begining == ((closing_date == '31st March')?obj.addition.gac5[pos]:obj.addition.gay[i])){
+                        this.schedules.balance[j].closing_balance += obj.addition.gayoacb[i] 
+                        this.schedules.balance[j].depreciation = parseFloat((this.schedules.balance[j].opening_balance * d).toFixed(2))
+                        this.schedules.balance[j].closing_balance = parseFloat((this.schedules.balance[j].opening_balance - (this.schedules.balance[j].opening_balance * d)).toFixed(2))                        
                     }
                 }
                 for(var i=0;i<obj.replacement.gryorcb.length;i++){
                     if(schedule.year_begining == ((closing_date == '31st March')?obj.replacement.grc5[pos]:obj.replacement.gry[i])){
-                        this.schedules.balance[j].closing_balance += obj.replacement.gryorcb[i]                        
+                        this.schedules.balance[j].closing_balance += obj.replacement.gryorcb[i]                   
+                        this.schedules.balance[j].depreciation = parseFloat((this.schedules.balance[j].opening_balance * d).toFixed(2))
+                        this.schedules.balance[j].closing_balance = parseFloat((this.schedules.balance[j].opening_balance - (this.schedules.balance[j].opening_balance * d)).toFixed(2))      
                     }
                 }
             }
@@ -924,57 +945,225 @@ var app = {
         }
         this.schedules.purchase.push(schedule)
     },
-    updatePurchaseScheduleAdd: function(asset, addition, pos, closing_date){
+    updatePurchaseScheduleAdd: function(asset, addition, pos, closing_date, d){
         let asset_number = parseInt(asset.split(" ")[1])-1
-        for(i=0;i<this.schedules.purchase[asset_number].length;i++){
-            let obj = this.schedules.purchase[asset_number][i]
+        var that = this
+        let overall_purchase = _.clone(this.schedules.purchase)
+        let purchase = _.clone(overall_purchase[asset_number])
+        for(i=1;i<purchase.length;i++){
+            let obj = _.clone(purchase[i])
             if(addition.aan[pos] == 'Significant' && obj.year_begining ==  ((closing_date == '31st March')?addition.aac5[pos]:addition.aay[pos])){
-                this.schedules.purchase[asset_number][i].closing_balance += addition.ayoacb[pos]
+                let new_cp = obj.closing_balance + addition.ayoacb[pos]
+                obj.closing_balance = new_cp
+
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
+            }else{
+                obj.opening_balance = purchase[i-1].closing_balance
+                obj.depreciation = purchase[i-1].closing_balance * d
+                obj.closing_balance = purchase[i-1].closing_balance - (purchase[i-1].closing_balance * d)
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
             }
         }
     },
-    updatePurchaseScheduleReplaceWhole: function(asset, replacement, pos, closing_date){
+    updatePurchaseScheduleReplaceWhole: function(asset, replacement, pos, closing_date, d){
         let asset_number = parseInt(asset.split(" ")[1])-1
-        for(i=0;i<this.schedules.purchase[asset_number].length;i++){
-            let obj = this.schedules.purchase[asset_number][i]
+        var that = this
+        let overall_purchase = _.clone(this.schedules.purchase)
+        let purchase = _.clone(overall_purchase[asset_number])
+        for(i=1;i<purchase.length;i++){
+            let obj = _.clone(purchase[i])
             if(obj.year_begining == ((closing_date == '31st March')?replacement.arc5[pos]:replacement.ary[pos])){
-                this.schedules.purchase[asset_number][i].closing_balance += replacement.ayorcb[pos]
+                let new_cp = obj.closing_balance + replacement.ayorcb[pos]
+                obj.closing_balance = new_cp
+
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
+            }else{
+                obj.opening_balance = purchase[i-1].closing_balance
+                obj.depreciation = purchase[i-1].closing_balance * d
+                obj.closing_balance = purchase[i-1].closing_balance - (purchase[i-1].closing_balance * d)
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
             }
         }
     },
-    updatePurchaseScheduleReplacePart: function(asset, replacement, pos, closing_date){
-        let asset_number = parseInt(asset.split(" ")[1])-1
-        for(i=0;i<this.schedules.purchase[asset_number].length;i++){
-            let obj = this.schedules.purchase[asset_number][i]
+    updatePurchaseScheduleReplacePart: function(asset, replacement, pos, closing_date, d){
+         let asset_number = parseInt(asset.split(" ")[1])-1
+        var that = this
+        let overall_purchase = _.clone(this.schedules.purchase)
+        let purchase = _.clone(overall_purchase[asset_number])
+        for(i=1;i<purchase.length;i++){
+            let obj = _.clone(purchase[i])
             if(obj.year_begining == ((closing_date == '31st March')?replacement.aprc5[pos]:replacement.apry[pos])){
-                this.schedules.purchase[asset_number][i].closing_balance += replacement.ayoprcb[pos]
+                let new_cp = obj.closing_balance + replacement.ayoprcb[pos]
+                obj.closing_balance = new_cp
+
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
+            }else{
+                obj.opening_balance = purchase[i-1].closing_balance
+                obj.depreciation = purchase[i-1].closing_balance * d
+                obj.closing_balance = purchase[i-1].closing_balance - (purchase[i-1].closing_balance * d)
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
             }
         }
     },
-    updatePurchaseScheduleSalePart: function(asset, sale, pos, closing_date){
+    updatePurchaseScheduleWrapper: function(asset, closing_date, d, x, y, z, is_add){
         let asset_number = parseInt(asset.split(" ")[1])-1
-        for(i=0;i<this.schedules.purchase[asset_number].length;i++){
-            let obj = this.schedules.purchase[asset_number][i]
+        var that = this
+        let overall_purchase = _.clone(this.schedules.purchase)
+        let purchase = _.clone(overall_purchase[asset_number])
+        for(i=1;i<purchase.length;i++){
+            let obj = _.clone(purchase[i])
+            if(obj.year_begining == ((closing_date == '31st March')?x-1:y)){
+                let new_op = obj.opening_balance - z
+                if(!is_add){
+                    new_op = obj.opening_balance + z
+                }
+                obj.opening_balance = new_op
+                obj.depreciation = new_op * d
+                obj.closing_balance = new_op - (new_op * d)
+
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
+            }else{
+                obj.opening_balance = purchase[i-1].closing_balance
+                obj.depreciation = purchase[i-1].closing_balance * d
+                obj.closing_balance = purchase[i-1].closing_balance - (purchase[i-1].closing_balance * d)
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
+            }
+        }
+    },
+    updatePurchaseScheduleSalePart: function(asset, sale, pos, closing_date, opening_date, d){
+        // this.updatePurchaseScheduleWrapper(asset, closing_date, d, sale.apsc5[pos], sale.apsy[pos], sale.ayopsob[pos], false)
+        let asset_number = parseInt(asset.split(" ")[1])-1
+        var that = this
+        let overall_purchase = _.clone(this.schedules.purchase)
+        let purchase = _.clone(overall_purchase[asset_number])
+        for(i=1;i<purchase.length;i++){
+            let obj = _.clone(purchase[i])
             if(obj.year_begining == ((closing_date == '31st March')?sale.apsc5[pos]-1:sale.apsy[pos])){
-                this.schedules.purchase[asset_number][i].opening_balance -= sale.ayopsob[pos]
+                let new_op = obj.opening_balance - sale.ayopsob[pos]
+                obj.opening_balance = new_op
+                obj.depreciation = new_op * d
+                obj.closing_balance = new_op - (new_op * d)
+
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
+            }else{
+                obj.opening_balance = purchase[i-1].closing_balance
+                obj.depreciation = purchase[i-1].closing_balance * d
+                obj.closing_balance = purchase[i-1].closing_balance - (purchase[i-1].closing_balance * d)
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
             }
         }
     },
-    updatePurchaseScheduleScrapPart: function(asset, scrap, pos, closing_date){
+    updatePurchaseScheduleScrapPart: function(asset, scrap, pos, closing_date, opening_date, d){
         let asset_number = parseInt(asset.split(" ")[1])-1
-        for(i=0;i<this.schedules.purchase[asset_number].length;i++){
-            let obj = this.schedules.purchase[asset_number][i]
+        var that = this
+        let overall_purchase = _.clone(this.schedules.purchase)
+        let purchase = _.clone(overall_purchase[asset_number])
+        for(i=1;i<purchase.length;i++){
+            let obj = _.clone(purchase[i])
             if(obj.year_begining == ((closing_date == '31st March')?scrap.apscrc5[pos]-1:scrap.apscry[pos])){
-                this.schedules.purchase[asset_number][i].opening_balance -= sale.ayopscrob[pos]
+                let new_op = obj.opening_balance - scrap.ayopscrob[pos]
+                obj.opening_balance = new_op
+                obj.depreciation = new_op * d
+                obj.closing_balance = new_op - (new_op * d)
+
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
+            }else{
+                obj.opening_balance = purchase[i-1].closing_balance
+                obj.depreciation = purchase[i-1].closing_balance * d
+                obj.closing_balance = purchase[i-1].closing_balance - (purchase[i-1].closing_balance * d)
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
             }
         }
     },
-    updatePurchaseScheduleTheftPart: function(asset, theft, pos, closing_date){
+    updatePurchaseScheduleTheftPart: function(asset, theft, pos, closing_date, opening_date, d){
         let asset_number = parseInt(asset.split(" ")[1])-1
-        for(i=0;i<this.schedules.purchase[asset_number].length;i++){
-            let obj = this.schedules.purchase[asset_number][i]
+        var that = this
+        let overall_purchase = _.clone(this.schedules.purchase)
+        let purchase = _.clone(overall_purchase[asset_number])
+        for(i=1;i<purchase.length;i++){
+            let obj = _.clone(purchase[i])
             if(obj.year_begining == ((closing_date == '31st March')?theft.aptdc5[pos]-1:theft.aptdy[pos])){
-                this.schedules.purchase[asset_number][i].opening_balance -= theft.ayoptdob[pos]
+                let new_op = obj.opening_balance - theft.ayoptdob[pos]
+                obj.opening_balance = new_op
+                obj.depreciation = new_op * d
+                obj.closing_balance = new_op - (new_op * d)
+
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
+            }else{
+                obj.opening_balance = purchase[i-1].closing_balance
+                obj.depreciation = purchase[i-1].closing_balance * d
+                obj.closing_balance = purchase[i-1].closing_balance - (purchase[i-1].closing_balance * d)
+                purchase[i] = _.clone(obj)
+                overall_purchase[asset_number][i] = _.clone(purchase[i])
+                overall_purchase[asset_number] = _.clone(purchase)
+
+                that.schedules.purchase = _.clone(overall_purchase)
+                that.schedules.purchase[asset_number] = _.clone(purchase)
             }
         }
     },
@@ -985,10 +1174,11 @@ var app = {
         console.log("old_schedule", old_schedule)
         var i = 1
         for(j=parseInt(old_schedule[0].year_begining);j<=parseInt(last);j++){
-            new_schedule.push(old_schedule[i-1])
+            if(old_schedule[i-1])
+                new_schedule.push(old_schedule[i-1])
             i++
         }
-        this.schedules.purchase[asset_number] = new_schedule
+        this.schedules.purchase[asset_number] = _.clone(new_schedule)
         console.log("new_schedule", new_schedule)
         return new_schedule[new_schedule.length-1].opening_balance
     },
@@ -999,10 +1189,11 @@ var app = {
         console.log("old_schedule", old_schedule)
         var i = 1
         for(j=parseInt(old_schedule[0].year_end);j<=parseInt(last);j++){
-            new_schedule.push(old_schedule[i-1])
+            if(old_schedule[i-1])
+                new_schedule.push(old_schedule[i-1])
             i++
         }
-        this.schedules.purchase[asset_number] = new_schedule
+        this.schedules.purchase[asset_number] = _.clone(new_schedule)
         console.log("new_schedule", new_schedule)
         return new_schedule[new_schedule.length-1].opening_balance
     },
@@ -1027,7 +1218,7 @@ var app = {
         }
         schedule.push(part_sale)
         for(j=schedule[i-1].year_begining + 1;j<=max;j++){
-            var purchase = {
+            var part_sale = {
                 opening_date : opening_date,
                 year_begining: schedule[i-1].year_begining + 1,
                 opening_balance: schedule[i-1].closing_balance,
@@ -1062,7 +1253,7 @@ var app = {
         }
         schedule.push(part_scrap)
         for(j=schedule[i-1].year_begining + 1;j<=max;j++){
-            var purchase = {
+            var part_scrap = {
                 opening_date : opening_date,
                 year_begining: schedule[i-1].year_begining + 1,
                 opening_balance: schedule[i-1].closing_balance,
@@ -1097,7 +1288,7 @@ var app = {
         }
         schedule.push(part_theft)
         for(j=schedule[i-1].year_begining + 1;j<=max;j++){
-            var purchase = {
+            var part_theft = {
                 opening_date : opening_date,
                 year_begining: schedule[i-1].year_begining + 1,
                 opening_balance: schedule[i-1].closing_balance,
@@ -1136,6 +1327,7 @@ var app = {
         //     }
         // }
         console.log("Total Assets Block Schedule", new_schedule)
+        localStorage.setItem('totalAssetsBlockSchedule', JSON.stringify(new_schedule))
     },
     addTwoSchedules: function(obj1, obj2, new_schedule){
         for(var i=0;i<obj1.length;i++){
@@ -1190,29 +1382,27 @@ var app = {
 
         let depreciation_account = {
             "account_name": "depreciation_account",
-            "debit": [],
-            "credit": []
+            "all": [],
         }
         let pnl_account = {
             "account_name": "pnl_account",
-            "debit": [],
-            "credit": []
+            "all": [],
         }
         let obj = {
             "account_name": "asset_account",
-            "debit": [],
-            "credit": []
+            "all": []
         }
 
         if(this.transactionVariables.gob){
-              obj.debit.push({
+            obj.all.push({
                 "date": "1/1/"+this.transactionVariables.goby,
                 "particulars": "To balance b/d",
                 "extra": "",
                 "amount": parseFloat(this.transactionVariables.gob.toFixed(2)),
                 "form": "Opening Balance (Form 1)",
                 "title": "Opening Balance",
-                "more": null
+                "more": null,
+                "side": "debit"
             })
         }
 
@@ -1224,9 +1414,10 @@ var app = {
                 "amount": parseFloat(this.transactionVariables.purchase.atc[i].toFixed(2)),
                 "form": "Purchase (Form 2)",
                 "title": "Purchase",
-                "more": null
+                "more": null,
+                "side": "debit"
             }
-            obj.debit.push(acc)
+            obj.all.push(acc)
 
             acc = {
                 "date": this.getShortDate(closing_date) + this.transactionVariables.purchase.apy[i],
@@ -1235,14 +1426,19 @@ var app = {
                 "amount": parseFloat(this.transactionVariables.purchase.ayopd[i].toFixed(2)),
                 "form": "Purchase (Form 2)",
                 "title": "Depreciation",
-                "more": this.getDepreciationOfAssetPurchase(i, d, closing_date)
+                "more": this.getDepreciationOfAssetPurchase(i, d, closing_date),
+                "side": "credit"
             }
 
-            obj.credit.push(acc)
-            depreciation_account.credit.push(acc)
+            obj.all.push(acc)
+
+            let acc1 = _.clone(acc)
+            acc1.particulars = `To ${this.currentAsset} a/c`
+            acc1.side = "debit"
+            depreciation_account.all.push(acc1)
 
             // Sales - Asset Account
-            if(this.transactionObject[2].values.length > 0 && this.transactionObject[2].values[i].asset == "General / Other"){
+            if(this.transactionObject[2].values.length > i && this.transactionObject[2].values[i].asset == "General / Other"){
                 acc = {
                     "date": this.getShortDate(this.transactionObject[2].values[i].values.date_of_sale) + this.transactionVariables.sales.gsy[i],
                     "particulars": `By depreciation a/c`,
@@ -1250,19 +1446,25 @@ var app = {
                     "amount": parseFloat(this.transactionVariables.sales.gsyosd[i].toFixed(2)),
                     "form": "Sale (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "sales", true, false, false)
+                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "sales", true, false, false),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
+                obj.all.push(acc)
 
-                obj.credit.push({
+                let acc1 = _.clone(acc)
+                acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
+
+                obj.all.push({
                     "date": this.getShortDate(this.transactionObject[2].values[i].values.date_of_sale) + this.transactionVariables.sales.gsy[i],
                     "particulars": `By bank a/c`,
                     "extra": `(Sales)`,
-                    "amount": parseFloat(this.transactionVariables.sales.gsyosd[i].toFixed(2)),
+                    "amount": parseFloat(this.transactionVariables.sales.gs[i].toFixed(2)),
                     "form": "Sale (Form 3)",
                     "title": "Sale",
-                    "more": null
+                    "more": null,
+                    "side": "credit"
                 })
 
                 if(this.transactionVariables.sales.gspl[i] > 0){
@@ -1273,10 +1475,16 @@ var app = {
                         "amount": parseFloat(this.transactionVariables.sales.gspl[i].toFixed(2)),
                         "form": "Sale (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "sales", false, true, false, false)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "sales", false, true, false, false),
+                        "side": "credit"
                     }
-                    obj.credit.push(acc)
-                    pnl_account.credit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+                    acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = (acc1.side == "debit")?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }else if(this.transactionVariables.sales.gspl[i] < 0){
                     acc = {
                         "date": this.getShortDate(this.transactionObject[2].values[i].values.date_of_sale) + this.transactionVariables.sales.gsy[i],
@@ -1285,13 +1493,19 @@ var app = {
                         "amount": parseFloat((this.transactionVariables.sales.gspl[i] * -1).toFixed(2)),
                         "form": "Sale (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "sales", true, true, false, false)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "sales", true, true, false, false),
+                        "side": "debit"
                     }
-                    obj.debit.push(acc)
-                    pnl_account.debit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+                    acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }
 
-            }else if(this.transactionObject[2].values.length > 0 && this.transactionObject[2].values[i].values.extent_of_sale.includes("whole")){
+            }else if(this.transactionObject[2].values.length > i && this.transactionObject[2].values[i].values.extent_of_sale.includes("whole")){
                 acc = {
                     "date": this.getShortDate(this.transactionObject[2].values[i].values.date_of_sale) + this.transactionVariables.sales.asy[i],
                     "particulars": `By depreciation a/c`,
@@ -1299,19 +1513,25 @@ var app = {
                     "amount": parseFloat(this.transactionVariables.sales.ayosd[i].toFixed(2)),
                     "form": "Sale (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "sales", false, true, false)
+                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "sales", false, true, false),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
+                obj.all.push(acc)
+                
+                let acc1 = _.clone(acc)
+                acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
 
-                obj.credit.push({
+                obj.all.push({
                     "date": this.getShortDate(this.transactionObject[2].values[i].values.date_of_sale) + this.transactionVariables.sales.asy[i],
                     "particulars": `By bank a/c`,
                     "extra": `(Sale of ${this.currentAsset} ${i+1})`,
                     "amount": parseFloat(this.transactionVariables.sales.as[i].toFixed(2)),
                     "form": "Sale (Form 3)",
                     "title": "Sale",
-                    "more": null
+                    "more": null,
+                    "side": "credit"
                 })
 
                 if(this.transactionVariables.sales.aspl[i] > 0){
@@ -1322,10 +1542,16 @@ var app = {
                         "amount": parseFloat(this.transactionVariables.sales.aspl[i].toFixed(2)),
                         "form": "Sale (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "sales", false, false, true, false)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "sales", false, false, true, false),
+                        "side": "credit"
                     }
-                    obj.credit.push(acc)
-                    pnl_account.credit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+                    acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }else if(this.transactionVariables.sales.aspl[i] < 0){
                     acc = {
                         "date": this.getShortDate(this.transactionObject[2].values[i].values.date_of_sale) + this.transactionVariables.sales.asy[i],
@@ -1334,13 +1560,19 @@ var app = {
                         "amount": parseFloat((this.transactionVariables.sales.aspl[i] * -1).toFixed(2)),
                         "form": "Sale (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "sales", true, false, true, false)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "sales", true, false, true, false),
+                        "side": "debit"
                     }
-                    obj.debit.push(acc)
-                    pnl_account.debit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+                    acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }
 
-            }else if(this.transactionObject[2].values.length > 0){
+            }else if(this.transactionObject[2].values.length > i){
                 acc = {
                     "date": this.getShortDate(this.transactionObject[2].values[i].values.date_of_sale) + this.transactionVariables.sales.apsy[i],
                     "particulars": `By depreciation a/c`,
@@ -1348,19 +1580,25 @@ var app = {
                     "amount": parseFloat(this.transactionVariables.sales.ayopsd[i].toFixed(2)),
                     "form": "Sale (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "sales", false, false, true)
+                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "sales", false, false, true),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
+                obj.all.push(acc)
+                
+                let acc1 = _.clone(acc)
+                acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
 
-                obj.credit.push({
+                obj.all.push({
                     "date": this.getShortDate(this.transactionObject[2].values[i].values.date_of_sale) + this.transactionVariables.sales.apsy[i],
                     "particulars": `By bank a/c`,
                     "extra": `(Part Sale of ${this.currentAsset} ${i+1})`,
                     "amount": parseFloat(this.transactionVariables.sales.aps[i].toFixed(2)),
                     "form": "Sale (Form 3)",
                     "title": "Sale",
-                    "more": null
+                    "more": null,
+                    "side": "credit"
                 })
 
                 if(this.transactionVariables.sales.apspl[i] > 0){
@@ -1371,10 +1609,16 @@ var app = {
                         "amount": parseFloat(this.transactionVariables.sales.apspl[i].toFixed(2)),
                         "form": "Sale (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "sales", false, false, false, true)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "sales", false, false, false, true),
+                        "side": "credit"
                     }
-                    obj.credit.push(acc)
-                    pnl_account.credit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+                    acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }else if(this.transactionVariables.sales.apspl[i] < 0){
                     acc = {
                         "date": this.getShortDate(this.transactionObject[2].values[i].values.date_of_sale) + this.transactionVariables.sales.apsy[i],
@@ -1383,15 +1627,21 @@ var app = {
                         "amount": parseFloat((this.transactionVariables.sales.apspl[i] * -1).toFixed(2)),
                         "form": "Sale (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "sales", true, false, false, true)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "sales", true, false, false, true),
+                        "side": "debit"
                     }
-                    obj.debit.push(acc)
-                    pnl_account.debit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+                    acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }
             }
 
             //Scrapping - Asset Account
-            if(this.transactionObject[3].values.length > 0 && this.transactionObject[3].values[i].asset == "General / Other"){
+            if(this.transactionObject[3].values.length > i && this.transactionObject[3].values[i].asset == "General / Other"){
                 acc = {
                     "date": this.getShortDate(this.transactionObject[3].values[i].values.date_of_sale) + this.transactionVariables.scrapped.gscry[i],
                     "particulars": `By depreciation a/c`,
@@ -1399,19 +1649,25 @@ var app = {
                     "amount": parseFloat(this.transactionVariables.scrapped.gscryosd[i].toFixed(2)),
                     "form": "Scrap (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "scrapped", true, false, false)
+                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "scrapped", true, false, false),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
+                obj.all.push(acc)
+                
+                let acc1 = _.clone(acc)
+                acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
 
-                obj.credit.push({
+                obj.all.push({
                     "date": this.getShortDate(this.transactionObject[3].values[i].values.date_of_sale) + this.transactionVariables.scrapped.gscry[i],
                     "particulars": `By bank a/c`,
                     "extra": `(Scrap value realised)`,
-                    "amount": parseFloat(this.transactionVariables.scrapped.gscryosd[i].toFixed(2)),
+                    "amount": parseFloat(this.transactionVariables.scrapped.gscr[i].toFixed(2)),
                     "form": "Scrap (Form 3)",
                     "title": "Scrapped",
-                    "more": null
+                    "more": null,
+                    "side": "credit"
                 })
 
                 if(this.transactionVariables.scrapped.gscrpl[i] > 0){
@@ -1422,10 +1678,16 @@ var app = {
                         "amount": parseFloat(this.transactionVariables.scrapped.gscrpl[i].toFixed(2)),
                         "form": "Scrap (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "scrapped", false, true, false, false)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "scrapped", false, true, false, false),
+                        "side": "credit"
                     }
-                    obj.credit.push(acc)
-                    pnl_account.credit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+                    acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }else if(this.transactionVariables.scrapped.gscrpl[i] < 0){
                     acc = {
                         "date": this.getShortDate(this.transactionObject[3].values[i].values.date_of_sale) + this.transactionVariables.scrapped.gscry[i],
@@ -1434,33 +1696,45 @@ var app = {
                         "amount": parseFloat((this.transactionVariables.scrapped.gscrpl[i] * -1).toFixed(2)),
                         "form": "Scrap (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "scrapped", true, true, false, false)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "scrapped", true, true, false, false),
+                        "side": "debit"
                     }
-                    obj.debit.push(acc)
-                    pnl_account.debit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+                    acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }
 
-            }else if(this.transactionObject[3].values.length > 0 && this.transactionObject[3].values[i].values.extent_of_sale.includes("whole")){
+            }else if(this.transactionObject[3].values.length > i && this.transactionObject[3].values[i].values.extent_of_sale.includes("whole")){
                 acc = {
                     "date": this.getShortDate(this.transactionObject[3].values[i].values.date_of_sale) + this.transactionVariables.scrapped.ascry[i],
                     "particulars": `By depreciation a/c`,
                     "extra": `(On ${this.currentAsset} ${i+1} scrapped)`,
-                    "amount": parseFloat(this.transactionVariables.scrapped.aycrosd[i].toFixed(2)),
+                    "amount": parseFloat(this.transactionVariables.scrapped.ayoscrd[i].toFixed(2)),
                     "form": "Scrap (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "scrapped", false, true, false)
+                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "scrapped", false, true, false),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
+                obj.all.push(acc)
+                
+                let acc1 = _.clone(acc)
+                acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
 
-                obj.credit.push({
+                obj.all.push({
                     "date": this.getShortDate(this.transactionObject[3].values[i].values.date_of_sale) + this.transactionVariables.scrapped.ascry[i],
                     "particulars": `By bank a/c`,
                     "extra": `(Scrap of ${this.currentAsset} ${i+1})`,
                     "amount": parseFloat(this.transactionVariables.scrapped.ascr[i].toFixed(2)),
                     "form": "Scrap (Form 3)",
                     "title": "Scrap",
-                    "more": null
+                    "more": null,
+                    "side": "credit"
                 })
 
                 if(this.transactionVariables.scrapped.ascrpl[i] > 0){
@@ -1471,10 +1745,16 @@ var app = {
                         "amount": parseFloat(this.transactionVariables.scrapped.ascrpl[i].toFixed(2)),
                         "form": "Scrap (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "scrapped", false, false, true, false)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "scrapped", false, false, true, false),
+                        "side": "credit"
                     }
-                    obj.credit.push(acc)
-                    pnl_account.credit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+                    acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }else if(this.transactionVariables.scrapped.ascrpl[i] < 0){
                     acc = {
                         "date": this.getShortDate(this.transactionObject[3].values[i].values.date_of_sale) + this.transactionVariables.scrapped.ascry[i],
@@ -1483,33 +1763,45 @@ var app = {
                         "amount": parseFloat((this.transactionVariables.scrapped.ascrpl[i] * -1).toFixed(2)),
                         "form": "Scrap (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "scrapped", true, false, true, false)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "scrapped", true, false, true, false),
+                        "side": "debit"
                     }
-                    obj.debit.push(acc)
-                    pnl_account.debit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+                    acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }
 
-            }else if(this.transactionObject[3].values.length > 0){
+            }else if(this.transactionObject[3].values.length > i){
                 acc = {
                     "date": this.getShortDate(this.transactionObject[3].values[i].values.date_of_sale) + this.transactionVariables.scrapped.apscry[i],
                     "particulars": `By depreciation a/c`,
-                    "extra": `(On part of ${this.currentAsset} ${i+1} scrapped`,
+                    "extra": `(On part of ${this.currentAsset} ${i+1} scrapped)`,
                     "amount": parseFloat(this.transactionVariables.scrapped.ayopscrd[i].toFixed(2)),
                     "form": "Scrap (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "scrapped", false, false, true)
+                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "scrapped", false, false, true),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
+                obj.all.push(acc)
+                
+                let acc1 = _.clone(acc)
+acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
 
-                obj.credit.push({
+                obj.all.push({
                     "date": this.getShortDate(this.transactionObject[3].values[i].values.date_of_sale) + this.transactionVariables.scrapped.apscry[i],
                     "particulars": `By bank a/c`,
                     "extra": `Scrap value realised`,
                     "amount": parseFloat(this.transactionVariables.scrapped.apscr[i].toFixed(2)),
                     "form": "Scrap (Form 3)",
                     "title": "Scrap",
-                    "more": null
+                    "more": null,
+                    "side": "credit"
                 })
 
                 if(this.transactionVariables.scrapped.apscrpl[i] > 0){
@@ -1520,27 +1812,39 @@ var app = {
                         "amount": parseFloat(this.transactionVariables.scrapped.apscrpl[i].toFixed(2)),
                         "form": "Scrap (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "scrapped", false, false, false, true)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "scrapped", false, false, false, true),
+                        "side": "credit"
                     }
-                    obj.credit.push(acc)
-                    pnl_account.credit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }else if(this.transactionVariables.scrapped.apscrpl[i] < 0){
                     acc = {
                         "date": this.getShortDate(this.transactionObject[3].values[i].values.date_of_sale) + this.transactionVariables.scrapped.apscry[i],
                         "particulars": `By P&L a/c`,
                         "extra": "(Profit on part scrapped)",
-                        "amount": parseFloat((this.transactionVariables.scrapped.apspl[i] * -1).toFixed(2)),
+                        "amount": parseFloat((this.transactionVariables.scrapped.apscrpl[i] * -1).toFixed(2)),
                         "form": "Scrap (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "scrapped", true, false, false, true)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "scrapped", true, false, false, true),
+                        "side": "debit"
                     }
-                    obj.debit.push(acc)
-                    pnl_account.debit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }
             }
 
             //Theft/Destruction - Asset Account
-            if(this.transactionObject[4].values.length > 0 && this.transactionObject[4].values[i].asset == "General / Other"){
+            if(this.transactionObject[4].values.length > i && this.transactionObject[4].values[i].asset == "General / Other"){
                 acc = {
                     "date": this.getShortDate(this.transactionObject[4].values[i].values.date_of_sale) + this.transactionVariables.destroyed.gtdy[i],
                     "particulars": `By depreciation a/c`,
@@ -1548,10 +1852,15 @@ var app = {
                     "amount": parseFloat(this.transactionVariables.destroyed.gtdyotdd[i].toFixed(2)),
                     "form": "Destroyed (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "destroyed", true, false, false)
+                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "destroyed", true, false, false),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
+                obj.all.push(acc)
+                
+                let acc1 = _.clone(acc)
+acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
 
                 if(this.transactionVariables.destroyed.gtdpl[i] > 0){
                     acc = {
@@ -1561,10 +1870,16 @@ var app = {
                         "amount": parseFloat(this.transactionVariables.destroyed.gtdpl[i].toFixed(2)),
                         "form": "Destroyed (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "destroyed", false, true, false, false)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "destroyed", false, true, false, false),
+                        "side": "credit"
                     }
-                    obj.credit.push(acc)
-                    pnl_account.credit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }else if(this.transactionVariables.destroyed.gtdpl[i] < 0){
                     acc = {
                         "date": this.getShortDate(this.transactionObject[4].values[i].values.date_of_sale) + this.transactionVariables.destroyed.gtdy[i],
@@ -1573,52 +1888,75 @@ var app = {
                         "amount": parseFloat((this.transactionVariables.destroyed.gtdpl[i] * -1).toFixed(2)),
                         "form": "Destroyed (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "destroyed", true, true, false, false)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "destroyed", true, true, false, false),
+                        "side": "debit"
                     }
-                    obj.debit.push(acc)
-                    pnl_account.debit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }
 
-            }else if(this.transactionObject[4].values.length > 0 && this.transactionObject[4].values[i].values.extent_of_sale.includes("whole")){
+            }else if(this.transactionObject[4].values.length > i && this.transactionObject[4].values[i].values.extent_of_sale.includes("whole")){
                 acc = {
                     "date": this.getShortDate(this.transactionObject[4].values[i].values.date_of_sale) + this.transactionVariables.destroyed.atdy[i],
                     "particulars": `By depreciation a/c`,
                     "extra": `(On ${this.currentAsset} ${i+1} destroyed)`,
-                    "amount": parseFloat(this.transactionVariables.scrapped.aycrosd[i].toFixed(2)),
+                    "amount": parseFloat(this.transactionVariables.destroyed.ayotdd[i].toFixed(2)),
                     "form": "Destroyed (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "destroyed", false, true, false)
+                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "destroyed", false, true, false),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
+                obj.all.push(acc)
+                
+                let acc1 = _.clone(acc)
+acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
 
                 if(this.transactionVariables.destroyed.atdpl[i] > 0){
                     acc = {
                         "date": this.getShortDate(this.transactionObject[4].values[i].values.date_of_sale) + this.transactionVariables.destroyed.atdy[i],
                         "particulars": `By P&L a/c`,
                         "extra": `(Loss)`,
-                        "amount": parseFloat(this.transactionVariables.destroyed.ayotdd[i].toFixed(2)),
+                        "amount": parseFloat(this.transactionVariables.destroyed.atdpl[i].toFixed(2)),
                         "form": "Destroyed (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "destroyed", false, false, true, false)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "destroyed", false, false, true, false),
+                        "side": "credit"
                     }
-                    obj.credit.push(acc)
-                    pnl_account.credit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }else if(this.transactionVariables.destroyed.atdpl[i] < 0){
                     acc = {
                         "date": this.getShortDate(this.transactionObject[4].values[i].values.date_of_sale) + this.transactionVariables.destroyed.atdy[i],
                         "particulars": `By P&L a/c`,
                         "extra": `(Profit on insurance settlement)`,
-                        "amount": parseFloat((this.transactionVariables.destroyed.ayotdd[i] * -1).toFixed(2)),
+                        "amount": parseFloat((this.transactionVariables.destroyed.atdpl[i] * -1).toFixed(2)),
                         "form": "Destroyed (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "destroyed", true, false, true, false)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "destroyed", true, false, true, false),
+                        "side": "debit"
                     }
-                    obj.debit.push(acc)
-                    pnl_account.debit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }
 
-            }else if(this.transactionObject[4].values.length > 0){
+            }else if(this.transactionObject[4].values.length > i){
                 acc = {
                     "date": this.getShortDate(this.transactionObject[4].values[i].values.date_of_sale) + this.transactionVariables.destroyed.aptdy[i],
                     "particulars": `By depreciation a/c`,
@@ -1626,10 +1964,15 @@ var app = {
                     "amount": parseFloat(this.transactionVariables.destroyed.ayoptdd[i].toFixed(2)),
                     "form": "Destroyed (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "destroyed", false, false, true)
+                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "destroyed", false, false, true),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
+                obj.all.push(acc)
+                
+                let acc1 = _.clone(acc)
+acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
 
                 if(this.transactionVariables.destroyed.aptdpl[i] > 0){
                     acc = {
@@ -1639,10 +1982,16 @@ var app = {
                         "amount": parseFloat(this.transactionVariables.destroyed.aptdpl[i].toFixed(2)),
                         "form": "Destroyed (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "destroyed", false, false, false, true)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "destroyed", false, false, false, true),
+                        "side": "credit"
                     }
-                    obj.credit.push(acc)
-                    pnl_account.credit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }else if(this.transactionVariables.destroyed.aptdpl[i] < 0){
                     acc = {
                         "date": this.getShortDate(this.transactionObject[4].values[i].values.date_of_sale) + this.transactionVariables.destroyed.aptdy[i],
@@ -1651,24 +2000,31 @@ var app = {
                         "amount": parseFloat((this.transactionVariables.destroyed.aptdpl[i] * -1).toFixed(2)),
                         "form": "Destroyed (Form 3)",
                         "title": "P&L",
-                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "destroyed", true, false, false, true)
+                        "more": this.getProfitOrLossOnMethod(i, d, closing_date, opening_date, "destroyed", true, false, false, true),
+                        "side": "credit"
                     }
-                    obj.debit.push(acc)
-                    pnl_account.credit.push(acc)
+                    obj.all.push(acc)
+                
+                    let acc1 = _.clone(acc)
+                    acc1.date = parseInt(acc1.date.split("/")[2])
+acc1.particulars = `To ${this.currentAsset} a/c`
+                    acc1.side = ((acc1.side == "debit"))?"credit":"debit"
+                    pnl_account.all.push(acc1)
                 }
             }
 
             //Addition - Asset Account
-            if(this.transactionObject[5].values.length > 0 && this.transactionObject[5].values[i].asset == "General / Other" && this.transactionObject[5].values[i].values.extent_of_sale == "Significant"){
+            if(this.transactionObject[5].values.length > i && this.transactionObject[5].values[i].asset == "General / Other" && this.transactionObject[5].values[i].values.extent_of_sale == "Significant"){
 
-                obj.debit.push({
+                obj.all.push({
                     "date": this.getShortDate(this.transactionObject[5].values[i].values.date_of_sale) + this.transactionVariables.addition.gay[i],
                     "particulars": `To bank a/c`,
                     "extra": `(Addition to ${this.currentAsset} ${i+1})`,
                     "amount": parseFloat(this.transactionVariables.addition.ga[i].toFixed(2)),
                     "form": "Addition (Form 3)",
                     "title": "Addition",
-                    "more": null
+                    "more": null,
+                    "side": "debit"
                 })
 
                 acc = {
@@ -1678,30 +2034,37 @@ var app = {
                     "amount": parseFloat(this.transactionVariables.addition.gayoad[i].toFixed(2)),
                     "form": "Addition (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "addition", true, false, false)
+                    "more": this.getDepreciationOfAssetAddition(i, d, closing_date, true, false, false),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
+                obj.all.push(acc)
+                
+                let acc1 = _.clone(acc)
+                acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
 
-            }else if(this.transactionObject[5].values.length > 0 && this.transactionObject[5].values[i].asset == "General / Other" && this.transactionObject[5].values[i].values.extent_of_sale == "Negligible"){
-                pnl_account.debit.push({
+            }else if(this.transactionObject[5].values.length > i && this.transactionObject[5].values[i].asset == "General / Other" && this.transactionObject[5].values[i].values.extent_of_sale == "Negligible"){
+                pnl_account.all.push({
                     "date": this.transactionVariables.addition.gay[i],
                     "particulars": `To additions to ${this.currentAsset}`,
                     "extra": ``,
                     "amount": parseFloat(this.transactionVariables.addition.ga[i].toFixed(2)),
                     "form": "Addition (Form 3)",
                     "title": "Addition",
-                    "more": null
+                    "more": null,
+                    "side": "debit"
                 })
-            }else if(this.transactionObject[5].values.length > 0 && this.transactionObject[5].values[i].values.extent_of_sale == "Significant"){
-                obj.debit.push({
+            }else if(this.transactionObject[5].values.length > i && this.transactionObject[5].values[i].values.extent_of_sale == "Significant"){
+                obj.all.push({
                     "date": this.getShortDate(this.transactionObject[5].values[i].values.date_of_sale) + this.transactionVariables.addition.aay[i],
                     "particulars": `To bank a/c`,
                     "extra": `(Addition to ${this.currentAsset} ${i+1})`,
                     "amount": parseFloat(this.transactionVariables.addition.aa[i].toFixed(2)),
                     "form": "Addition (Form 3)",
                     "title": "Addition",
-                    "more": null
+                    "more": null,
+                    "side": "debit"
                 })
 
                 acc = {
@@ -1711,34 +2074,42 @@ var app = {
                     "amount": parseFloat(this.transactionVariables.addition.ayoad[i].toFixed(2)),
                     "form": "Addition (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "addition", true, false, false)
+                    "more": this.getDepreciationOfAssetAddition(i, d, closing_date, true, false, false),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
+                obj.all.push(acc)
+                
+                let acc1 = _.clone(acc)
+acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
 
-            }else if(this.transactionObject[5].values.length > 0 && this.transactionObject[5].values[i].values.extent_of_sale == "Negligible"){
-                pnl_account.push({
+            }else if(this.transactionObject[5].values.length > i && this.transactionObject[5].values[i].values.extent_of_sale == "Negligible"){
+                pnl_account.all.push({
                     "date": this.transactionVariables.addition.aay[i],
-                    "particulars": `To bank a/c`,
+                    "particulars": `To additions to ${this.currentAsset}`,
                     "extra": `(To additions to ${this.currentAsset} ${i+1})`,
                     "amount": parseFloat(this.transactionVariables.addition.aa[i].toFixed(2)),
                     "form": "Addition (Form 3)",
                     "title": "Addition",
-                    "more": null
+                    "more": null,
+                    "side": "debit"
                 })
             }
 
+            console.log("replacement", this.transactionObject[6])
             //Replacement - Asset Account
-            if(this.transactionObject[6].values.length > 0 && this.transactionObject[6].values[i].asset == "General / Other" && this.transactionObject[6].values[i].values.extent_of_sale == "Significant"){
+            if(this.transactionObject[6].values.length > i && this.transactionObject[6].values[i].asset == "General / Other" && this.transactionObject[6].values[i].values.extent_of_sale == "Significant"){
 
-                obj.debit.push({
+                obj.all.push({
                     "date": this.getShortDate(this.transactionObject[6].values[i].values.date_of_sale) + this.transactionVariables.replacement.gry[i],
                     "particulars": `To bank a/c`,
                     "extra": `(Cost of replacement)`,
                     "amount": parseFloat(this.transactionVariables.replacement.grc[i].toFixed(2)),
                     "form": "Replacement (Form 3)",
                     "title": "Replacement",
-                    "more": null
+                    "more": null,
+                    "side": "debit"
                 })
 
                 acc = {
@@ -1748,21 +2119,28 @@ var app = {
                     "amount": parseFloat(this.transactionVariables.replacement.gryord[i].toFixed(2)),
                     "form": "Replacement (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "replacement", true, false, false)
+                    "more": this.getDepreciationOfAssetReplacement(i, d, closing_date, true, false, false),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
-
-            }else if(this.transactionObject[6].values.length > 0 && this.transactionObject[6].values[i].extent_of_sale.includes("whole") && this.transactionObject[6].values[i].values.extent_of_sale == "Significant"){
+                obj.all.push(acc)
                 
-                obj.debit.push({
+                let acc1 = _.clone(acc)
+acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
+
+            }else if(this.transactionObject[6].values.length > i && this.transactionObject[6].values[i].values.extent_of_sale.includes("whole")){
+                // && this.transactionObject[6].values[i].values.nature_of_replacement == "Significant"
+                
+                obj.all.push({
                     "date": this.getShortDate(this.transactionObject[6].values[i].values.date_of_sale) + this.transactionVariables.replacement.ary[i],
                     "particulars": `To bank a/c`,
                     "extra": `(Cost of replacement of ${this.currentAsset} ${i+1})`,
                     "amount": parseFloat(this.transactionVariables.replacement.arc[i].toFixed(2)),
                     "form": "Replacement (Form 3)",
                     "title": "Replacement",
-                    "more": null
+                    "more": null,
+                    "side": "debit"
                 })
 
                 acc = {
@@ -1772,21 +2150,27 @@ var app = {
                     "amount": parseFloat(this.transactionVariables.replacement.ayord[i].toFixed(2)),
                     "form": "Replacement (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "replacement", true, false, false)
+                    "more": this.getDepreciationOfAssetReplacement(i, d, closing_date, true, false, false),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
-
-            }else if(this.transactionObject[6].values.length > 0 && this.transactionObject[6].values[i].extent_of_sale.includes("part") && this.transactionObject[6].values[i].values.extent_of_sale == "Significant"){
+                obj.all.push(acc)
                 
-                obj.debit.push({
+                let acc1 = _.clone(acc)
+acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
+
+            }else if(this.transactionObject[6].values.length > i && this.transactionObject[6].values[i].values.extent_of_sale.includes("part") && this.transactionObject[6].values[i].values.nature_of_replacement == "Significant"){
+                
+                obj.all.push({
                     "date": this.getShortDate(this.transactionObject[6].values[i].values.date_of_sale) + this.transactionVariables.replacement.apry[i],
                     "particulars": `To bank a/c`,
                     "extra": `(Cost of replacement of ${this.currentAsset} ${i+1})`,
                     "amount": parseFloat(this.transactionVariables.replacement.aprc[i].toFixed(2)),
                     "form": "Replacement (Form 3)",
                     "title": "Replacement",
-                    "more": null
+                    "more": null,
+                    "side": "debit"
                 })
 
                 acc = {
@@ -1796,20 +2180,26 @@ var app = {
                     "amount": parseFloat(this.transactionVariables.replacement.ayoprd[i].toFixed(2)),
                     "form": "Replacement (Form 3)",
                     "title": "Depreciation",
-                    "more": this.getDepreciationOfAssetMethod(i, d, closing_date, opening_date, "replacement", true, false, false)
+                    "more": this.getDepreciationOfAssetReplacement(i, d, closing_date, true, false, false),
+                    "side": "credit"
                 }
-                obj.credit.push(acc)
-                depreciation_account.credit.push(acc)
+                obj.all.push(acc)
+                
+                let acc1 = _.clone(acc)
+acc1.particulars = `To ${this.currentAsset} a/c`
+                acc1.side = "debit"
+                depreciation_account.all.push(acc1)
 
-            }else if(this.transactionObject[6].values.length > 0 && this.transactionObject[6].values[i].extent_of_sale.includes("part") && this.transactionObject[6].values[i].values.extent_of_sale == "Negligible"){
-                pnl_account.push({
+            }else if(this.transactionObject[6].values.length > i && this.transactionObject[6].values[i].values.extent_of_sale.includes("part") && this.transactionObject[6].values[i].values.nature_of_replacement == "Negligible"){
+                pnl_account.all.push({
                     "date": this.transactionVariables.replacement.apry[i],
                     "particulars": `To repairs a/c`,
                     "extra": ``,
                     "amount": parseFloat(this.transactionVariables.replacement.aprc[i].toFixed(2)),
                     "form": "Replacement (Form 3)",
                     "title": "Replacement",
-                    "more": null
+                    "more": null,
+                    "side": "debit"
                 })
             }
         }
@@ -1824,24 +2214,24 @@ var app = {
     getDepreciationOfAssetPurchase: function(i, d, closing_date){
         let obj = [
            `Depreciation\t= Cost of asset x Rate of Depreciation x No. of months / 12`,
-           `= ${this.transactionVariables.purchase.atc[i]} x ${d} x ${this.transactionVariables.purchase.apdp[i]} / 12`,
-           `= ${this.transactionVariables.purchase.ayopd[i]}`
+           `= ${this.transactionVariables.purchase.atc[i].toFixed(2)} x ${d} x ${this.transactionVariables.purchase.apdp[i].toFixed(2)} / 12`,
+           `= ${this.transactionVariables.purchase.ayopd[i].toFixed(2)}`
         ]
         return obj
     },
     getDepreciationOfAssetAddition: function(i, d, closing_date, is_asset, is_whole, is_part){
         if(!is_part){
             let obj = [
-               `Depreciation = Amount on addition x Rate of Depreciation x No. of months / 12`,
-               `             = ${this.transactionVariables.addition.ga[i]} x ${d} x ${this.transactionVariables.addition.gadp[i]} / 12`,
-               `             = ${this.transactionVariables.addition.gayoad[i]}`
+               `Depreciation = Amount of addition x Rate of Depreciation x No. of months / 12`,
+               `             = ${(this.transactionVariables.addition.ga[i])?this.transactionVariables.addition.ga[i].toFixed(2):0.00} x ${d} x ${(this.transactionVariables.addition.gadp[i])?this.transactionVariables.addition.gadp[i].toFixed(2):0.00} / 12`,
+               `             = ${(this.transactionVariables.addition.gayoad[i])?this.transactionVariables.addition.gayoad[i].toFixed(2):0.00}`
             ]
             return obj
         }else{
             let obj = [
-               `Depreciation = Amount on addition x Rate of Depreciation x No. of months / 12`,
-               `             = ${this.transactionVariables.addition.aa[i]} x ${d} x ${this.transactionVariables.addition.aadp[i]} / 12`,
-               `             = ${this.transactionVariables.addition.ayoad[i]}`
+               `Depreciation = Amount of addition x Rate of Depreciation x No. of months / 12`,
+               `             = ${(this.transactionVariables.addition.aa[i])?this.transactionVariables.addition.aa[i].toFixed(2):0.00} x ${d} x ${(this.transactionVariables.addition.aadp[i])?this.transactionVariables.addition.aadp[i].toFixed(2):0.00} / 12`,
+               `             = ${(this.transactionVariables.addition.ayoad[i])?this.transactionVariables.addition.ayoad[i].toFixed(2):0.00}`
             ]
             return obj
         }
@@ -1850,22 +2240,22 @@ var app = {
         if(is_asset){
             let obj = [
                `Depreciation = Cost of replacement x Rate of Depreciation x No. of months / 12`,
-               `             = ${this.transactionVariables.replacement.grc[i]} x ${d} x ${this.transactionVariables.replacement.grdp[i]} / 12`,
-               `             = ${this.transactionVariables.replacement.gryord[i]}`
+               `             = ${(this.transactionVariables.replacement.grc[i])?this.transactionVariables.replacement.grc[i].toFixed(2):0.00} x ${d} x ${(this.transactionVariables.replacement.grdp[i])?this.transactionVariables.replacement.grdp[i].toFixed(2):0.00} / 12`,
+               `             = ${(this.transactionVariables.replacement.gryord[i])?this.transactionVariables.replacement.gryord[i].toFixed(2):0.00}`
             ]
             return obj
         }else if(is_whole){
             let obj = [
                `Depreciation = Cost of replacement x Rate of Depreciation x No. of months / 12`,
-               `             = ${this.transactionVariables.replacement.arc[i]} x ${d} x ${this.transactionVariables.replacement.ardp[i]} / 12`,
-               `             = ${this.transactionVariables.replacement.ayord[i]}`
+               `             = ${(this.transactionVariables.replacement.arc[i])?this.transactionVariables.replacement.arc[i].toFixed(2):0.00} x ${d} x ${(this.transactionVariables.replacement.ardp[i])?this.transactionVariables.replacement.ardp[i].toFixed(2):0.00} / 12`,
+               `             = ${(this.transactionVariables.replacement.ayord[i])?this.transactionVariables.replacement.ayord[i].toFixed(2):0.00}`
             ]
             return obj
         }else{
             let obj = [
                `Depreciation = Cost of part replacement x Rate of Depreciation x No. of months / 12`,
-               `             = ${this.transactionVariables.replacement.aprc[i]} x ${d} x ${this.transactionVariables.replacement.aprdp[i]} / 12`,
-               `             = ${this.transactionVariables.replacement.ayoprd[i]}`
+               `             = ${(this.transactionVariables.replacement.aprc[i])?this.transactionVariables.replacement.aprc[i].toFixed(2):0.00} x ${d} x ${(this.transactionVariables.replacement.aprdp[i])?this.transactionVariables.replacement.aprdp[i].toFixed(2):0.00} / 12`,
+               `             = ${(this.transactionVariables.replacement.ayoprd[i])?this.transactionVariables.replacement.ayoprd[i].toFixed(2):0.00}`
             ]
             return obj
         }
@@ -1926,7 +2316,7 @@ var app = {
                 }
                 rows = this.schedules.purchase[i]
             }
-        }else if(method == 'scrapped' && !is_part){
+        }else if(method == 'scrapped'){
             if(is_asset){
                 def = {
                     var1: this.transactionVariables.scrapped.gscrpm[i],
@@ -1939,7 +2329,7 @@ var app = {
                     var8: (closing_date == '31st December')?this.transactionVariables.scrapped.gscry[i]:this.transactionVariables.scrapped.gscrc7[i],
                     var9: this.transactionVariables.scrapped.gscryosob[i],
                     var10: (closing_date == '31st December')?this.transactionVariables.scrapped.gscry[i]:this.transactionVariables.scrapped.gscrc7[i],
-                    var11: this.transactionVariables.scrapped.gsyosob[i],
+                    var11: this.transactionVariables.scrapped.gscryosob[i],
                     var12: this.transactionVariables.scrapped.gscrdp[i],
                     var13: this.transactionVariables.scrapped.gscryosd[i],
                 }
@@ -1965,21 +2355,21 @@ var app = {
                 def = {
                     var1: this.transactionVariables.purchase.apm[i],
                     var2: this.transactionVariables.purchase.apy[i],
-                    var3: this.transactionVariables.purchase.apscrc[i],
+                    var3: this.transactionVariables.scrapped.apscrc[i],
                     var4: (closing_date == '31st December')?this.transactionVariables.purchase.apy[i]:this.transactionVariables.ac2[i],
-                    var5: this.transactionVariables.purchase.apscrc[i],
+                    var5: this.transactionVariables.scrapped.apscrc[i],
                     var6: this.transactionVariables.purchase.apdp[i],
-                    var7: this.transactionVariables.purchase.apscryopd[i],
-                    var8: (closing_date == '31st December')?this.transactionVariables.purchase.apscry[i]:this.transactionVariables.purchase.apscrc5[i],
-                    var9: this.transactionVariables.purchase.ayopscrob[i],
-                    var10: (closing_date == '31st December')?this.transactionVariables.purchase.apscry[i]:this.transactionVariables.purchase.apscrc5[i],
-                    var11: this.transactionVariables.purchase.ayopscrob[i],
-                    var12: this.transactionVariables.purchase.apscrdp[i],
-                    var13: this.transactionVariables.purchase.ayopscrd[i]
+                    var7: this.transactionVariables.scrapped.apscryopd[i],
+                    var8: (closing_date == '31st December')?this.transactionVariables.scrapped.apscry[i]:this.transactionVariables.scrapped.apscrc5[i],
+                    var9: this.transactionVariables.scrapped.ayopscrob[i],
+                    var10: (closing_date == '31st December')?this.transactionVariables.scrapped.apscry[i]:this.transactionVariables.scrapped.apscrc5[i],
+                    var11: this.transactionVariables.scrapped.ayopscrob[i],
+                    var12: this.transactionVariables.scrapped.apscrdp[i],
+                    var13: this.transactionVariables.scrapped.ayopscrd[i]
                 }
                 rows = this.schedules.purchase[i]
             }
-        }else if(method == 'theft'){
+        }else if(method == 'destroyed'){
             if(is_asset){
                 def = {
                     var1 : this.transactionVariables.destroyed.gtdpm[i],
@@ -2006,22 +2396,22 @@ var app = {
                     var5: this.transactionVariables.purchase.atc[i],
                     var6: this.transactionVariables.purchase.apdp[i],
                     var7: this.transactionVariables.purchase.ayopd[i],
-                    var8: (closing_date == '31st December')?this.transactionVariables.purchase.atdy[i]:this.transactionVariables.purchase.atdc5[i],
-                    var9: this.transactionVariables.purchase.ayotdob[i],
-                    var10: (closing_date == '31st December')?this.transactionVariables.purchase.atdy[i]:this.transactionVariables.purchase.atdc5[i],
-                    var11: this.transactionVariables.purchase.ayotdob[i],
-                    var12: this.transactionVariables.purchase.atddp[i],
-                    var13: this.transactionVariables.purchase.ayotdd[i]
+                    var8: (closing_date == '31st December')?this.transactionVariables.destroyed.atdy[i]:this.transactionVariables.destroyed.atdc5[i],
+                    var9: this.transactionVariables.destroyed.ayotdob[i],
+                    var10: (closing_date == '31st December')?this.transactionVariables.destroyed.atdy[i]:this.transactionVariables.destroyed.atdc5[i],
+                    var11: this.transactionVariables.destroyed.ayotdob[i],
+                    var12: this.transactionVariables.destroyed.atddp[i],
+                    var13: this.transactionVariables.destroyed.ayotdd[i]
                 }
                 rows = this.schedules.purchase[i]
             }else if(is_part){
                 def = {
-                    var1: this.transactionVariables.destroyed.apm[i],
-                    var2: this.transactionVariables.destroyed.apy[i],
+                    var1: this.transactionVariables.purchase.apm[i],
+                    var2: this.transactionVariables.purchase.apy[i],
                     var3: this.transactionVariables.destroyed.aptdc[i],
-                    var4: (closing_date == '31st December')?this.transactionVariables.destroyed.apy[i]:this.transactionVariables.destroyed.ac2[i],
+                    var4: (closing_date == '31st December')?this.transactionVariables.purchase.apy[i]:this.transactionVariables.purchase.ac2[i],
                     var5: this.transactionVariables.destroyed.aptdc[i],
-                    var6: this.transactionVariables.destroyed.apdp[i],
+                    var6: this.transactionVariables.purchase.apdp[i],
                     var7: this.transactionVariables.destroyed.aptdyopd[i],
                     var8: (closing_date == '31st December')?this.transactionVariables.destroyed.aptdy[i]:this.transactionVariables.destroyed.aptdc5[i],
                     var9: this.transactionVariables.destroyed.ayoptdob[i],
@@ -2035,17 +2425,17 @@ var app = {
         }
         let depreciation = []
         let block = [{
-            "desc": `Cost of ${this.currentAsset} sold as on ${def.var1.toFixed(2)}/${def.var2.toFixed(2)}`,
+            "desc": `Cost of ${this.currentAsset} sold as on ${def.var1}/${def.var2}`,
             "value": parseFloat(def.var3.toFixed(2))
         }]
         if(closing_date == '31st December'){
             block.push({
-                "desc": `Less: Depreciation for ${def.var4.toFixed(2)}\n(${def.var5.toFixed(2)} x ${d} x ${def.var6.toFixed(2)} / 12)`,
+                "desc": `Less: Depreciation for ${def.var4}<br/>(${def.var5.toFixed(2)} x ${d} x ${def.var6.toFixed(2)} / 12)`,
                 "value": parseFloat(def.var7.toFixed(2))
             })
         }else{
             block.push({
-                "desc": `Less: Depreciation for ${parseFloat(def.var4.toFixed(2))-1} - ${def.var4}\n(${def.var5.toFixed(2)} x ${d} x ${def.var6.toFixed(2)} / 12)`,
+                "desc": `Less: Depreciation for ${parseFloat(def.var4.toFixed(2))-1} - ${def.var4}<br/>(${def.var5.toFixed(2)} x ${d} x ${def.var6.toFixed(2)} / 12)`,
                 "value": parseFloat(def.var7.toFixed(2))
             })
         }
@@ -2054,34 +2444,34 @@ var app = {
         for(var j=0;j<rows.length;j++){
             console.log("Rows", rows[j], rows.length)
             block = [{
-                "desc": `WDV on ${opening_date} / ${rows[j].year_begining}`,
-                "value": (rows[j].opening_balance)?parseFloat(rows[j].opening_balance.toFixed(2)):null
+                "desc": `WDV on ${this.getShortDate(opening_date)}${rows[j].year_begining}`,
+                "value": (rows[j].opening_balance)?parseFloat(rows[j].opening_balance.toFixed(2)):0.00
             }]
             if(closing_date == '31st December'){
                 block.push({
-                    "desc": `Less: Depreciation for ${rows[j].year_begining}\n(${rows[j].opening_balance} x ${d})`,
-                    "value": (rows[j].depreciation)?parseFloat(rows[j].depreciation.toFixed(2)):null
+                    "desc": `Less: Depreciation for ${rows[j].year_begining}<br/>(${(rows[j].opening_balance)?rows[j].opening_balance.toFixed(2):0.00} x ${d})`,
+                    "value": (rows[j].depreciation)?parseFloat(rows[j].depreciation.toFixed(2)):0.00
                 })
             }else{
                 block.push({
-                    "desc": `Less: Depreciation for ${rows[j].year_begining} - ${rows[j].year_end}\n(${rows[j].opening_balance} x ${d})`,
-                    "value": (rows[j].depreciation)?parseFloat(rows[j].depreciation.toFixed(2)):null
+                    "desc": `Less: Depreciation for ${rows[j].year_begining} - ${rows[j].year_end}<br/>(${(rows[j].opening_balance)?rows[j].opening_balance.toFixed(2):0.00} x ${d})`,
+                    "value": (rows[j].depreciation)?parseFloat(rows[j].depreciation.toFixed(2)):0.00
                 })
             }
             depreciation.push(block)
         }
         block = [{
-                "desc": `WDV on ${opening_date} / ${def.var8.toFixed(2)}`,
+                "desc": `WDV on ${this.getShortDate(opening_date)}${def.var8}`,
                 "value": parseFloat(def.var9.toFixed(2))
             }]
         if(closing_date == '31st December'){
             block.push({
-                "desc": `Less: Depreciation for ${def.var10.toFixed(2)}\n(${def.var11.toFixed(2)} x ${d} x ${def.var12.toFixed(2)} / 12)`,
+                "desc": `Less: Depreciation for ${def.var10}<br/>(${def.var11.toFixed(2)} x ${d} x ${def.var12.toFixed(2)} / 12)`,
                 "value": parseFloat(def.var13.toFixed(2))
             })
         }else{
             block.push({
-                "desc": `Less: Depreciation for ${def.var10.toFixed(2)} - ${parseFloat(def.var10.toFixed(2))+1}\n(${def.var11.toFixed(2)} x ${d} x ${def.var12.toFixed(2)} / 12)`,
+                "desc": `Less: Depreciation for ${def.var10} - ${parseFloat(def.var10.toFixed(2))+1}\n(${def.var11.toFixed(2)} x ${d} x ${def.var12.toFixed(2)} / 12)`,
                 "value": parseFloat(def.var13.toFixed(2))
             })
         }

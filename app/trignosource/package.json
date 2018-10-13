@@ -30,7 +30,8 @@
     "es6-promise-plugin": "^4.2.2",
     "particles.js": "^2.0.0",
     "pulltorefreshjs": "^0.1.13",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "jaeger.Html5Video": "~1.2.2"
   },
   "cordova": {
     "plugins": {
@@ -44,7 +45,8 @@
       "cordova-plugin-actionsheet": {},
       "cordova-custom-config": {},
       "cordova-plugin-keyboard": {},
-      "cordova-plugin-dialogs": {}
+      "cordova-plugin-dialogs": {},
+      "jaeger.Html5Video": {}
     },
     "platforms": [
       "ios",

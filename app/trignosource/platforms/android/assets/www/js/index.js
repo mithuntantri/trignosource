@@ -18,8 +18,8 @@
  */
 var app = {
     // Application Constructor
-    // baseUrl: 'http://13.126.30.240',
-    baseUrl: 'https://sour-pug-14.localtunnel.me',
+    baseUrl: 'http://13.126.30.240',
+    // baseUrl: 'https://sour-pug-14.localtunnel.me',
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },
@@ -46,6 +46,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
+        screen.orientation.lock('portrait');
         console.log('Received Event: ' + id);
         document.addEventListener("offline", function(){ 
           console.log("Device offline")

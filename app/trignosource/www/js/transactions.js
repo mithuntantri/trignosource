@@ -209,14 +209,18 @@ var app = {
     onDeviceReady: function() {
         StatusBar.backgroundColorByHexString('#003256');
         this.receivedEvent('deviceready');
+        document.addEventListener("backbutton", function(){
+            window.location = 'calculator.html'
+        }, false);
         document.getElementById('back_arrow').addEventListener('click', function(e){
-            navigator.app.backHistory();
+            window.location = 'calculator.html'
         })
     },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        screen.orientation.lock('portrait');
         // for(var i=0;i< this.videos.length;i++){
         //   (function(i){
         //     var j = i;

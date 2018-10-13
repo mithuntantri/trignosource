@@ -92,6 +92,15 @@ body {
   min-height: 225px;
 }
 
+.calculator__title{
+  text-transform: uppercase;
+    font-weight: bold;
+    font-family: 'Eras Medium ITC';
+    color: rgb(50,66,33);
+    font-size: 14px;
+    margin-top: 10px;
+}
+
 .cards {
   font-family: 'Tw Cen MT', sans-serif !important;
 	display: -webkit-flex;
@@ -306,9 +315,9 @@ body {
 }
 
 .card__icon{
-  width:35px;
-  height:35px;
-  margin: 7px;
+  width:50px;
+  height:38px;
+  margin: 5px;
 }
 
 .interactive__videos{

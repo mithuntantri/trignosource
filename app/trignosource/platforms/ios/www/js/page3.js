@@ -34,10 +34,17 @@ var app = {
     whiteTimes : [],
     stopPropogation: false,
     stayHere: false,
+    currentQuality: 'Auto',
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
 
         this.baseUrl = localStorage.getItem('baseUrl')
+
+        if(localStorage.getItem('streaming') != null || localStorage.getItem('streaming') != undefined){
+          this.currentQuality = localStorage.getItem('streaming')
+        }else{
+          localStorage.setItem('streaming', this.currentQuality)
+        }
 
         this.tutorials = localStorage.getItem('tutorials')
         this.currentSubject = parseInt(localStorage.getItem('currentSubject'))
@@ -66,9 +73,40 @@ var app = {
           document.getElementById('next_video_duration').innerHTML = this.getDuration(this.tutorials[this.currentSubject].chapters[this.currentChapter].videos[parseInt(this.currentVideo)+1].duration)
         }
 
-        document.getElementById('video-element').innerHTML = "<source src='"+this.baseUrl+"/uploads/Videos/"+this.video.file_name+"' type='video/mp4'>"
-        this.loadVieo(0);
+        this.reloadVideo(0);
         this.handleNext();
+    },
+
+    changeVideo: function(currentTime){
+      document.getElementById('controls').classList.remove("hide")
+      document.getElementById('controls').classList.remove("show")
+      document.getElementById('controls').classList.add("hide")
+      document.getElementById('loading').style.display = 'flex'
+      document.getElementById('player').style.display = 'none'
+      this.player.pause()
+      console.log("Changing video", currentTime)
+      if(this.currentQuality == 'Auto'){
+        document.getElementById('video-element').innerHTML = "<source src='"+this.baseUrl+"/uploads/Videos/360p/"+this.video.file_name+"' type='video/mp4'>"
+      }else{
+        document.getElementById('video-element').innerHTML = "<source src='"+this.baseUrl+"/uploads/Videos/"+this.currentQuality+"/"+this.video.file_name+"' type='video/mp4'>"
+      }
+      this.player.load()
+      this.player.currentTime = currentTime
+      this.player.addEventListener('loadeddata', function(){
+          console.log("Video Loaded Successfully!")
+          document.getElementById('loading').style.display = 'none'
+          document.getElementById('player').style.display = 'flex'
+      }, false)
+      this.player.play()
+    },
+
+    reloadVideo: function(currentTime){
+      if(this.currentQuality == 'Auto'){
+        document.getElementById('video-element').innerHTML = "<source src='"+this.baseUrl+"/uploads/Videos/360p/"+this.video.file_name+"' type='video/mp4'>"
+      }else{
+        document.getElementById('video-element').innerHTML = "<source src='"+this.baseUrl+"/uploads/Videos/"+this.currentQuality+"/"+this.video.file_name+"' type='video/mp4'>"
+      }
+      this.loadVieo(currentTime);
     },
 
     seekTenSecondsBehind: function(){
@@ -267,6 +305,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        screen.orientation.lock('portrait');
          document.addEventListener("offline", function(){ 
           console.log("Device offline")
           alert("Seems your internet is disconnected. Please check and try again") 
@@ -276,7 +315,6 @@ var app = {
 
     loadVieo: function(starttime){
       console.log("sscript loaded")
-
       // Get a handle to the player
       this.player = document.getElementById('video-element');
       this.player.currentTime = starttime
@@ -406,27 +444,30 @@ var app = {
       }, false)
     },
 
-    callback: function(buttonIndex) {
-      setTimeout(function() {
-        // like other Cordova plugins (prompt, confirm) the buttonIndex is 1-based (first button is index 1)
-        alert('button index clicked: ' + buttonIndex);
-      });
-    },
-
     testShareSheet: function() {
+      var that = this;
       var options = {
           androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT, // default is THEME_TRADITIONAL
-          title: 'What do you want with this image?',
+          title: 'Video Streaming Quality',
           subtitle: 'Choose wisely, my friend', // supported on iOS only
-          buttonLabels: ['Share via Facebook', 'Share via Twitter'],
+          buttonLabels: ['Auto', '360p', '480p', '720p', '1080p'],
           androidEnableCancelButton : true, // default false
           winphoneEnableCancelButton : true, // default false
           addCancelButtonWithLabel: 'Cancel',
-          addDestructiveButtonWithLabel : 'Delete it',
-          position: [20, 40], // for iPad pass in the [x, y] position of the popover
+          position: [20, 40, 60, 80, 100], // for iPad pass in the [x, y] position of the popover
           destructiveButtonLast: true // you can choose where the destructive button is shown
       };
-      window.plugins.actionsheet.show(options, callback);
+      window.plugins.actionsheet.show(options, function(buttonIndex){
+        setTimeout(function(){
+          console.log("buttonIndex", buttonIndex)
+          var buttonLabels = ['Auto', '360p', '480p', '720p', '1080p']
+          if(buttonIndex <= 5){
+            that.currentQuality = buttonLabels[buttonIndex-1];
+            localStorage.setItem('streaming', that.currentQuality)
+            that.changeVideo(that.player.currentTime)
+          }
+        })
+      });
     },
 
     loadBuffer: function(){

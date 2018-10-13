@@ -80,7 +80,7 @@ var app = {
 
         var btn1 = document.getElementById('view-accounts-btn-1')
         btn1.addEventListener('click', function(){
-            if((that.assetAccount.debit.length + that.assetAccount.credit.length) > 0){
+            if((that.assetAccount.all.length) > 0){
                 that.nextButton(0)                
             }else{
                 that.showBottom('No accounts to view')
@@ -89,7 +89,7 @@ var app = {
 
         var btn2 = document.getElementById('view-accounts-btn-2')
         btn2.addEventListener('click', function(){
-            if((that.depreciationAccount.debit.length + that.depreciationAccount.credit.length) > 0){
+            if((that.depreciationAccount.all.length) > 0){
                 that.nextButton(1)                
             }else{
                 that.showBottom('No accounts to view')
@@ -98,7 +98,7 @@ var app = {
         
         var btn3 = document.getElementById('view-accounts-btn-3')
         btn3.addEventListener('click', function(){
-            if((that.pnlAccount.debit.length + that.pnlAccount.credit.length) > 0){
+            if((that.pnlAccount.all.length) > 0){
                 that.nextButton(2)                
             }else{
                 that.showBottom('No accounts to view')
@@ -114,8 +114,11 @@ var app = {
     onDeviceReady: function() {
         StatusBar.backgroundColorByHexString('#003256');
         this.receivedEvent('deviceready');
+        document.addEventListener("backbutton", function(){
+            window.location = 'final_inputs.html'
+        }, false);
         document.getElementById('back_arrow').addEventListener('click', function(e){
-            navigator.app.backHistory();
+            window.location = 'final_inputs.html'
         })
     },
 

@@ -61,8 +61,8 @@ var calculators = [
 								etc.`,
 								`Residual value or the value that the machinery could
 								fetch after its useful life.`,
-								`The total number of hours for which the machinery can
-								be expected to run efficiently.`
+								`The total number of years over which the asset is expected to be
+								used by the enterprise.`
 							]
 			},
 			{
@@ -85,8 +85,8 @@ var calculators = [
 								etc.`,
 								`Residual value or the value that the machinery could
 								fetch after its useful life.`,
-								`The total number of hours for which the machinery can
-								be expected to run efficiently.`
+								`The total number of years over which the asset is expected to be
+								used by the enterprise.`
 							]
 			},
 			{
@@ -109,8 +109,8 @@ var calculators = [
 								etc.`,
 								`Residual value or the value that the machinery could
 								fetch after its useful life.`,
-								`The total number of hours for which the machinery can
-								be expected to run efficiently.`
+								`The total number of years over which the asset is expected to be
+								used by the enterprise.`
 							]
 			},
 			{

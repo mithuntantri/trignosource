@@ -48,7 +48,35 @@ var app = {
         var final_html = ``
         var img_loaded = []
         var currentCalculators = this.calculators[parseInt(this.currentSubject)][parseInt(this.currentChapter)]
-        for(var i=0;i< currentCalculators.length;i++){
+        var i = currentCalculators.length-1
+        final_html += `<div class="calculator__title">Virtual Problem Solver</div><div class="onerounded-card" 
+                id="interactive-videos-`+i+`"
+                style="height:auto;flex-direction:column;display:flex;">
+              <div style="position:relative;display:flex;flex-grow:0;flex-direction:row;width:100%;padding:5px 0;">
+                <div class="videos__title" style="width:58px;text-align:center;">01</div>
+                <div class="videos__title">`+currentCalculators[i].name+`</div>
+                <div id="open_details_${i}" style="position:absolute;bottom:5px;right:5px;display:flex;flex-direction:row;justify-content:flex-end;padding:7px;">
+                  <img src="img/calculators/green_arrow_down.png" style="width:11px;height:9px;">
+                </div>
+                <div id="close_details_${i}" style="position:absolute;bottom:5px;right:5px;display:flex;flex-direction:row;justify-content:flex-end;padding:7px;display:none;">
+                  <img src="img/calculators/green_arrow_up.png" style="width:11px;height:9px;">
+                </div>
+              </div>
+              <div id="opened_details_${i}" style="padding:10px;border-top:1px solid;border-color:rgb(100,120,100);display:none;">
+                <div style="background-color:rgb(245,245,245);border-radius:10px;padding:3px;">
+                  <ul style="margin:0;padding-left:30px;">
+                    <li>Asset a/c</li>
+                    <li>Depreciation a/c</li>
+                    <li>Profit and Loss a/c</li>
+                    <li>Working notes</li>
+                  </ul>
+                </div>
+              </div>
+          </div>`
+        for(var i=0;i< currentCalculators.length-1;i++){
+          if(i==0){
+            final_html += `<div class="calculator__title">Calculators</div>`
+          }
           final_html += `
           <div class="onerounded-card" 
                 id="interactive-videos-`+i+`"
@@ -95,6 +123,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        screen.orientation.lock('portrait');
         var currentCalculators = this.calculators[parseInt(this.currentSubject)][parseInt(this.currentChapter)]
         for(var i=0;i< currentCalculators.length;i++){
           (function(i){

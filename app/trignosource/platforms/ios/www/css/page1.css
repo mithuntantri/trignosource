@@ -70,12 +70,12 @@ body {
   justify-content: center;
   background-color: rgb(0,43,75);
   width: 100%;
-  height: 40%;
+  min-height: 40%;
 }
 
 .part2{
   display: flex;
-  flex-grow: 2;
+  /*flex-grow: 2;*/
   flex-direction: column;
   justify-content: center;
   background-color: rgb(255,249,242);
@@ -84,12 +84,21 @@ body {
 
 .part2.ppage2,
 .part1.ppage2{
-  padding: 15px;
+  padding: 10px;
   width: auto !important;
   background-color: transparent !important;
   justify-content: flex-start;
   height: auto !important;
   min-height: 225px;
+}
+
+.calculator__title{
+  text-transform: uppercase;
+    font-weight: bold;
+    font-family: 'Eras Medium ITC';
+    color: rgb(50,66,33);
+    font-size: 14px;
+    margin-top: 10px;
 }
 
 .cards {
@@ -107,9 +116,25 @@ body {
 	box-sizing: border-box;
 }
 
-.subject_1{
-  color: rgb(103,156,215);
+.card{
+  font-family: 'Eras Medium ITC';
+  flex-grow: 1;
+  padding: 10px;
+  color: white;
+  display: flex;
+    flex-direction: column;
+  justify-content: center;
+  border-color: rgb(208, 206, 206);
+  height: 100%;
+  margin: 0 25px;
+  box-shadow:rgba(0, 0, 0, 0.4) 0px 0px 8px 0px;
+  box-sizing: border-box;
+  border-radius: 3px;
 }
+
+/*.subject_1{
+  color: rgb(255,151,87);
+},,
 .subject_2{
   color: rgb(156,215,103);
 }
@@ -118,19 +143,36 @@ body {
 }
 .subject_4{
   color: rgb(255,151,87);
+}*/
+
+.subject_1{
+  color: rgb(255,151,57) !important;
+}
+
+.subject_2{
+  color: rgb(156,215,103) !important;
+}
+
+.subject_3{
+  color: rgb(255,102,99) !important;
+}
+
+.subject_4{
+  color: rgb(202,181,112) !important;
 }
 
 .onerounded-card{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 7px;
+  margin: 7px 0px;
   background-color: #fff;
   border-color: rgb(208, 206, 206);
-  border-top-left-radius: 50px;
+  /*border-top-left-radius: 50px;*/
+  border-radius: 8px;
   width: 100%;
-  height: 90px;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px 0px !important;
+  height:60px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 8px 0px !important;
   box-sizing: border-box;
 }
 
@@ -207,26 +249,29 @@ body {
 
 .card__details{
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse;
+  justify-content: space-between;
   flex-grow: 2;
   height: 100%;
   padding: 5px 10px;
 }
 
 .card__title{
-  height: 30px;
-  line-height: 30px;
-  font-size: 16px;
+  font-family: 'Eras Medium ITC';
+  height: 60px;
+  line-height: 40px;
+  font-size: 17px;
   text-align: right;
   width: 100%;
 }
 
 .card__count{
-  height: 30px;
-  line-height: 30px;
-  font-size: 14px;
-  text-align: right;
-  width: 100%;
+  font-family: 'Eras Medium ITC';
+  height: 60px;
+  line-height: 40px;
+  font-size: 17px;
+  text-align: left;
+  width: 50px;
 }
 
 .videos-card{
@@ -234,7 +279,7 @@ body {
 }
 
 .videos-title{
-  border-bottom: 1px solid rgb(248,174,38) !important;
+  /*border-bottom: 1px solid rgb(248,174,38) !important;*/
 }
 
 .calculators-card{
@@ -242,7 +287,7 @@ body {
 }
 
 .calculators-title{
-  border-bottom: 1px solid rgb(91,146,50) !important;
+  /*border-bottom: 1px solid rgb(91,146,50) !important;*/
 }
 
 .theory-card{
@@ -250,7 +295,7 @@ body {
 }
 
 .theory-title{
-  border-bottom: 1px solid rgb(47,83,115) !important;
+  /*border-bottom: 1px solid rgb(47,83,115) !important;*/
 }
 
 .tests-card{
@@ -258,7 +303,7 @@ body {
 }
 
 .tests-title{
-  border-bottom: 1px solid rgb(89,7,21) !important;
+  /*border-bottom: 1px solid rgb(89,7,21) !important;*/
 }
 
 .questions-card{
@@ -266,13 +311,13 @@ body {
 }
 
 .questions-title{
-  border-bottom: 1px solid rgb(151,79,118) !important;
+  /*border-bottom: 1px solid rgb(151,79,118) !important;*/
 }
 
 .card__icon{
-  width:40px;
-  height:40px;
-  margin: 10px;
+  width:50px;
+  height:38px;
+  margin: 5px;
 }
 
 .interactive__videos{
@@ -315,12 +360,13 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-family: 'TW Cen MT';
+  font-family: 'Eras Medium ITC';
   color: rgb(77,51,3);
-  font-size: 18px;
+  font-size: 15px;
   height: 70px;
-  text-align: right;
-  border-bottom: 1px solid rgb(77,51,3);
+  font-weight: bold;
+  text-align: left;
+  padding-right: 12px;
 }
 
 .videos__subdetails{
@@ -328,10 +374,10 @@ body {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  font-size: 13px;
+  font-size: 11px;
   color: rgb(77,51,3);
   line-height: 33px;
-  font-family: 'TW Cen MT';
+  font-family: 'Eras Medium ITC';
 }
 
 .page3-part2{
@@ -499,4 +545,90 @@ body {
 }
 @-webkit-keyframes spin {
   to { -webkit-transform: rotate(360deg); }
+}
+
+.track_ur_progress_header{
+  font-family: 'Eras Medium ITC';
+  font-size: 11px;
+  padding-left: 7px;
+  margin: 5px 25px;
+  color: rgb(74,102,138);
+}
+
+.track_ur_progress_header.videos{
+  color: rgb(255,235,200);
+}
+
+.new-progress-list{
+  border-radius: 3px;
+  background-color: rgb(245,245,245);
+  margin-top: 5px;
+  padding: 10px;
+  color: black;
+  position: relative;
+}
+
+.new-progress-list-completion{
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  font-weight: bold;
+  font-size: 13px;
+  font-family: 'TW Cen MT';
+  color: rgb(112,173,71);
+}
+
+.new-progress-list-module{
+  font-size: 13px;
+    font-weight: bold;
+    line-height: 18px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.new-progress-list-chapter{
+  font-size: 13px;
+    line-height: 18px;
+    color: rgb(120,100,120);
+}
+
+.overall_progress{
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.overall_progress_part1{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.overall_progress_title{
+  font-family: 'Eras Medium ITC';
+  font-size: 13px;
+  color: rgb(100,120,100);
+}
+
+.overall_progress_pc{
+  font-size: 13px;
+  font-family: 'TW Cen MT';
+  font-weight: bold;
+  color: rgb(112,173,71);
+}
+
+.overall_progress_part2{
+  border-radius: 3px;
+  width: 100%;
+  height: 5px;
+  margin: 3px 0;
+  background-color: rgb(226,240,217);
+}
+.overall_progress_progress{
+  width: 45%;
+  height: 100%;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  background-color: rgb(112,173,71);
 }

@@ -45,7 +45,9 @@ var app = {
         document.getElementById('chapter_number').innerHTML = 'CHAPTER ' + this.tutorials[this.currentSubject].chapters[this.currentChapter].chapter_number
         document.getElementById('videos_count').innerHTML = this.tutorials[this.currentSubject].chapters[this.currentChapter].videos.length
         document.getElementById('videos_count_new').innerHTML = this.tutorials[this.currentSubject].chapters[this.currentChapter].videos.length
-        document.getElementById('calculators_count').innerHTML = this.calculators[parseInt(this.currentSubject)][parseInt(this.currentChapter)].length
+        if(this.calculators[parseInt(this.currentSubject)].length > 0){
+            document.getElementById('calculators_count').innerHTML = this.calculators[parseInt(this.currentSubject)][parseInt(this.currentChapter)].length            
+        }
 
         document.getElementsByClassName('subject_image')[0].innerHTML = '<img style="width:75%;" src="img/subject_icons/subject_'+ parseInt(this.currentSubject + 1) + '_b.png"/>'
 
@@ -73,6 +75,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        screen.orientation.lock('portrait');
         document.addEventListener("offline", function(){ 
           console.log("Device offline")
           alert("Seems your internet is disconnected. Please check and try again") 

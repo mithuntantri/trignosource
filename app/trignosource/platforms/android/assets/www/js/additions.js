@@ -306,7 +306,13 @@ var app = {
                                     <div class="dropdown-bubble">
                                       <div class="dropdowntext" style="margin: 0;background-color: rgb(220,220,220);color:black;" id="year_dropdown_option_${i}">
                                       `
-                                        for(var j=parseInt(that.transactionObject[0].year);j<=2030;j++){
+                                        if(document.getElementById('asset_'+i).value == 'General / Other'){
+                                            start = parseInt(that.transactionObject[0].year)
+                                        }else{
+                                            let asset_number = parseInt(document.getElementById('asset_'+i).value.split(" ")[1])
+                                            start = parseInt(that.transactionObject[1].values[asset_number-1].year_of_purchase)
+                                        }
+                                        for(var j=start;j<=2030;j++){
                                             final_html += `<p id="year_dropdown_option_${i}_${j}">${j}</p>`
                                         }
                                         final_html += `
@@ -405,7 +411,7 @@ var app = {
             hidemonth.style.display = 'none'
         })
 
-        for(var k=parseInt(that.transactionObject[0].year);k<=2030;k++){
+        for(var k=start;k<=2030;k++){
             (function(k){
                 var l = k;
                 var year = document.getElementById('year_dropdown_option_'+i+'_'+l)
@@ -470,7 +476,7 @@ var app = {
             hideasset.style.display = 'none'
         })        
 
-        for(var k=0;k<that.assets.length;k++){
+        for(var k=0;k<that.nature.length;k++){
             (function(k){
                 var l = k;
                 var month = document.getElementById('nature_dropdown_option_'+i+'_'+l)
@@ -499,6 +505,7 @@ var app = {
         console.log('Received Event: ' + id);
         var that = this
         var next_btn = document.getElementById('next_btn');
+        screen.orientation.lock('portrait');
         next_btn.addEventListener('click', function(){
             that.nextButton()
         })
@@ -524,9 +531,9 @@ var app = {
                 "asset": document.getElementById('asset_'+i).value,
                 "values": {
                     "extent_of_sale": document.getElementById('extent_of_sale_'+i).value,
-                    "sale_proceeds": document.getElementById('sale_proceeds_'+i).value,
+                    "sale_proceeds": parseFloat(document.getElementById('sale_proceeds_'+i).value),
                     "date_of_sale": document.getElementById('sale_month_'+i).value,
-                    "year_of_sale": document.getElementById('sale_year_'+i).value,
+                    "year_of_sale": parseInt(document.getElementById('sale_year_'+i).value),
                 }
             }
             if(that.checkForm(i)){

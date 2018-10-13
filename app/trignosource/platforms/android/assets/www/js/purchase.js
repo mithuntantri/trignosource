@@ -321,9 +321,14 @@ var app = {
 
                 var create_btn = document.getElementById('create_btn_'+j)
                 create_btn.addEventListener('click', function(){
+                    var additional_costs = parseFloat(document.getElementById('add_cost_of_asset_'+j).value)
+                    console.log("additional_costs", additional_costs)
+                    if(additional_costs == null || additional_costs == '' || isNaN(additional_costs)){
+                        additional_costs = 0
+                    }
                     that.transactionObject[1].values[j] = {
                         "cost": parseFloat(document.getElementById('cost_of_asset_'+j).value),
-                        "additional_costs": parseFloat(document.getElementById('add_cost_of_asset_'+j).value),
+                        "additional_costs": parseFloat(additional_costs.toFixed(2)),
                         "date_of_purchase": document.getElementById('purchase_month_'+j).value,
                         "year_of_purchase": parseInt(document.getElementById('purchase_year_'+j).value)
                     }
@@ -343,9 +348,13 @@ var app = {
 
     savePurchase: function(j){
         var that = this
+        var additional_costs = document.getElementById('add_cost_of_asset_'+j).value
+        if(additional_costs == null || additional_costs == '' || isNaN(additional_costs)){
+            additional_costs = 0
+        }
         that.transactionObject[1].values[j] = {
             "cost": parseFloat(document.getElementById('cost_of_asset_'+j).value),
-            "additional_costs": parseFloat(document.getElementById('add_cost_of_asset_'+j).value),
+            "additional_costs": parseFloat(additional_costs.toFixed(2)),
             "date_of_purchase": document.getElementById('purchase_month_'+j).value,
             "year_of_purchase": parseInt(document.getElementById('purchase_year_'+j).value)
         }
@@ -363,9 +372,6 @@ var app = {
     checkForm: function(j){
         let obj = this.transactionObject[1].values[j]
         console.log(obj)
-        if(obj.additional_costs == null || obj.additional_costs == ''){
-            this.transactionObject[1].values[j].additional_costs = 0
-        }
         if(obj.cost == null || obj.cost == '' || isNaN(obj.cost)){
             alert("Please enter cost of asset")
             return false
@@ -501,6 +507,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        screen.orientation.lock('portrait');
         // for(var i=0;i< this.videos.length;i++){
         //   (function(i){
         //     var j = i;

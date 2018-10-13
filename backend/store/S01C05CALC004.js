@@ -51,7 +51,7 @@ var calculator = (input_object)=>{
 		input_array.push({"key": "Rate of Intereset on Investment (%)", "value": roi_on_investment, "unit": ""})
 
 		let a = 1 + (roi_on_investment/100)
-		let b = 1 - duration_of_lease
+		let b = duration_of_lease*-1
 		let denominator = (1 - Math.pow(a,b))/(roi_on_investment/100)
 		let result1 = 1/denominator
 		console.log(result1)

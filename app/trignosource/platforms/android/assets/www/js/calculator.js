@@ -71,7 +71,11 @@ var app = {
         document.getElementById('subject_name').innerHTML = this.tutorials[this.currentSubject].subject_name.toUpperCase()
         document.getElementById('chapter_name').innerHTML = this.tutorials[this.currentSubject].chapters[this.currentChapter].chapter_name
         document.getElementById('chapter_number').innerHTML = 'CHAPTER ' + this.tutorials[this.currentSubject].chapters[this.currentChapter].chapter_number
-        document.getElementById('calculator_number').innerHTML = 'Calculator - 0'+(this.currentCalculator+1)
+        if(this.currentCalculator == 5){
+            document.getElementById('calculator_number').innerHTML = 'Accounts generator - 01'
+        }else{
+            document.getElementById('calculator_number').innerHTML = 'Calculator - 0'+(this.currentCalculator+1)            
+        }
 
         var final_html = ``
         var that = this
@@ -395,6 +399,7 @@ var app = {
         //     }, false);
         //   })(i);
         // }
+        screen.orientation.lock('portrait');
         var that = this
         var calculate_btn = document.getElementById('calculate_btn');
         calculate_btn.addEventListener('click', function(){

@@ -143,13 +143,14 @@ var app = {
                 var purchase_create = document.getElementById('purchase_create_'+j)
          
                 purchase_create.addEventListener('click', function(){
+                    console.log("purchase_create",document.getElementById('asset_'+j).value)
                     var purchase_desc = document.getElementById('purchase_desc_'+j)
                     var purchase_form = document.getElementById('purchase_form_'+j)
                     var purchase_delete = document.getElementById('purchase_delete_'+j)
                     if(j == that.transactionObject[2].values.length-1){
                         purchase_desc.style.display = 'none'                        
                     }else{
-                        if(that.transactionObject[2].values[j].asset == "General / Other"){
+                        if(document.getElementById('asset_'+j).value == "General / Other"){
                             that.addOPForm(j)                            
                         }else{
                             that.addAssetForm(j)
@@ -207,7 +208,7 @@ var app = {
                             var select_dropdown = document.getElementById('select_dropdown_assets_'+j)
                             var asset = document.getElementById('asset_'+j)
                             asset.value = assets[l]
-                            if(that.transactionObject[2].values[j].asset == "General / Other"){
+                            if(document.getElementById('asset_'+j).value == "General / Other"){
                                 that.transactionObject[2].values[j].values = {
                                     "sale_proceeds": null,
                                     "date_of_purchase": null,
@@ -326,7 +327,7 @@ var app = {
 
         if(!option){
             final_html += `<div class="title">
-                           Cost of ${that.currentAsset} being sold:
+                           Cost of the part being sold:
                         </div>
                         <div class="input-container" style="margin:5px 0 15px 0;">
                              <div class="input-unit green-unit">&#8377;</div>
@@ -676,7 +677,7 @@ var app = {
                                     <div class="dropdown-bubble">
                                       <div class="dropdowntext" style="margin: 0;background-color: rgb(220,220,220);color:black;" id="p_year_dropdown_option_${i}">
                                       `
-                                        for(var j=1990;j<parseInt(that.transactionObject[0].year);j++){
+                                        for(var j=1990;j<=parseInt(that.transactionObject[0].year);j++){
                                             final_html += `<p id="p_year_dropdown_option_${i}_${j}">${j}</p>`
                                         }
                                         final_html += `
@@ -801,7 +802,7 @@ var app = {
             })(k);
         }
 
-        for(var k=1990;k<parseInt(that.transactionObject[0].year);k++){
+        for(var k=1990;k<=parseInt(that.transactionObject[0].year);k++){
             (function(k){
                 var l = k;
                 var year = document.getElementById('p_year_dropdown_option_'+i+'_'+l)
@@ -877,6 +878,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        screen.orientation.lock('portrait');
         var that = this
         var next_btn = document.getElementById('next_btn');
         next_btn.addEventListener('click', function(){
@@ -905,12 +907,12 @@ var app = {
             that.transactionObject[2].values[i] = {
                 "asset": document.getElementById('asset_'+i).value,
                 "values": {
-                    "sale_proceeds": document.getElementById('sale_proceeds_'+i).value,
+                    "sale_proceeds": parseFloat(document.getElementById('sale_proceeds_'+i).value),
                     "date_of_purchase": document.getElementById('purchase_month_'+i).value,
-                    "year_of_purchase": document.getElementById('purchase_year_'+i).value,
+                    "year_of_purchase": parseInt(document.getElementById('purchase_year_'+i).value),
                     "date_of_sale": document.getElementById('sale_month_'+i).value,
-                    "year_of_sale": document.getElementById('sale_year_'+i).value,
-                    "purchase_cost": document.getElementById('cost_of_asset_'+i).value
+                    "year_of_sale": parseInt(document.getElementById('sale_year_'+i).value),
+                    "purchase_cost": parseFloat(document.getElementById('cost_of_asset_'+i).value)
                 }
             }
         }else{
@@ -923,10 +925,10 @@ var app = {
                     "asset": document.getElementById('asset_'+i).value,
                     "values": {
                         "extent_of_sale": document.getElementById('extent_of_sale_'+i).value,
-                        "sale_proceeds": document.getElementById('sale_proceeds_'+i).value,
+                        "sale_proceeds": parseFloat(document.getElementById('sale_proceeds_'+i).value),
                         "date_of_sale": document.getElementById('sale_month_'+i).value,
-                        "year_of_sale": document.getElementById('sale_year_'+i).value,
-                        "asset_cost": that.transactionObject[1].values[asset_number].cost + that.transactionObject[1].values[asset_number].additional_costs
+                        "year_of_sale": parseInt(document.getElementById('sale_year_'+i).value),
+                        "asset_cost": parseFloat(that.transactionObject[1].values[asset_number].cost + that.transactionObject[1].values[asset_number].additional_costs)
                     }
                 }
             }else{
@@ -934,11 +936,11 @@ var app = {
                     "asset": document.getElementById('asset_'+i).value,
                     "values": {
                         "extent_of_sale": document.getElementById('extent_of_sale_'+i).value,
-                        "sale_proceeds": document.getElementById('sale_proceeds_'+i).value,
+                        "sale_proceeds": parseFloat(document.getElementById('sale_proceeds_'+i).value),
                         "date_of_sale": document.getElementById('sale_month_'+i).value,
-                        "year_of_sale": document.getElementById('sale_year_'+i).value,
-                        "purchase_cost": document.getElementById('cost_of_asset_'+i).value,
-                        "asset_cost": that.transactionObject[1].values[asset_number].cost + that.transactionObject[1].values[asset_number].additional_costs
+                        "year_of_sale": parseInt(document.getElementById('sale_year_'+i).value),
+                        "purchase_cost": parseFloat(document.getElementById('cost_of_asset_'+i).value),
+                        "asset_cost": parseFloat(that.transactionObject[1].values[asset_number].cost + that.transactionObject[1].values[asset_number].additional_costs)
                     }
                 }
             }

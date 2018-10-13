@@ -35,7 +35,7 @@ html {
   height: 100vh;
 }
 body {
-  background: rgb(30,59,21);
+  background: #fff;
   height: 100%;
   overflow: hidden;
 }
@@ -136,6 +136,14 @@ canvas {
 }
 .logo >img {
   -webkit-animation: pulse 3s infinite;
+}
+.tag-line{
+  font-family: 'Eras Medium ITC';
+  color:rgb(100,120,100);
+  text-align: center;
+    bottom: 50px;
+    position: absolute;
+    width: 100%;
 }
 h2 {
   font-family: 'Eras Medium ITC', 'Lato', 'Open Sans';

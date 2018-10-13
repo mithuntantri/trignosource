@@ -305,6 +305,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        screen.orientation.lock('portrait');
          document.addEventListener("offline", function(){ 
           console.log("Device offline")
           alert("Seems your internet is disconnected. Please check and try again") 

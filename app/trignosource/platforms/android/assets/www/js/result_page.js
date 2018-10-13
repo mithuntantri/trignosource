@@ -256,6 +256,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        screen.orientation.lock('portrait');
         // for(var i=0;i< this.videos.length;i++){
         //   (function(i){
         //     var j = i;
